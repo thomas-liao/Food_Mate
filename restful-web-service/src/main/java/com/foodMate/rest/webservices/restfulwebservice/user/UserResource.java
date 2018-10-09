@@ -8,6 +8,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+// resource is actually a controller.. its resources gets exposed, so we specifically call it resource
+
 @RestController
 public class UserResource {
     // find repository automatically
