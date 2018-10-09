@@ -1,13 +1,21 @@
 package com.foodMate.rest.webservices.restfulwebservice.user;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class User {
     private Integer id;
+
+    @Size(min=2, max=16, message = "Should be between 2 - 16 characters")
     private String fname;
+    @Size(min=2, max=16, message = "Should be between 2 - 16 characters")
     private String lname;
+    @Size(min=6, max=16, message = "Should be between 6 - 16 characters")
     private String userName;
-    private Date birthDate;
+
+    @Past
+    private Date registrationDate;
     private enum food_pref {Chinese, Japanese, French, Italian, Mexican, American};
     private String addr;
 
@@ -17,12 +25,12 @@ public class User {
 
     }
 
-    public User(Integer id, String fname, String lname, String userName, Date birthDate, String addr) {
+    public User(Integer id, String fname, String lname, String userName, Date registrationDate, String addr) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
         this.userName = userName;
-        this.birthDate = birthDate;
+        this.registrationDate = registrationDate;
         this.addr = addr;
     }
 
@@ -59,12 +67,12 @@ public class User {
         this.userName = userName;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getRegistrationDate() {
+        return registrationDate;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     public String getAddr() {
@@ -84,7 +92,7 @@ public class User {
                 ", fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
                 ", userName='" + userName + '\'' +
-                ", birthDate=" + birthDate +
+                ", registrationDate=" + registrationDate +
                 ", addr='" + addr + '\'' +
                 '}';
     }
