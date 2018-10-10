@@ -4,4 +4,4 @@
  2. localhost:8080/users,  list all users
  3. (GET) localhost:8080/users/{id}, look for user by id, return 404 if not found.
  4. (DELETE) localhost:8080/users/{id}, delete user by id, return 404 if not found.
- 5. (POST) JSON to localhost:8080/users, add user (assigned uid sequentially, response URI of added (User) user object - for future convenience.
+ 5. (POST) JSON to localhost:8080/users, add user (assigned uid sequentially, respond URI of added (User) user object - for future convenience.
