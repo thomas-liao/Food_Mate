@@ -9,19 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".SignupActivity"
+        <activity
+            android:name=".SignupActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".RoleSelectActivity"
-            android:theme="@style/AppTheme.Dark"/>
-
-        <activity android:name=".PostActivity"
-            android:theme="@style/AppTheme.Dark"/>
-        <activity android:name=".MessageBoxActivity"
+        <activity
+            android:name=".RoleSelectActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".PostActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".MessageBoxActivity"
             android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ReservationActivity"></activity>
     </application>
 
 </manifest>
