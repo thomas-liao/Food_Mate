@@ -1,4 +1,4 @@
-package com.group18.oose.foodmate;
+package jhu.oose.group18.foodmate;
 
 import org.junit.Test;
 

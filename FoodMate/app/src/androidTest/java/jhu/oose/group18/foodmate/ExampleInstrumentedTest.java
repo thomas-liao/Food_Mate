@@ -1,4 +1,4 @@
-package com.group18.oose.foodmate;
+package jhu.oose.group18.foodmate;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.group18.oose.foodmate", appContext.getPackageName());
+        assertEquals("jhu.oose.group18.foodmate", appContext.getPackageName());
     }
 }
