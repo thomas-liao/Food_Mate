@@ -13,6 +13,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,12 +44,34 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
-                if (!validate()) {
-                    onLoginFailed();
-                    return;
-                }
-                startActivity(intent);
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                String url = "http://10.0.2.2:8080/user/1";
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>()
+                        {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // display response
+                                System.out.println("Response:"+response.toString());
+                            }
+                        },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        }
+                );
+
+                // add it to the RequestQueue
+                queue.add(getRequest);
+//                Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+//                if (!validate()) {
+//                    onLoginFailed();
+//                    return;
+//                }
+//                startActivity(intent);
             }
         });
 
