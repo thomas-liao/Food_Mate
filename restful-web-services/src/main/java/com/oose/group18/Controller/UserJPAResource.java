@@ -74,14 +74,16 @@ public class UserJPAResource {
 	}
 
 	@PostMapping("/login")
-	public Integer userLogin(@RequestBody User loginUser) {
+	public String userLogin(@RequestBody User loginUser) {
 		List<User> users = userRepository.findAll();
 		for (User user : users) {
 			if (loginUser.getUserName().equals(user.getUserName()) && loginUser.getPassword().equals(user.getPassword())) {
-				return user.getId();
+				System.out.println(user.getUserName());
+				System.out.println(user.getPassword());
+				return String.valueOf(user.getId());
 			}
 		}
-		return -1;
+		return "-1";
 	}
 
 	@PostMapping("/register")
