@@ -1,6 +1,7 @@
 package com.oose.group18.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModel;
@@ -36,6 +37,7 @@ public class Restaurant {
     private Double latitude;
     private Double longitude;
 
+    @JsonIgnore
     @OneToMany(mappedBy="restaurant")
     private List<Post> posts;
 

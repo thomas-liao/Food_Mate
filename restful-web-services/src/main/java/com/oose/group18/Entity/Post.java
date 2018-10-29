@@ -31,6 +31,7 @@ public class Post {
 	private User user;
 
 	//@JsonManagedReference
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable
 	private List<User> guest;

@@ -8,10 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -33,6 +30,7 @@ public class User {
 
 	private String fullName;
 
+	@JsonIgnore
 	private String password;
 
 	private String addr;
@@ -42,12 +40,14 @@ public class User {
 	@Email
 	private String email;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="user")
 	private List<Post> posts;
 
 
 	//@JsonManagedReference
-	@JsonBackReference
+	//@JsonBackReference
+	@JsonIgnore
 	@ManyToMany(mappedBy = "guest")
 	private List<Post> joinedPost;
 

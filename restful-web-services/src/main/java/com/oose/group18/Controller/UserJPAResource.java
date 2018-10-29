@@ -261,7 +261,7 @@ public class UserJPAResource {
 		if (user.getId().equals(post.getUser().getId())) {
 			return -1;
 		}
-		if (post.getNumOfGuest() == post.getGuest().size()) {
+		if (post.getNumOfGuest() >= post.getGuest().size()) {
 			return -2;
 		}
 		if (post.getGuest().contains(user)) {
