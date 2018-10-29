@@ -21,18 +21,20 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".PostActivity"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
-            android:name=".MessageBoxActivity"
-            android:theme="@style/AppTheme.Dark" />
-
-        <activity android:name=".ReservationActivity">
+            android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MessageBoxActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".ReservationActivity">
+        </activity>
+        <activity android:name=".ListRestaurantActivity" />
+        <activity android:name=".RecommendationActivity"></activity>
     </application>
 
 </manifest>

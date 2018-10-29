@@ -15,18 +15,18 @@ android:visibility="visible">
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/user1"
                 android:layout_width="130dp"
                 android:layout_height="134dp"
                 android:src="@drawable/ava1" />
 
             <Switch
-                android:id="@+id/switch6"
+                android:id="@+id/switch1"
                 android:layout_width="178dp"
                 android:layout_height="103dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
-                android:text="Confirm Response" />
+                android:text="Decline Response" />
         </TableRow>
 
         <TableRow
@@ -34,18 +34,18 @@ android:visibility="visible">
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/user2"
                 android:layout_width="130dp"
                 android:layout_height="134dp"
                 android:src="@drawable/ava2" />
 
             <Switch
-                android:id="@+id/switch8"
+                android:id="@+id/switch2"
                 android:layout_width="178dp"
                 android:layout_height="103dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
-                android:text="Confirm Response" />
+                android:text="Decline Response" />
         </TableRow>
 
         <TableRow
@@ -53,18 +53,18 @@ android:visibility="visible">
             android:layout_height="match_parent" >
 
             <ImageView
-                android:id="@+id/imageView11"
+                android:id="@+id/user3"
                 android:layout_width="130dp"
                 android:layout_height="134dp"
                 android:src="@drawable/ava3" />
 
             <Switch
-                android:id="@+id/switch7"
+                android:id="@+id/switch3"
                 android:layout_width="178dp"
                 android:layout_height="103dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
-                android:text="Confirm Response" />
+                android:text="Decline Response" />
         </TableRow>
 
     </TableLayout>
