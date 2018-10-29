@@ -107,6 +107,8 @@ def main():
     ranked_list = recomm.recommend_for_user(args.uid)
     for i in range(args.topk):
         print(ranked_list[i])
-    
+    with open('output.txt', 'w') as f:
+        f.write("Sdfdf")
+
 if __name__ == '__main__':
     main()

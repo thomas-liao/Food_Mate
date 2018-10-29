@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url = "http://10.0.2.2:8080/user/1";
+                String url = "https://food-mate.herokuapp.com/user/1";
                 JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>()
                         {

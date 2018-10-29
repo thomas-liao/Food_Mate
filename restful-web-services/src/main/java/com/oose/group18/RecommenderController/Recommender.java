@@ -17,23 +17,57 @@ public class Recommender {
     public static List<Integer> getRecommend(int id, int topk) {
         List<Integer> result = new ArrayList<>();
         try {
-            Object var2 = true;
-            ProcessBuilder argument = new ProcessBuilder(new String[]{"python", "recommender.py",
-                    "--rating-data", "./rating_sparse.data", "--uid", ""+id, "--topk", ""+topk});
-            Process process = argument.start();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            //System.out.println();
+        /*
+        ProcessBuilder pb = new ProcessBuilder("python","recommender.py",
+                    "--rating-data","./rating_sparse.data",
+                    "--uid", uid, "--topk", ""+topk);
+        */
+            ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
+                    "--rating-data","./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data",
+                    "--uid", ""+id, "--topk", ""+topk);
+            //ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/test.py");
+            Process p = pb.start();
 
-            for(int i = 0; i < topk; ++i) {
-                result.add(Integer.getInteger(bufferedReader.readLine()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            for (int i = 0; i < 10; i++) {
+                result.add(Integer.parseInt(in.readLine()));
             }
-            for(int i = 0; i < topk; ++i) {
-                System.out.println(result.get(i));
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+
         }
+        catch(Exception e){System.out.println(e);}
         return result;
     }
+    public static void main(String[] args) {
+    try {
+        //System.out.println();
+        String uid = "1";
+        int topk = 12;
+        /*
+        ProcessBuilder pb = new ProcessBuilder("python","recommender.py",
+                    "--rating-data","./rating_sparse.data",
+                    "--uid", uid, "--topk", ""+topk);
+        */
+        ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
+                "--rating-data","./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data",
+                "--uid", ""+uid, "--topk", ""+topk);
+
+        Process p = pb.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+        List<String> res= new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            res.add(in.readLine());
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println(res.get(i));
+        }
+
+    }
+    catch(Exception e){System.out.println(e);}
+}
 }
 
 //import io.swagger.models.auth.In;
