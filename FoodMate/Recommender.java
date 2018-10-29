@@ -8,8 +8,8 @@ public static void main(String[] args) {
         String uid = args[0];
         int topk = 12;
         ProcessBuilder pb = new ProcessBuilder("python","recommender.py", 
-                    "--rating-data","./surprise_projects/rating_sparse.data",
-                    "--uid", uid, "--topk", topk);
+                    "--rating-data","./rating_sparse.data",
+                    "--uid", uid, "--topk", ""+topk);
         Process p = pb.start();
         
         BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
