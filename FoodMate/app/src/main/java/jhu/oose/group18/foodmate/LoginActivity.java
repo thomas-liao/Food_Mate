@@ -115,10 +115,9 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(String response) {
                             Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
                             Integer userId = Integer.parseInt(response);
-                            System.out.println(userId);
-                            if (userId < 0) {
+                            if (userId != 201) {
+                                System.out.println("create failed");
                                 onLoginFailed();
-//                                return;
                             } else {
                                 startActivity(intent);
                             }
@@ -153,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                                 responseString = String.valueOf(response.statusCode);
                                 // can get more details such as response.headers
                             }
-                            return super.parseNetworkResponse(response);
+                            return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                         }
                     };
 

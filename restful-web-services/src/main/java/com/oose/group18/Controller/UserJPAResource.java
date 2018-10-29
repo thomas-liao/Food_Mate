@@ -88,6 +88,8 @@ public class UserJPAResource {
 
 	@PostMapping("/register")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
+		user.setId(1000);
+		System.out.println(user.toString());
 
 		User savedUser = userRepository.save(user);
 

@@ -11,6 +11,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,12 +53,79 @@ public class SignupActivity extends AppCompatActivity {
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validate()) {
-                    onSignupFailed();
-                    return;
+
+                try {
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    String URL = "http://10.0.2.2:8080/register";
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("userName", _usernameText.getText().toString());
+                    jsonBody.put("password", _passwordText.getText().toString());
+                    jsonBody.put("fullName", _fullnameText.getText().toString());
+                    jsonBody.put("addr", _locationText.getText().toString());
+                    jsonBody.put("email", _emailText.getText().toString());
+                    jsonBody.put("description", _bioText.getText().toString());
+                    final String requestBody = jsonBody.toString();
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+                            Integer userId = Integer.parseInt(response);
+                            System.out.println(userId);
+                            if (userId < 0) {
+                                onSignupFailed();
+//                                return;
+                            } else {
+                                _signupButton.setEnabled(false);
+                                onSignupSuccess();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println("error " + error.toString());
+                            Log.e("VOLLEY", error.toString());
+                        }
+                    }) {
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
+                        }
+
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            try {
+                                return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            } catch (UnsupportedEncodingException uee) {
+                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                return null;
+                            }
+                        }
+
+
+                        @Override
+                        protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                            String responseString = "";
+                            if (response != null) {
+                                responseString = String.valueOf(response.statusCode);
+                                // can get more details such as response.headers
+                            }
+                            return super.parseNetworkResponse(response);
+                        }
+                    };
+
+                    requestQueue.add(stringRequest);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                _signupButton.setEnabled(false);
-                onSignupSuccess();
+
+
+//                if (!validate()) {
+//                    onSignupFailed();
+//                    return;
+//                }
+//                _signupButton.setEnabled(false);
+//                onSignupSuccess();
             }
         });
 
