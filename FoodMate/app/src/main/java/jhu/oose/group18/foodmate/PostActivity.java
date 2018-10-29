@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -29,6 +30,11 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
+
+        String restaurantSelected = getIntent().getStringExtra("restaurantSelected");
+        _restaurant.setText(restaurantSelected);
+        _restaurant.setFocusable(false);
+        _restaurant.setEnabled(false);
 
         _postButton.setOnClickListener(new View.OnClickListener() {
             @Override
