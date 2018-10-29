@@ -15,12 +15,14 @@ import com.oose.group18.Entity.User;
 import com.oose.group18.Entity.UserView;
 import com.oose.group18.Event.GuestJoinEvent;
 import com.oose.group18.Event.UserLoginEvent;
+import com.oose.group18.RecommenderController.Recommender;
 import com.oose.group18.Repository.PostRepository;
 import com.oose.group18.Repository.RestaurantRepository;
 import com.oose.group18.Repository.UserRepository;
 import com.oose.group18.Exception.PostNotFoundException;
 import com.oose.group18.Exception.RestaurantNotFoundException;
 import com.oose.group18.Exception.UserNotFoundException;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +51,8 @@ public class UserJPAResource {
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
+
+	Recommender recommender;
 
 	@GetMapping("/users")
 	public MappingJacksonValue retrieveAllUsers() {
@@ -116,10 +120,15 @@ public class UserJPAResource {
 	}
 
 	@GetMapping("user/{id}/host/restaurants")
-	public List<Restaurant> retrieveAllRestaurants() {
-		List<Integer> res = new ArrayList<>();
-		res.add(1);
-		res.add(2);
+	public List<Restaurant> retrieveAllRestaurants(@PathVariable int id) {
+		List<Integer> res = recommender.getRecommend(id, 10);
+		if (res == null) {
+			System.out.println("return is empty");
+			return null;
+		}
+		for (Integer i : res) {
+			System.out.println(i);
+		}
 		List<Restaurant> restaurants = restaurantRepository.findAllById(res);
 		return restaurants;
 	}
