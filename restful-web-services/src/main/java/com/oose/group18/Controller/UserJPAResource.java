@@ -121,14 +121,17 @@ public class UserJPAResource {
 
 	@GetMapping("user/{id}/host/restaurants")
 	public List<Restaurant> retrieveAllRestaurants(@PathVariable int id) {
-		List<Integer> res = recommender.getRecommend(id, 10);
-		if (res == null) {
-			System.out.println("return is empty");
-			return null;
-		}
-		for (Integer i : res) {
-			System.out.println(i);
-		}
+		List<Integer> res = new ArrayList<>();
+		res.add(1);
+		res.add(2);
+//		List<Integer> res = recommender.getRecommend(id, 10);
+//		if (res == null) {
+//			System.out.println("return is empty");
+//			return null;
+//		}
+//		for (Integer i : res) {
+//			System.out.println(i);
+//		}
 		List<Restaurant> restaurants = restaurantRepository.findAllById(res);
 		return restaurants;
 	}
