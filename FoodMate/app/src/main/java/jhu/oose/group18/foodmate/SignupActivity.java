@@ -18,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -69,10 +70,10 @@ public class SignupActivity extends AppCompatActivity {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
-                            Integer userId = Integer.parseInt(response);
-                            System.out.println(userId);
-                            if (userId < 0) {
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println(response);
+                            }
+                            if (!response.equals("201")) {
                                 onSignupFailed();
 //                                return;
                             } else {
@@ -110,7 +111,7 @@ public class SignupActivity extends AppCompatActivity {
                                 responseString = String.valueOf(response.statusCode);
                                 // can get more details such as response.headers
                             }
-                            return super.parseNetworkResponse(response);
+                            return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                         }
                     };
 

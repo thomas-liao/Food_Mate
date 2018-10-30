@@ -91,9 +91,9 @@ public class UserJPAResource {
 		user.setId(1000);
 		System.out.println(user.toString());
 
-		User savedUser = userRepository.save(user);
+		//User savedUser = userRepository.save(user);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(1000)
 				.toUri();
 
 		return ResponseEntity.created(location).build();
