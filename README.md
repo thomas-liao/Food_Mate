@@ -5,6 +5,17 @@
   3. (GET) localhost:8080/users/{id}, look for user by id, return 404 if not found.
   4. (DELETE) localhost:8080/users/{id}, delete user by id, return 404 if not found.
   5. (POST) JSON to localhost:8080/users, add user (assigned uid sequentially, respond URI of added (User) user object - for future convenience.
+  
+  Backend test:
+  src/test/java/com/oose/group18/Controller/SpringDataJpaTest.java
+  
+  which includes 5 tests:
+  (1)    Find user by id
+  (2)    Find user name
+  (3)    Find restaurant by Id
+  (4)    Find all user
+  (5)    Find all restaurant
+
 
 # Food Mate app
 
