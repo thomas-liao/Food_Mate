@@ -57,7 +57,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    String URL = "http://10.0.2.2:8080/register";
+                    String URL = "https://food-mate.herokuapp.com/register";
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("userName", _usernameText.getText().toString());
                     jsonBody.put("password", _passwordText.getText().toString());
