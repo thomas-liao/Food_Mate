@@ -26,23 +26,53 @@
             android:layout_marginBottom="8dp">
 
             <EditText
+<<<<<<< HEAD
                 android:id="@+id/restaurant"
+=======
+                android:id="@+id/editText2"
+>>>>>>> origin/thomas-liao
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+<<<<<<< HEAD
                 android:hint="restaurant"
+=======
+                android:hint="Resturant"
+>>>>>>> origin/thomas-liao
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Password Label -->
+<<<<<<< HEAD
+=======
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/editText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Type"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+>>>>>>> origin/thomas-liao
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <EditText
+<<<<<<< HEAD
                 android:id="@+id/dateTime"
+=======
+                android:id="@+id/editText4"
+>>>>>>> origin/thomas-liao
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -55,7 +85,25 @@
             android:layout_height="match_parent">
 
             <EditText
+<<<<<<< HEAD
                 android:id="@+id/maxGuest"
+=======
+                android:id="@+id/editText5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Time"
+                android:inputType="time" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/editText6"
+>>>>>>> origin/thomas-liao
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -69,7 +117,11 @@
             android:layout_height="match_parent">
 
             <EditText
+<<<<<<< HEAD
                 android:id="@+id/waitingTime"
+=======
+                android:id="@+id/editText7"
+>>>>>>> origin/thomas-liao
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

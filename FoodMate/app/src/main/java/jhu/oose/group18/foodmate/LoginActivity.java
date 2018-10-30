@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/thomas-liao
 import android.content.Intent;
 import android.util.Patterns;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -35,6 +40,18 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+=======
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+// TL
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
+
+>>>>>>> origin/thomas-liao
 public class LoginActivity extends AppCompatActivity {
 
 //    private static final String TAG = "LoginActivity";
@@ -54,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
 //                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 //                String url = "http://10.0.2.2:8080/login";
 //                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -191,6 +209,14 @@ public class LoginActivity extends AppCompatActivity {
 //                    return;
 //                }
 //                startActivity(intent);
+=======
+                Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+                if (!validate()) {
+                    onLoginFailed();
+                    return;
+                }
+                startActivity(intent);
+>>>>>>> origin/thomas-liao
             }
         });
 
@@ -204,6 +230,15 @@ public class LoginActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+>>>>>>> origin/thomas-liao
     }
 
     private void onLoginFailed() {
