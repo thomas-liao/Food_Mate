@@ -142,45 +142,6 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-//    public void signup() {
-//        Log.d(TAG, "Signup");
-//
-//        if (!validate()) {
-//            onSignupFailed();
-//            return;
-//        }
-//
-//        _signupButton.setEnabled(false);
-
-//        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-//                R.style.AppTheme_Dark_Dialog);
-//        progressDialog.setIndeterminate(true);
-//        progressDialog.setMessage("Creating Account...");
-//        progressDialog.show();
-//
-//        String fullname = _fullnameText.getText().toString();
-//        String username = _usernameText.getText().toString();
-//        String email = _emailText.getText().toString();
-//        String location = _locationText.getText().toString();
-//        String password = _passwordText.getText().toString();
-//        String reEnterPassword = _reEnterPasswordText.getText().toString();
-//        String bio = _bioText.getText().toString();
-//
-//        // TODO: Implement your own signup logic here.
-//
-//        new android.os.Handler().postDelayed(
-//                new Runnable() {
-//                    public void run() {
-//                        // On complete call either onSignupSuccess or onSignupFailed
-//                        // depending on success
-//                        onSignupSuccess();
-//                        // onSignupFailed();
-//                        progressDialog.dismiss();
-//                    }
-//                }, 3000);
-//    }
-
-
     private void onSignupSuccess() {
         Toast.makeText(getBaseContext(), "Signup finished", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
@@ -188,8 +149,6 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-//        setResult(RESULT_OK, null);
-//        finish();
     }
 
     private void onSignupFailed() {

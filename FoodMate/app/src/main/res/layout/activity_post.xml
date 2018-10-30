@@ -26,38 +26,23 @@
             android:layout_marginBottom="8dp">
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/restaurant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Resturant"
+                android:hint="restaurant"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Password Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Type"
-                android:inputType="textPersonName" />
-        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/dateTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -70,21 +55,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editText5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Time"
-                android:inputType="time" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/maxGuest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -98,7 +69,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editText7"
+                android:id="@+id/waitingTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

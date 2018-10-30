@@ -10,8 +10,13 @@
         android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" >
+=======
+        android:theme="@style/AppTheme.Dark">
+        <activity android:name=".MainActivity">
+>>>>>>> yuka
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
@@ -26,16 +31,30 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".RoleSelectActivity"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark">
+        </activity>
         <activity
             android:name=".PostActivity"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark">
+        </activity>
         <activity
             android:name=".MessageBoxActivity"
             android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".ReservationActivity"
+            android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity android:name=".ListRestaurantActivity"
+            android:theme="@style/AppTheme.Dark">
+        </activity>
+        <activity android:name=".RecommendationActivity"
+            android:theme="@style/AppTheme.Dark">
 
+<<<<<<< HEAD
         <activity android:name=".ReservationActivity"/>
 
+=======
+        </activity>
+>>>>>>> yuka
     </application>
 
 </manifest>

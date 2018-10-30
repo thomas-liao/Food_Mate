@@ -26,7 +26,7 @@ public class RoleSelectActivity extends AppCompatActivity {
         _hostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),PostActivity.class);
+                Intent intent = new Intent(getApplicationContext(),ListRestaurantActivity.class);
                 startActivity(intent);
             }
         });
@@ -34,7 +34,7 @@ public class RoleSelectActivity extends AppCompatActivity {
         _guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(),RecommendationActivity.class);
                 startActivity(intent);
             }
         });
