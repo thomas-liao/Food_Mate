@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-<<<<<<< HEAD
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,23 +12,18 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-=======
->>>>>>> origin/thomas-liao
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PostActivity extends AppCompatActivity {
     @BindView(R.id.btn_post) Button _postButton;
-<<<<<<< HEAD
     @BindView(R.id.restaurant) EditText _restaurant;
     @BindView(R.id.dateTime) EditText _dateTime;
     @BindView(R.id.waitingTime) EditText _waitingTime;
     @BindView(R.id.maxGuest) EditText _maxGuest;
 
 
-=======
->>>>>>> origin/thomas-liao
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +31,6 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
 
-<<<<<<< HEAD
         String restaurantSelected = getIntent().getStringExtra("restaurantSelected");
         _restaurant.setText(restaurantSelected);
         _restaurant.setFocusable(false);
@@ -102,14 +95,4 @@ public class PostActivity extends AppCompatActivity {
 
         return valid;
     }
-=======
-        _postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MessageBoxActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
->>>>>>> origin/thomas-liao
 }
