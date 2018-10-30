@@ -8,7 +8,6 @@
   
   Backend test:
   src/test/java/com/oose/group18/Controller/SpringDataJpaTest.java
-  
   which includes 5 tests:
   (1)    Find user by id
   (2)    Find user name
