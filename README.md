@@ -7,7 +7,11 @@ We have built the basic framework and implemented some core features. Feel free 
 
 For back end we choose springboot and h2 database as server and database to store user and restaurant information. The whole project is under restful-web-services folder. To run the whole projects, user Intellij to import the whole project, waiting for dependency downloaded, and click run button, you are ready to go!
 
-For the Recommendation part, we use python to do the prediction part, so some python packages are also needed to run the whole project. run
+### Recommender System
+
+We currently implemented an SVD-based collaborative filtering system to perform ranking on all available hosts according to the history of the guest and his/her similarity with other guests. The core code is currently using Python and called by Java ProcessBuilder class. We will consider rewrite it in Java and add more logic on top of that. 
+
+Some python packages are needed to run the whole project. run
 
 `pip install -r requirement.txt`
 
@@ -17,9 +21,9 @@ Since the packages in requirement1.txt are depend on packages in requirement.txt
 
 There is an easy way to check our server! We deployed the whole server on Heroku, so you can eaily check the endpoint of our server by accessing: https://food-mate.herokuapp.com as the base url, the detail of endpoints are stored in FoodMate.postman_collection.json.
 
- 
 
-Currently Implemented endpoint:
+
+### Currently Implemented endpoint
 
 **GET /users**
 
