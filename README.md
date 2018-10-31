@@ -133,7 +133,6 @@ After choosing to be host, the user can get a list of recommended restaurants (b
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
-[TO IMPLEMENT]
 ### Guest
 
 ![postRecommendation](./Image/postRecommendation.png)
