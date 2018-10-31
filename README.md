@@ -105,7 +105,7 @@ Now let's take a look at our app!
 
 ![login](./Image/login.png)
 
-The initial page is the login page. User can inter the username and password to login. You can use the reverved account: username: Amy, password Amy to login.
+The initial page is the login page. User need to enter username and password to login. You can use the registered account (it's in our database): username: Amy, password Amy to login.
 
 ![signup](./Image/signup.png)
 
@@ -121,7 +121,7 @@ User can choose to be host or guest.
 
 ![restaurant](./Image/restaurant.png)
 
-After choosing to be host, the user can get a list of recommendation restaurant. Then the user can choose the restaurant he/she likes to make a post.
+After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
 
 ### Send Post
 
@@ -129,6 +129,7 @@ After choosing to be host, the user can get a list of recommendation restaurant.
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
+[TO IMPLEMENT]
 ### Guest
 
 ![postRecommendation](./Image/postRecommendation.png)
