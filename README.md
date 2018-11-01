@@ -129,7 +129,7 @@ Wanna create your own account? No problem! Click create one will send you to reg
 
 ### Choose Role
 
-![ChooseRole](./Image/ChooseRole.png)
+![ChooseRole](./Image/ChooseRole.png = 250x250)
 
 User can choose to be host or guest.
 
