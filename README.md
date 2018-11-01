@@ -16,6 +16,8 @@
   (4)    Find all user
   (5)    Find all restaurant
 
+Let $\text{S}_1(N) = \sum_{p=1}^N \text{E}(p)$
+
 
 # Food Mate app
 
