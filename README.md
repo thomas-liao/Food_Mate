@@ -118,36 +118,38 @@ To build the project, use Android studio to import the whole project, waiting fo
 Now let's take a look at our app!
 
 ### Login
-
-![login](./Image/login.png)
+<img align="middle" src="./Image/login.png" alt="login" width="250"/><br/><br/>
 
 The initial page is the login page. User need to enter username and password to login. You can use the registered account (it's in our database): username: Amy, password Amy to login.
 
-![signup](./Image/signup.png)
+<img  src="./Image/signup.png" alt="signup" width="250"/><br/><br/>
+
 
 Wanna create your own account? No problem! Click create one will send you to registration page where you can fill your basic information to create a new account. Then you will jump to login page to login will your own account.
 
 ### Choose Role
 
-![ChooseRole](./Image/ChooseRole.png = 250x250)
+<img  src="./Image/ChooseRole.png" alt="Choose Role" width="250"/><br/><br/>
+
 
 User can choose to be host or guest.
 
 ### Host:
 
-![restaurant](./Image/restaurant.png)
+<img src="./Image/restaurant.png" alt="drawing" width="250"/><br/><br/>
+
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
 
 ### Send Post
 
-![Guest List](./Image/GuestList.png)
+<img src="./Image/GuestList.png" alt="Send Post" width="250"/><br/><br/>
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
 ### Guest
 
-![postRecommendation](./Image/postRecommendation.png)
+<img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
 
 After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join.
 
