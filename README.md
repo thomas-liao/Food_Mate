@@ -7,37 +7,6 @@ We have built the basic framework and implemented some core features. Feel free 
 
 For back end we choose springboot and h2 database as server and database to store user and restaurant information. The whole project is under restful-web-services folder. To run the whole projects, user Intellij to import the whole project, waiting for dependency downloaded, and click run button, you are ready to go!
 
-### Recommender System
-
-We've implemented an SVD-based collaborative filtering system to perform ranking on all available hosts according to the history of the guest and his/her similarity with other guests. 
-
-#### Introduction
-
-We maintain an m by n matrix M where m denotes the numbre of users and n denotes the number of restaurants, the (i,j)-th element of which represents the rating of user i to restaurant j. The matrix will be sparse because the user will only have visited a few of all restaurants in our system. And the missing elements in that matrix are estimated based on a factorization M = P^T*Q. This method represents user i as a vector of preferences for a few factors and item j as a vector where each element expresses how much the item exhibits that factor. Then the rating of item j for user i is estimated by the inner product of these two vectors. 
-
-#### Model Training and Testing
-
-For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5. 
-
-In production mode, we will periodically update the original matrix and perform new factorization on it. We haven't look into the cold start problem, which could be addressed in later iterations using content-based recommendation.
-
-
-#### Implementation
-
-The core code is currently using Python and called by Java ProcessBuilder class. We will consider rewrite it in Java and add more logic on top of that. 
-
-Some python packages are needed to run the whole project. run
-
-`pip install -r requirement.txt`
-
-`pip install -r requirement1.txt`
-
-Since the packages in requirement1.txt are depend on packages in requirement.txt, the order is important.
-
-There is an easy way to check our server! We deployed the whole server on Heroku, so you can eaily check the endpoint of our server by accessing: https://food-mate.herokuapp.com as the base url, the detail of endpoints are stored in FoodMate.postman_collection.json.
-
-
-
 ### Currently Implemented endpoint
 
 **GET /users**
@@ -92,6 +61,8 @@ Guest join POST (accept invitation from host). More concretely, post information
 
 For guest to look up all joined posts.
 
+There is an easy way to check our server! We deployed the whole server on Heroku, so you can eaily check the endpoint of our server by accessing: https://food-mate.herokuapp.com as the base url, the detail of endpoints are stored in FoodMate.postman_collection.json.
+
 ## Backend test
 
 We also implemented some Unit tests to test the correctness of our logic.
@@ -109,6 +80,32 @@ which includes 5 tests:
 (4)   Find all user
 
 (5)   Find all restaurant
+
+### Recommender System
+
+We've implemented an SVD-based collaborative filtering system to perform ranking on all available hosts according to the history of the guest and his/her similarity with other guests. 
+
+#### Introduction
+
+We maintain an m by n matrix M where m denotes the numbre of users and n denotes the number of restaurants, the (i,j)-th element of which represents the rating of user i to restaurant j. The matrix will be sparse because the user will only have visited a few of all restaurants in our system. And the missing elements in that matrix are estimated based on a factorization M = P^T*Q. This method represents user i as a vector of preferences for a few factors and item j as a vector where each element expresses how much the item exhibits that factor. Then the rating of item j for user i is estimated by the inner product of these two vectors. 
+
+#### Model Training and Testing
+
+For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5. 
+
+In production mode, we will periodically update the original matrix and perform new factorization on it. We haven't look into the cold start problem, which could be addressed in later iterations using content-based recommendation.
+
+#### Implementation
+
+The core code is currently using Python and called by Java ProcessBuilder class. We will consider rewrite it in Java and add more logic on top of that. 
+
+Some python packages are needed to run the whole project. run
+
+`pip install -r requirement.txt`
+
+`pip install -r requirement1.txt`
+
+Since the packages in requirement1.txt are depend on packages in requirement.txt, the order is important.
 
 ## Front End
 
@@ -132,7 +129,7 @@ Wanna create your own account? No problem! Click create one will send you to reg
 
 ### Choose Role
 
-![Choose Role](./Image/Choose Role.png)
+![ChooseRole](./Image/ChooseRole.png)
 
 User can choose to be host or guest.
 
@@ -144,7 +141,7 @@ After choosing to be host, the user can get a list of recommended restaurants (b
 
 ### Send Post
 
-![Guest List](./Image/Guest List.png)
+![Guest List](./Image/GuestList.png)
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
@@ -153,6 +150,12 @@ Then the user can fill the form and send the post to the server and wait for gue
 ![postRecommendation](./Image/postRecommendation.png)
 
 After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join.
+
+# What need to Improve
+
+1. Currently we implemented part of the interaction between back end and front-end, in the next iteration we will implement all of the interactions.
+2. We built several unit tests for back end, in next iteration we will implement more comprehensive test cases to cover all cover cases.
+3. Currently the recommendation system can only do recommendation for restaurants, in next iteration we will implement the recommendation system for post recommendation.
 
 # Food Mate app
 
