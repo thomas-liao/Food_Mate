@@ -1,9 +1,6 @@
 package com.oose.group18.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,14 +16,17 @@ public class Restaurant {
     @Id
     @GeneratedValue
     @Column(name="res_id")
+    @JsonProperty("id")
     private Integer id;
 
     @Size(min=2, message="Name should have atleast 2 characters")
     @ApiModelProperty(notes="Name should have atleast 2 characters")
+    @JsonProperty("name")
     private String name;
 
     @Size(min=2, message="Name should have atleast 2 characters")
     @ApiModelProperty(notes="Category should have atleast 2 characters")
+    @JsonProperty("category")
     private String category;
 
     private Integer price;
@@ -34,7 +34,11 @@ public class Restaurant {
     private Integer reviewCount;
 
     private Integer rating;
+
+    @JsonIgnore
     private Double latitude;
+
+    @JsonIgnore
     private Double longitude;
 
     @JsonIgnore

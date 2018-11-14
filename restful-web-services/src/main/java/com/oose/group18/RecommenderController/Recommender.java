@@ -14,6 +14,15 @@ import java.util.List;
 
 public class Recommender {
 
+    public Recommender() {
+        ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
+                    "--rating-data","./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data", "--train"
+                    );
+        //ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/test.py");
+        Process p = pb.start();
+    }
+
+
     public static List<Integer> getRecommend(int id, int topk) {
         List<Integer> result = new ArrayList<>();
         try {
