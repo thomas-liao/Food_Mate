@@ -293,7 +293,7 @@ INSERT INTO restaurant VALUES (277,'Chinese',39.29504073,-76.56992169,'China Wok
 INSERT INTO restaurant VALUES (278,'Chinese',39.28341164,-76.59923514,'Manchurian Rice Co.',2,3,45);
 INSERT INTO restaurant VALUES (279,'Chinese',39.30389,-76.60768,'Dragon Phoenix',3,3,2);
 INSERT INTO restaurant VALUES (280,'Chinese',39.29869182,-76.61576763,'Khun Nine Thai',2,4,133);
-insert into post values(1, 'new post 1', 10, sysdate(), NULL , NULL);
+--insert into post values(1, 'new post 1', 10, sysdate(), NULL , NULL);
 -- insert into post values(2, 'new post 2', 10, sysdate(), 2, 1);
 -- insert into post values(3, 'new post 3', 10, sysdate(), 3, 1);
 -- insert into post values(4, 'new post 4', 10, sysdate(), 4, 1);
