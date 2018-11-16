@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.ws.Response;
@@ -47,44 +49,45 @@ public class HttpRequestTest {
 
     }
 
-//    @Test
-//    public void getUserHttpStatusTest() throws Exception {
+    @Test
+    public void deleteUserRequestTest() throws Exception {
+        this.restTemplate.delete("http://localhost:" + port + "/user/3");
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/3",
+                String.class)).doesNotContain("Thomas").doesNotContain("third@example.com");
+    }
+    @Test
+    public void putUserRequestTest() throws Exception {
+
+        User mockUser1 = new User();
+        Integer tempId1 = 5;
+        mockUser1.setId(tempId1);
+        mockUser1.setAddr("somewhere");
+        mockUser1.setFullName("Yuka");
+        mockUser1.setUserName("Yukaaa");
+        mockUser1.setPassword("123cdeF!");
+        mockUser1.setEmail("fifth@example.com");
+        mockUser1.setDescription("abcdefg");
+
+
+        HttpEntity<User> request = new HttpEntity<>(mockUser1);
+        User usr = this.restTemplate.postForObject("http://localhost:" + port + "/register", request, User.class);
+
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/5",
+                String.class)).contains("Yuka").contains("fifth@example.com");
+
 //
+//        ClientHttpRequestFactory requestFactory = getClientHttpRequestFactory();
+//        RestTemplate restTemplate = new RestTemplate(requestFactory);
 //
-////        ResponseEntity<String> response2 = this.restTemplate.getForEntity("http://localhost:" + port + "/user/9999", String.class);
-////        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-//
-//
-//
-//
-//
-//
-//    }
-//
-//    @Test
-//    public void deleteUserRequestTest() throws Exception {
-//        this.restTemplate.delete("http://localhost:" + port + "/user/1");
-//        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/1",
-//                String.class)).doesNotContain("John").doesNotContain("first@example.com");
-//    }
-//    @Test
-//    public void putUserRequestTest() throws Exception {
-//
-//        Integer tempId1 = 11;
-//        User mockUser1 = new User();
-//        mockUser1.setId(tempId1);
-//        mockUser1.setAddr("somewhere");
-//        mockUser1.setFullName("ThomasL");
-//        mockUser1.setUserName("tliao4");
-//        mockUser1.setPassword("123cdeF!");
-//        mockUser1.setEmail("tliao4@jhu.edu");
-//        mockUser1.setDescription("abcdefg");
-//
-//
-//        this.restTemplate.postForObject("http://localhost:" + port+ "/register", mockUser1, String.class);
-//        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/11",
-//                String.class)).contains("ThomasL").contains("tliao4@jhu.edu");
-//    }
+//        HttpEntity<Foo> request = new HttpEntity<>(new Foo("bar"));
+//        Foo foo = restTemplate.postForObject(fooResourceUrl, request, Foo.class);
+//        assertThat(foo, notNullValue());
+//        assertThat(foo.getName(), is("bar"));
+
+
+
+
+    }
 //
 
 
