@@ -19,7 +19,11 @@ public class Recommender {
                     "--rating-data","./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data", "--train"
                     );
         //ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/test.py");
-        Process p = pb.start();
+        try {
+            Process p = pb.start();
+        }catch (Exception e) {
+
+        }
     }
 
 
