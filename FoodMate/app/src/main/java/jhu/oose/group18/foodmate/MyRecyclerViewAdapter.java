@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
         holder.testName.setText(restaurant.getName());
         holder.textCategory.setText(restaurant.getCategory());
-
+        holder.textPic.setImageResource(restaurant.getPic());
     }
 
     @Override
@@ -39,12 +40,14 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView textPic;
         public TextView testName, textCategory;
         public ViewHolder(View itemView) {
             super(itemView);
 
             testName = itemView.findViewById(R.id.main_name);
             textCategory = itemView.findViewById(R.id.main_category);
+            textPic = itemView.findViewById(R.id.restaurant_logo);
         }
     }
 }

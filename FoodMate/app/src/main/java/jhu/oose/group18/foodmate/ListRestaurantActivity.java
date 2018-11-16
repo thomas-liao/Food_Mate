@@ -70,6 +70,7 @@ public class ListRestaurantActivity extends AppCompatActivity{
                                 Restaurant restaurant = new Restaurant();
                                 restaurant.setName(jsonObj.getString("name"));
                                 restaurant.setCategory(jsonObj.getString("category"));
+                                restaurant.setPic(R.drawable.restaurant_logo);
 //                                restaurant.setYear(jsonObj.getInt("releaseYear"));
                                 restaurantList.add(restaurant);
 //                                nameArray[i] = jsonObj.getString("name");

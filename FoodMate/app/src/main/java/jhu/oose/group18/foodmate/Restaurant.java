@@ -2,9 +2,8 @@ package jhu.oose.group18.foodmate;
 
 public class Restaurant {
     public String title;
-    public int rating;
+    public int pic;
     public int year;
-
     public String name;
     public String category;
 
@@ -12,9 +11,9 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String title, int rating, int year) {
+    public Restaurant(String title, int pic, int year) {
         this.title = title;
-        this.rating = rating;
+        this.pic = pic;
         this.year = year;
     }
 
@@ -26,12 +25,12 @@ public class Restaurant {
         this.title = title;
     }
 
-    public int getRating() {
-        return rating;
+    public int getPic() {
+        return pic;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setPic(int pic) {
+        this.pic = pic;
     }
 
     public int getYear() {
