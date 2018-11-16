@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -80,7 +81,7 @@ public class ListRestaurantActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         MyApplication application=(MyApplication)getApplication();
-        String url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/restaurants";
+        String url = "http://10.0.2.2:8080/user/" + application.userId + "/host/restaurants";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>()
@@ -113,6 +114,22 @@ public class ListRestaurantActivity extends AppCompatActivity {
                 }
 
         );
+        getRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
         queue.add(getRequest);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

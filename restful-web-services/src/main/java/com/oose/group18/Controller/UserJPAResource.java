@@ -3,6 +3,7 @@ package com.oose.group18.Controller;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,7 @@ public class UserJPAResource {
 		for (User user : users) {
 			result.add(new UserView(user));
 		}
+
 		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("userName", "fullName", "description", "email");
 
 		FilterProvider filters = new SimpleFilterProvider().addFilter("SomeBeanFilter", filter);
@@ -155,7 +157,7 @@ public class UserJPAResource {
 	}
 
 	@PostMapping("/user/{id}/host/posts/{restaurantId}")
-	public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody Post post, @PathVariable int restaurantId) {
+	public String createPost(@PathVariable int id, @RequestBody Post post, @PathVariable int restaurantId) {
 
 		Optional<User> userOptional = userRepository.findById(id);
 
@@ -176,12 +178,12 @@ public class UserJPAResource {
 		post.setUser(user);
 		post.setRestaurant(restaurant);
 
-		postRepository.save(post);
+		Post insertedPost = postRepository.save(post);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(post.getId())
 				.toUri();
 
-		return ResponseEntity.created(location).build();
+		return String.valueOf(insertedPost.getId());
 
 	}
 
@@ -243,15 +245,22 @@ public class UserJPAResource {
 			throw new UserNotFoundException("id-" + id);
 		}
 		User user = userOptional.get();
-		List<Integer> post = new ArrayList<>();
-		post.add(1);
-		post.add(2);
-		List<Post> posts = postRepository.findAllById(post);
-		for (Post recommendedPost :posts) {
-			if (user.getJoinedPost().contains(recommendedPost)) {
-				posts.remove(recommendedPost);
-			}
+		List<Post> posts = postRepository.findAll();
+		if (posts == null) {
+			return posts;
 		}
+//		for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
+//			String value = iterator.next();
+//			if (value.length() > 5) {
+//				iterator.remove();
+//			}
+//		}
+		posts.removeIf((Post post) -> user.getJoinedPost().contains(post) || post.getUser().getId().equals(user.getId()) || post.getGuest().size() >= post.getNumOfGuest());
+//		for (Post recommendedPost : posts) {
+//			if (user.getJoinedPost().contains(recommendedPost) || recommendedPost.getUser().getId().equals(user.getId()) || recommendedPost.getGuest().size() >= recommendedPost.getNumOfGuest()) {
+//				posts.remove(recommendedPost);
+//			}
+//		}
 		return posts;
 	}
 
@@ -279,7 +288,7 @@ public class UserJPAResource {
 		if (user.getId().equals(post.getUser().getId())) {
 			return -1;
 		}
-		if (post.getNumOfGuest() >= post.getGuest().size()) {
+		if (post.getNumOfGuest() <= post.getGuest().size()) {
 			return -2;
 		}
 		if (post.getGuest().contains(user)) {

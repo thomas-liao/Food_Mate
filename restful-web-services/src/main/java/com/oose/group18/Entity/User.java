@@ -30,7 +30,9 @@ public class User {
 
 	private String fullName;
 
+	@JsonIgnore
 	private String password;
+
 
 	private String addr;
 

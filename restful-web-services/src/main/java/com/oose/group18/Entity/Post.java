@@ -17,6 +17,7 @@ public class Post {
 	@GeneratedValue
 	@Column(name="post_id")
 	private Integer id;
+
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -27,13 +28,15 @@ public class Post {
 	private Integer numOfGuest;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JsonIgnore
+	@JsonView(View.Summary.class)
+//	@JsonIgnore
 	private User user;
 
 	//@JsonManagedReference
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable
+	@JsonProperty("guest")
 	private List<User> guest;
 
 	public Post() {
