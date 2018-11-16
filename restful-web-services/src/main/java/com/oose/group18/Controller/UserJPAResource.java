@@ -77,8 +77,17 @@ public class UserJPAResource {
 
 	@PostMapping("/login")
 	public String userLogin(@RequestBody User loginUser) {
+		if (loginUser == null) {
+			System.out.println("null input");
+		}
 		List<User> users = userRepository.findAll();
+		if (users == null) {
+			System.out.println("null users");
+		}
 		for (User user : users) {
+			if (user.getUserName() == null || user.getPassword() == null) {
+				System.out.println("null name or password");
+			}
 			if (loginUser.getUserName().equals(user.getUserName()) && loginUser.getPassword().equals(user.getPassword())) {
 				System.out.println(user.getUserName());
 				System.out.println(user.getPassword());
