@@ -1,6 +1,7 @@
 import os
 import argparse
 import numpy as np
+import pickle
 from surprise import SVD 
 from surprise import Dataset
 from surprise.model_selection import cross_validate
@@ -12,6 +13,11 @@ import pdb
 def parse_args():
   parser = argparse.ArgumentParser()
 
+  parser.add_argument(
+      '--train',
+      action='store_true',
+      help='rating-data file path'
+  )
   parser.add_argument(
       '--rating-data',
       type=str,
@@ -54,6 +60,7 @@ class Recommender:
         self.data = None
         self.trainset = None
         self.testset = None
+        self.userSim = None
         
         self.load_data()
 
@@ -71,6 +78,9 @@ class Recommender:
             trainset = self.trainset
 
         self.algo.fit(trainset)
+
+        self.userSim = np.matmul(self.algo.pu, self.algo.pu.T)
+        self.userSim = self.userSim - np.diag(self.userSim.diagonal())
 
     def test (self):
         predictions = self.algo.test(self.testset)
@@ -93,22 +103,41 @@ class Recommender:
         #pdb.set_trace()
         return ranked_list
 
+    def user_similarity (self, uid1, uid2):
+        '''
+        return similarity of two users
+        '''
+        if self.userSim is not None:
+            return self.userSim[uid1, uid2]
+        else:
+            raise NotImplementedError
+            return 0
+
+    def save_weight (self, path):
+        pickle.dump( self, open( path, "wb" ) )
+
+def load_weight(path):
+    with open(path, 'rb') as f:
+        model = pickle.load(f)
+    return model
+
 def main():
     args = parse_args()
-    recomm = Recommender('SVD', args.rating_data)
+    if args.train:
+        recomm = Recommender('SVD', args.rating_data)
+        recomm.train()
+        recomm.save_weight('weight.pkl')
+    else:
+        recomm = load_weight('weight.pkl')
+        ranked_list = recomm.recommend_for_user(args.uid)
+        for i in range(args.topk):
+            print(ranked_list[i])
 
     if args.debug:
         recomm.split_data(test_size=args.test_size)
         recomm.train(use_full_data=False)
         recomm.test()
 
-
-    recomm.train()
-    ranked_list = recomm.recommend_for_user(args.uid)
-    for i in range(args.topk):
-        print(ranked_list[i])
-    with open('output.txt', 'w') as f:
-        f.write("Sdfdf")
 
 if __name__ == '__main__':
     main()
