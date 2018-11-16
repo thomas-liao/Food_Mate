@@ -39,8 +39,8 @@ public class ListAdapter extends ArrayAdapter {
         View rowView=inflater.inflate(layout, null,true);
 
         if (layout == R.layout.restaurant_row){
-            TextView nameTextField = (TextView) rowView.findViewById(R.id.restaurant_name);
-            TextView infoTextField = (TextView) rowView.findViewById(R.id.restaurant_location);
+            TextView nameTextField = (TextView) rowView.findViewById(R.id.main_name);
+            TextView infoTextField = (TextView) rowView.findViewById(R.id.main_category);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.restaurant_logo);
 
             //this code sets the values of the objects to values from the arrays
