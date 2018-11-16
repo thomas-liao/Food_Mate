@@ -15,6 +15,7 @@ public class ApplicationEventListener {
         RestTemplate restTemplate = new RestTemplate();
         Post post = new Post();
         post.setDescription("testing");
+        post.setNumOfGuest(3);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8080/user/1/host/posts/4", post, String.class);
         System.out.println(responseEntity.getBody());
     }
