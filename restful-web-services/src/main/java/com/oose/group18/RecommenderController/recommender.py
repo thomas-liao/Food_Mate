@@ -126,9 +126,9 @@ def main():
     if args.train:
         recomm = Recommender('SVD', args.rating_data)
         recomm.train()
-        recomm.save_weight('weight.pkl')
+        recomm.save_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
     else:
-        recomm = load_weight('weight.pkl')
+        recomm = load_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
         ranked_list = recomm.recommend_for_user(args.uid)
         for i in range(args.topk):
             print(ranked_list[i])

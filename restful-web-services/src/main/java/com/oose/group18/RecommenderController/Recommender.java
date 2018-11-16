@@ -15,11 +15,15 @@ import java.util.List;
 public class Recommender {
 
     public Recommender() {
-        ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
-                    "--rating-data","./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data", "--train"
-                    );
-        //ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/test.py");
-        Process p = pb.start();
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/recommender.py",
+                    "--rating-data", "./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data", "--train"
+            );
+            System.out.println("Recommender system initialized!");
+
+            //ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/test.py");
+            Process p = pb.start();
+        }catch(Exception e){System.out.println(e);}
     }
 
 
