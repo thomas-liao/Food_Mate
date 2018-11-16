@@ -53,7 +53,7 @@ public class UserJPAResource {
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
 
-	Recommender recommender;
+	Recommender recommender = new Recommender();
 
 	@GetMapping("/users")
 	public MappingJacksonValue retrieveAllUsers() {
