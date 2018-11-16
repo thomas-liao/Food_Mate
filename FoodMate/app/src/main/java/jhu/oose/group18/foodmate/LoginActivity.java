@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    String URL = "http://10.0.2.2:8080/login";
+                    String URL = "https://food-mate.herokuapp.com/login";
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("userName", _usernameText.getText().toString());
                     jsonBody.put("password", _passwordText.getText().toString());
@@ -115,11 +115,11 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(String response) {
                             Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
                             Integer userId = Integer.parseInt(response);
-                            System.out.println(userId);
                             if (userId < 0) {
                                 onLoginFailed();
-//                                return;
                             } else {
+                                MyApplication application=(MyApplication)getApplication();
+                                application.userId = userId;
                                 startActivity(intent);
                             }
                         }

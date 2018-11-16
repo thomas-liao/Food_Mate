@@ -30,7 +30,9 @@ public class User {
 
 	private String fullName;
 
+//	@JsonIgnore
 	private String password;
+
 
 	private String addr;
 
@@ -50,7 +52,7 @@ public class User {
 	@ManyToMany(mappedBy = "guest")
 	private List<Post> joinedPost;
 
-	protected User() {
+	public User() {
 
 	}
 

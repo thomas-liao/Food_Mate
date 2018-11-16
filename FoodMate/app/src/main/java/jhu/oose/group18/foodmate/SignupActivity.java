@@ -11,6 +11,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,12 +54,79 @@ public class SignupActivity extends AppCompatActivity {
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validate()) {
-                    onSignupFailed();
-                    return;
+
+                try {
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    String URL = "https://food-mate.herokuapp.com/register";
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("userName", _usernameText.getText().toString());
+                    jsonBody.put("password", _passwordText.getText().toString());
+                    jsonBody.put("fullName", _fullnameText.getText().toString());
+                    jsonBody.put("addr", _locationText.getText().toString());
+                    jsonBody.put("email", _emailText.getText().toString());
+                    jsonBody.put("description", _bioText.getText().toString());
+                    final String requestBody = jsonBody.toString();
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            for (int i = 0; i < 100; i++) {
+                                System.out.println(response);
+                            }
+                            if (!response.equals("201")) {
+                                onSignupFailed();
+//                                return;
+                            } else {
+                                _signupButton.setEnabled(false);
+                                onSignupSuccess();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println("error " + error.toString());
+                            Log.e("VOLLEY", error.toString());
+                        }
+                    }) {
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
+                        }
+
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            try {
+                                return requestBody == null ? null : requestBody.getBytes("utf-8");
+                            } catch (UnsupportedEncodingException uee) {
+                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                return null;
+                            }
+                        }
+
+
+                        @Override
+                        protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                            String responseString = "";
+                            if (response != null) {
+                                responseString = String.valueOf(response.statusCode);
+                                // can get more details such as response.headers
+                            }
+                            return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                        }
+                    };
+
+                    requestQueue.add(stringRequest);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                _signupButton.setEnabled(false);
-                onSignupSuccess();
+
+
+//                if (!validate()) {
+//                    onSignupFailed();
+//                    return;
+//                }
+//                _signupButton.setEnabled(false);
+//                onSignupSuccess();
             }
         });
 
@@ -59,45 +142,6 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-//    public void signup() {
-//        Log.d(TAG, "Signup");
-//
-//        if (!validate()) {
-//            onSignupFailed();
-//            return;
-//        }
-//
-//        _signupButton.setEnabled(false);
-
-//        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-//                R.style.AppTheme_Dark_Dialog);
-//        progressDialog.setIndeterminate(true);
-//        progressDialog.setMessage("Creating Account...");
-//        progressDialog.show();
-//
-//        String fullname = _fullnameText.getText().toString();
-//        String username = _usernameText.getText().toString();
-//        String email = _emailText.getText().toString();
-//        String location = _locationText.getText().toString();
-//        String password = _passwordText.getText().toString();
-//        String reEnterPassword = _reEnterPasswordText.getText().toString();
-//        String bio = _bioText.getText().toString();
-//
-//        // TODO: Implement your own signup logic here.
-//
-//        new android.os.Handler().postDelayed(
-//                new Runnable() {
-//                    public void run() {
-//                        // On complete call either onSignupSuccess or onSignupFailed
-//                        // depending on success
-//                        onSignupSuccess();
-//                        // onSignupFailed();
-//                        progressDialog.dismiss();
-//                    }
-//                }, 3000);
-//    }
-
-
     private void onSignupSuccess() {
         Toast.makeText(getBaseContext(), "Signup finished", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
@@ -105,8 +149,6 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-//        setResult(RESULT_OK, null);
-//        finish();
     }
 
     private void onSignupFailed() {

@@ -1,12 +1,11 @@
 package jhu.oose.group18.foodmate;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -14,45 +13,75 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class MessageBoxActivity extends AppCompatActivity {
-    String[] nameArray = {"message", "message"};
+public class ListRestaurantActivity extends AppCompatActivity {
 
-    String[] infoArray = {
-            "this is a test message",
-            "this is a test message",
-            "this is a test message",
 
+    String[] nameArray = {
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
+            "restaurant",
     };
 
-    Integer[] imageArray = {R.drawable.ava1,
-            R.drawable.ava2,
-            R.drawable.ava3};
+    String[] infoArray = {
+            "info",
+            "info",
+            "info",
+            "info",
+            "info",
+            "info",
+            "info",
+            "info",
+            "info",
+            "info",
+    };
+
+    Integer[] imageArray = {R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo,
+            R.drawable.restaurant_logo};
 
     ListView listView;
+
     JSONArray jsonArr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_box);
+        setContentView(R.layout.activity_list_restaurant);
 
-        ListAdapter whatever = new ListAdapter(this, R.layout.message_row, nameArray, infoArray, imageArray);
-        listView = (ListView) findViewById(R.id.message_list);
+        ListAdapter whatever = new ListAdapter(this, R.layout.restaurant_row, nameArray, infoArray, imageArray);
+        listView = (ListView) findViewById(R.id.restaurant_list);
         listView.setAdapter(whatever);
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         MyApplication application=(MyApplication)getApplication();
-        String url = "http://10.0.2.2:8080//user/" + application.userId + "/host/posts/" + application.createdPostId + "/guests";
+        String url = "http://10.0.2.2:8080/user/" + application.userId + "/host/restaurants";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>()
@@ -67,7 +96,8 @@ public class MessageBoxActivity extends AppCompatActivity {
                             {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                nameArray[i] = jsonObj.getString("fullName");
+                                nameArray[i] = jsonObj.getString("name");
+                                infoArray[i] = jsonObj.getString("category");
                             }
                             //System.out.println(response.toString());
                             //JSONArray a = new JSONArray();
@@ -101,6 +131,20 @@ public class MessageBoxActivity extends AppCompatActivity {
             }
         });
         queue.add(getRequest);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ListRestaurantActivity.this, PostActivity.class);
+                String message = nameArray[position];
+                MyApplication application=(MyApplication)getApplication();
+                try {
+                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                } catch (Exception e) {System.out.println(e);}
+                intent.putExtra("restaurantSelected", message);
+                startActivity(intent);
+            }
+        });
 
     }
 
