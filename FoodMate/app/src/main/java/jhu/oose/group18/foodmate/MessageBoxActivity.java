@@ -52,7 +52,7 @@ public class MessageBoxActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         MyApplication application=(MyApplication)getApplication();
-        String url = "http://10.0.2.2:8080//user/" + application.userId + "/host/posts/" + application.createdPostId + "/guests";
+        String url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.createdPostId + "/guests";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>()
