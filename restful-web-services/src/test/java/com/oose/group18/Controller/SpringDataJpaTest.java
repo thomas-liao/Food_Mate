@@ -229,7 +229,4 @@ public class SpringDataJpaTest {
         assert res.get(0).getId() == tempId1;
         assert res.get(1).getId() == tempId2;
     }
-//    @MockBean
-//    private UserRepository userRepositoryMockBean;
-//
 }
