@@ -63,7 +63,7 @@ public class PostActivity extends AppCompatActivity {
                 final MyApplication application=(MyApplication)getApplication();
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    String URL = "http://10.0.2.2:8080/user/" + application.userId + "/host/posts/" + application.restaurantId;
+                    String URL = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.restaurantId;
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("numOfGuest", _maxGuest.getText().toString());
                     final String requestBody = jsonBody.toString();
