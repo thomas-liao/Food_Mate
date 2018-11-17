@@ -11,6 +11,7 @@ import androidx.test.rule.ActivityTestRule;
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
@@ -28,9 +29,10 @@ public class LoginActivityTest {
     @Test
     public void testUserLogin()
     {
-        // input some text in the edit text
-//        Espresso.onView(withId(R.id.etTextToChange)).perform(typeText(mName));
-        // close soft keyboard
+        // input username 'Amy'
+        Espresso.onView(withId(R.id.input_username)).perform(typeText(username));
+        // input password 'Amy'
+        Espresso.onView(withId(R.id.input_password)).perform(typeText(username));
 //        Espresso.closeSoftKeyboard();
         // perform button click
         Espresso.onView(withId(R.id.btn_login)).perform(click());
