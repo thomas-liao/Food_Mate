@@ -1,28 +1,27 @@
 package jhu.oose.group18.foodmate;
 
-public class Restaurant {
-    public String title;
+public class Message {
+    public String display1;
     public int pic;
     public int year;
     public String name;
     public String category;
 
-    public Restaurant() {
+    public Message() {
 
     }
-
-    public Restaurant(String title, int pic, int year) {
-        this.title = title;
+    public Message(String display1, String display2, int pic) {
+        this.display1 = display1;
         this.pic = pic;
-        this.year = year;
+        this.year = pic;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDisplay1() {
+        return display1;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDisplay1(String display1) {
+        this.display1 = display1;
     }
 
     public int getPic() {
