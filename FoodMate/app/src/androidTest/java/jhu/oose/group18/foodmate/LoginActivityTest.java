@@ -63,7 +63,7 @@ public class LoginActivityTest {
             public void run() {
                 System.out.println("Wait for loading");
             }
-        }, 3000);
+        }, 2000);
         // check that after successfully login the next activity RoleSelectActivity is invoked by viewmatch
         onView(withId(R.id.btn_host)).check(matches(isDisplayed()));
     }
