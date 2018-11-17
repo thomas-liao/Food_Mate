@@ -100,8 +100,9 @@ class Recommender:
             iid_to_score[iid] = score
 
         ranked_list = sorted(list(iid_to_score.keys()), key=lambda iid: iid_to_score[iid], reverse=True)
+        ranked_list_with_score = [(iid,iid_to_score[iid]) for iid in ranked_list]
         #pdb.set_trace()
-        return ranked_list
+        return ranked_list_with_score
 
     def user_similarity (self, uid1, uid2):
         '''
@@ -116,6 +117,13 @@ class Recommender:
     def save_weight (self, path):
         pickle.dump( self, open( path, "wb" ) )
 
+    def save_usersim (self, path):
+        with open(path, 'w') as f:
+            for i in range(self.userSim.shape[0]):
+                for j in range(self.userSim.shape[1]):
+                    f.write('{:.3f} '.format(self.userSim[i, j]))
+                f.write('\n')
+
 def load_weight(path):
     with open(path, 'rb') as f:
         model = pickle.load(f)
@@ -126,12 +134,16 @@ def main():
     if args.train:
         recomm = Recommender('SVD', args.rating_data)
         recomm.train()
+        #recomm.save_usersim('weight.pkl')
+        #recomm.save_usersim('user_sim.txt')
         recomm.save_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
+        recomm.save_usersim('./src/main/java/com/oose/group18/RecommenderController/user_sim.txt')
     else:
+        #recomm = load_weight('weight.pkl')
         recomm = load_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
-        ranked_list = recomm.recommend_for_user(args.uid)
+        ranked_list_with_score = recomm.recommend_for_user(args.uid)
         for i in range(args.topk):
-            print(ranked_list[i])
+            print( '{} {:.3f}'.format( ranked_list_with_score[i][0], ranked_list_with_score[i][1] ))
 
     if args.debug:
         recomm.split_data(test_size=args.test_size)

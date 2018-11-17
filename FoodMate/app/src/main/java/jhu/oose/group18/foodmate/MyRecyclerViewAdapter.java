@@ -12,26 +12,35 @@ import java.util.List;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
     private Context context;
-    private List<Restaurant> list;
+    private List<Message> list;
+    CustomItemClickListener listener;
 
-    public MyRecyclerViewAdapter(Context context, List<Restaurant> list) {
+    public MyRecyclerViewAdapter(Context context, List<Message> list, CustomItemClickListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.restaurant_row, parent, false);
-        return new ViewHolder(v);
+        final ViewHolder mViewHoder = new ViewHolder(v);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(view, mViewHoder.getAdapterPosition());
+            }
+        });
+        return mViewHoder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Restaurant restaurant = list.get(position);
+        Message message = list.get(position);
 
-        holder.testName.setText(restaurant.getName());
-        holder.textCategory.setText(restaurant.getCategory());
-        holder.textPic.setImageResource(restaurant.getPic());
+        holder.testName.setText(message.getName());
+        holder.textCategory.setText(message.getCategory());
+        holder.textPic.setImageResource(message.getPic());
     }
 
     @Override

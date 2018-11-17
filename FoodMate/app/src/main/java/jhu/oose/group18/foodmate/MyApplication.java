@@ -11,4 +11,5 @@ public class MyApplication extends Application {
     Integer userId;
     Integer restaurantId;
     Integer createdPostId;
+    Integer joinedPostId;
 }

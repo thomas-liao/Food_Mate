@@ -182,7 +182,7 @@ public class PostActivity extends AppCompatActivity {
 
 
         if (resturant.isEmpty()) {
-            _restaurant.setError("Enter valid Restaurant Name");
+            _restaurant.setError("Enter valid Message Name");
             valid = false;
         } else {
             _restaurant.setError(null);
