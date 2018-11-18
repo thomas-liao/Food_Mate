@@ -20,7 +20,7 @@ public class RestfulWebServicesApplication {
 		ApplicationEventListener listener = new ApplicationEventListener();
 		listener.doSomethingAfterStartup();
 	}
-
+	
 	@Bean
 	public LocaleResolver localeResolver() {
 		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();

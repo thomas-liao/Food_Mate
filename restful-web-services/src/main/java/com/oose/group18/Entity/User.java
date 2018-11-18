@@ -24,8 +24,8 @@ public class User {
 	@Column(name="user_id")
 	private Integer id;
 
-	@Size(min=2, message="Name should have atleast 2 characters")
-	@ApiModelProperty(notes="Name should have atleast 2 characters")
+	@Size(min=2, message="Name should have at least 2 characters")
+	@ApiModelProperty(notes="Name should have at least 2 characters")
 	private String userName;
 
 	private String fullName;
