@@ -2,7 +2,7 @@ import os
 import argparse
 import numpy as np
 import pickle
-from surprise import SVD 
+from surprise import SVD
 from surprise import Dataset
 from surprise.model_selection import cross_validate
 from surprise import accuracy
@@ -61,12 +61,12 @@ class Recommender:
         self.trainset = None
         self.testset = None
         self.userSim = None
-        
+
         self.load_data()
 
     def load_data (self):
         self.data = Dataset.load_from_file(self.file_path, self.reader)
-    
+
     def split_data (self, test_size=0.05):
         self.trainset, self.testset = train_test_split(self.data, test_size=test_size)
 
@@ -123,6 +123,24 @@ class Recommender:
                 for j in range(self.userSim.shape[1]):
                     f.write('{:.3f} '.format(self.userSim[i, j]))
                 f.write('\n')
+
+def load_weight(path):
+    with open(path, 'rb') as f:
+        model = pickle.load(f)
+    return model
+
+    def user_similarity (self, uid1, uid2):
+        '''
+        return similarity of two users
+        '''
+        if self.userSim is not None:
+            return self.userSim[uid1, uid2]
+        else:
+            raise NotImplementedError
+            return 0
+
+    def save_weight (self, path):
+        pickle.dump( self, open( path, "wb" ) )
 
 def load_weight(path):
     with open(path, 'rb') as f:

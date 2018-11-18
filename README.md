@@ -156,6 +156,14 @@ After finishing sending the post, user will be able to retrive their history of 
 
 After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join.
 
+## Frontend test
+
+We have several frontend test (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+
+To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
+
+Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration.  
+
 # What need to Improve
 
 1. Currently we implemented part of the interaction between back end and front-end, in the next iteration we will implement all of the interactions.
