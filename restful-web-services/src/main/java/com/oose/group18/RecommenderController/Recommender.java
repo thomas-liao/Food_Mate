@@ -18,7 +18,7 @@ import com.oose.group18.Entity.Post;
 
 public class Recommender {
 
-    
+
     public Recommender() {
         try {
             ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/recommender.py",
@@ -50,7 +50,7 @@ public class Recommender {
         catch(Exception e){System.out.println(e);}
         return rec_list;
     }
-    
+
     public static List<RestaurantWithScore> getRecommendWithScore(int id, int topk) {
         List<RestaurantWithScore> rec_list = new ArrayList<>();
         try {
@@ -73,7 +73,7 @@ public class Recommender {
         catch(Exception e){System.out.println(e);}
         return rec_list;
     }
-    
+
 
 
     public static void main(String[] args) {
@@ -101,5 +101,3 @@ public class Recommender {
     catch(Exception e){System.out.println(e);}
 }
 }
-
-
