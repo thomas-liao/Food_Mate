@@ -141,6 +141,8 @@ User can choose to be host or guest.
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
 
+We have switched from ListView to RecyclerView in iteration4.
+
 ### Send Post
 
 <img src="./Image/GuestList.png" alt="Send Post" width="250"/><br/><br/>
@@ -148,13 +150,14 @@ After choosing to be host, the user can get a list of recommended restaurants (b
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
 
-After finishing sending the post, user will be able to retrive their history of posts by clicking the "history" button in the bottom of the page.
+After finishing sending the post, users will enter a message box, where they could get messages from guests. They will also be able to retrive their history of posts by clicking the "history" button in the bottom of the page. We have switched from ListView to RecyclerView in iteration4.
+
 
 ### Guest
 
 <img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
 
-After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join.
+After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join. We have switched from ListView to RecyclerView in iteration4.
 
 ## Frontend test
 
