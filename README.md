@@ -147,6 +147,9 @@ After choosing to be host, the user can get a list of recommended restaurants (b
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
+
+After finishing sending the post, user will be able to retrive their history of posts by clicking the "history" button in the bottom of the page.
+
 ### Guest
 
 <img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
