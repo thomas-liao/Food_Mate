@@ -1,6 +1,5 @@
 package jhu.oose.group18.foodmate;
 
-import android.support.test.espresso.contrib.RecyclerViewActions;
 
 import org.junit.After;
 import org.junit.Before;
@@ -55,8 +54,8 @@ public class PostActivityTest {
 
         onView(withId(R.id.btn_host)).perform(click());
 
-        onView(ViewMatchers.withId(R.id.restaurant_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+//        onView(ViewMatchers.withId(R.id.restaurant_list))
+//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
     @Before
