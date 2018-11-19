@@ -7,6 +7,19 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - code refactoring and improvement
 
+
+## [0.2.0] - 2018-11-18
+### Added
+- implemented 
+- implemented post recommendation system for guests
+- added frontend interface, including post recommendation, review history
+- added frontend-backend communication, including send post, get recommendation posts, join post, review history
+- add backend test
+- add frontend test
+### Changed
+- change return type of GET recommendation to postView
+- change listView to recycleView
+
 ## [0.1.0] - 2018-10-29
 ### Added
 - functional frontend with all major intended functionalities
