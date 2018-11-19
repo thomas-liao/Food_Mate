@@ -1,7 +1,8 @@
 import os
 import argparse
 import numpy as np
-from surprise import SVD 
+import pickle
+from surprise import SVD
 from surprise import Dataset
 from surprise.model_selection import cross_validate
 from surprise import accuracy
@@ -12,6 +13,11 @@ import pdb
 def parse_args():
   parser = argparse.ArgumentParser()
 
+  parser.add_argument(
+      '--train',
+      action='store_true',
+      help='rating-data file path'
+  )
   parser.add_argument(
       '--rating-data',
       type=str,
@@ -54,12 +60,13 @@ class Recommender:
         self.data = None
         self.trainset = None
         self.testset = None
-        
+        self.userSim = None
+
         self.load_data()
 
     def load_data (self):
         self.data = Dataset.load_from_file(self.file_path, self.reader)
-    
+
     def split_data (self, test_size=0.05):
         self.trainset, self.testset = train_test_split(self.data, test_size=test_size)
 
@@ -71,6 +78,9 @@ class Recommender:
             trainset = self.trainset
 
         self.algo.fit(trainset)
+
+        self.userSim = np.matmul(self.algo.pu, self.algo.pu.T)
+        self.userSim = self.userSim - np.diag(self.userSim.diagonal())
 
     def test (self):
         predictions = self.algo.test(self.testset)
@@ -90,25 +100,74 @@ class Recommender:
             iid_to_score[iid] = score
 
         ranked_list = sorted(list(iid_to_score.keys()), key=lambda iid: iid_to_score[iid], reverse=True)
+        ranked_list_with_score = [(iid,iid_to_score[iid]) for iid in ranked_list]
         #pdb.set_trace()
-        return ranked_list
+        return ranked_list_with_score
+
+    def user_similarity (self, uid1, uid2):
+        '''
+        return similarity of two users
+        '''
+        if self.userSim is not None:
+            return self.userSim[uid1, uid2]
+        else:
+            raise NotImplementedError
+            return 0
+
+    def save_weight (self, path):
+        pickle.dump( self, open( path, "wb" ) )
+
+    def save_usersim (self, path):
+        with open(path, 'w') as f:
+            for i in range(self.userSim.shape[0]):
+                for j in range(self.userSim.shape[1]):
+                    f.write('{:.3f} '.format(self.userSim[i, j]))
+                f.write('\n')
+
+def load_weight(path):
+    with open(path, 'rb') as f:
+        model = pickle.load(f)
+    return model
+
+    def user_similarity (self, uid1, uid2):
+        '''
+        return similarity of two users
+        '''
+        if self.userSim is not None:
+            return self.userSim[uid1, uid2]
+        else:
+            raise NotImplementedError
+            return 0
+
+    def save_weight (self, path):
+        pickle.dump( self, open( path, "wb" ) )
+
+def load_weight(path):
+    with open(path, 'rb') as f:
+        model = pickle.load(f)
+    return model
 
 def main():
     args = parse_args()
-    recomm = Recommender('SVD', args.rating_data)
+    if args.train:
+        recomm = Recommender('SVD', args.rating_data)
+        recomm.train()
+        #recomm.save_usersim('weight.pkl')
+        #recomm.save_usersim('user_sim.txt')
+        recomm.save_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
+        recomm.save_usersim('./src/main/java/com/oose/group18/RecommenderController/user_sim.txt')
+    else:
+        #recomm = load_weight('weight.pkl')
+        recomm = load_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
+        ranked_list_with_score = recomm.recommend_for_user(args.uid)
+        for i in range(args.topk):
+            print( '{} {:.3f}'.format( ranked_list_with_score[i][0], ranked_list_with_score[i][1] ))
 
     if args.debug:
         recomm.split_data(test_size=args.test_size)
         recomm.train(use_full_data=False)
         recomm.test()
 
-
-    recomm.train()
-    ranked_list = recomm.recommend_for_user(args.uid)
-    for i in range(args.topk):
-        print(ranked_list[i])
-    with open('output.txt', 'w') as f:
-        f.write("Sdfdf")
 
 if __name__ == '__main__':
     main()

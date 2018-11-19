@@ -3,26 +3,24 @@ package com.oose.group18.Controller;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.oose.group18.Entity.Post;
-import com.oose.group18.Entity.Restaurant;
-import com.oose.group18.Entity.User;
-import com.oose.group18.Entity.UserView;
+import com.oose.group18.Entity.*;
 import com.oose.group18.Event.GuestJoinEvent;
 import com.oose.group18.Event.UserLoginEvent;
 import com.oose.group18.RecommenderController.Recommender;
+import com.oose.group18.RecommenderController.PostRecommender;
 import com.oose.group18.Repository.PostRepository;
 import com.oose.group18.Repository.RestaurantRepository;
 import com.oose.group18.Repository.UserRepository;
 import com.oose.group18.Exception.PostNotFoundException;
 import com.oose.group18.Exception.RestaurantNotFoundException;
 import com.oose.group18.Exception.UserNotFoundException;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.swing.text.html.Option;
+import javax.validation.constraints.Null;
 
 @RestController
 public class UserJPAResource {
@@ -52,7 +51,8 @@ public class UserJPAResource {
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
 
-	Recommender recommender;
+	Recommender recommender = new Recommender();
+	PostRecommender post_recommender = new PostRecommender();
 
 	@GetMapping("/users")
 	public MappingJacksonValue retrieveAllUsers() {
@@ -61,6 +61,7 @@ public class UserJPAResource {
 		for (User user : users) {
 			result.add(new UserView(user));
 		}
+
 		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("userName", "fullName", "description", "email");
 
 		FilterProvider filters = new SimpleFilterProvider().addFilter("SomeBeanFilter", filter);
@@ -75,8 +76,17 @@ public class UserJPAResource {
 
 	@PostMapping("/login")
 	public String userLogin(@RequestBody User loginUser) {
+		if (loginUser == null) {
+			System.out.println("null input");
+		}
 		List<User> users = userRepository.findAll();
+		if (users == null) {
+			System.out.println("null users");
+		}
 		for (User user : users) {
+			if (user.getUserName() == null || user.getPassword() == null) {
+				System.out.println("null name or password");
+			}
 			if (loginUser.getUserName().equals(user.getUserName()) && loginUser.getPassword().equals(user.getPassword())) {
 				System.out.println(user.getUserName());
 				System.out.println(user.getPassword());
@@ -130,7 +140,7 @@ public class UserJPAResource {
 //		List<Integer> res = new ArrayList<>();
 //		res.add(1);
 //		res.add(2);
-		List<Integer> res = recommender.getRecommend(id, 10);
+		List<Integer> res = recommender.getRecommend(id, 11);
 		if (res == null) {
 			System.out.println("return is empty");
 			return null;
@@ -155,7 +165,7 @@ public class UserJPAResource {
 	}
 
 	@PostMapping("/user/{id}/host/posts/{restaurantId}")
-	public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody Post post, @PathVariable int restaurantId) {
+	public String createPost(@PathVariable int id, @RequestBody Post post, @PathVariable int restaurantId) {
 
 		Optional<User> userOptional = userRepository.findById(id);
 
@@ -176,12 +186,12 @@ public class UserJPAResource {
 		post.setUser(user);
 		post.setRestaurant(restaurant);
 
-		postRepository.save(post);
+		Post insertedPost = postRepository.save(post);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(post.getId())
 				.toUri();
 
-		return ResponseEntity.created(location).build();
+		return String.valueOf(insertedPost.getId());
 
 	}
 
@@ -237,27 +247,39 @@ public class UserJPAResource {
 
 
 	@PostMapping("user/{id}/guest/posts")
-	public List<Post> retrieveAllRecommendedPosts(@PathVariable int id) {
+	public List<PostView> retrieveAllRecommendedPosts(@PathVariable int id) {
 		Optional<User> userOptional = userRepository.findById(id);
 		if (!userOptional.isPresent()) {
 			throw new UserNotFoundException("id-" + id);
 		}
 		User user = userOptional.get();
-		List<Integer> post = new ArrayList<>();
-		post.add(1);
-		post.add(2);
-		List<Post> posts = postRepository.findAllById(post);
-		for (Post recommendedPost :posts) {
-			if (user.getJoinedPost().contains(recommendedPost)) {
-				posts.remove(recommendedPost);
-			}
+		List<Post> posts = postRepository.findAll();
+		if (posts == null) {
+			return null;
 		}
-		return posts;
+		List<Post> rec_posts = post_recommender.getRecommendPost(posts, id, 10);
+//		for (Iterator<Post> iterator = posts.iterator(); iterator.hasNext(); ) {
+//			String value = iterator.next();
+//			if (value.length() > 5) {
+//				iterator.remove();
+//			}
+//		}
+		rec_posts.removeIf((Post post) -> user.getJoinedPost().contains(post) || post.getUser().getId().equals(user.getId()) || post.getGuest().size() >= post.getNumOfGuest());
+		List<PostView> result = new ArrayList<>();
+		for (Post post : rec_posts) {
+			result.add(new PostView(post));
+		}
+//		for (Post recommendedPost : posts) {
+//			if (user.getJoinedPost().contains(recommendedPost) || recommendedPost.getUser().getId().equals(user.getId()) || recommendedPost.getGuest().size() >= recommendedPost.getNumOfGuest()) {
+//				posts.remove(recommendedPost);
+//			}
+//		}
+		return result;
 	}
 
 
 	@PostMapping("/user/{id}/guest/{post_id}")
-	public Integer joinPost(@PathVariable int id, @PathVariable int post_id) {
+	public String joinPost(@PathVariable int id, @PathVariable int post_id) {
 
 		Optional<User> userOptional = userRepository.findById(id);
 
@@ -277,13 +299,13 @@ public class UserJPAResource {
 		Post post = postOptional.get();
 
 		if (user.getId().equals(post.getUser().getId())) {
-			return -1;
+			return "-1";
 		}
-		if (post.getNumOfGuest() >= post.getGuest().size()) {
-			return -2;
+		if (post.getNumOfGuest() <= post.getGuest().size()) {
+			return "-2";
 		}
 		if (post.getGuest().contains(user)) {
-			return -3;
+			return "-3";
 		}
 		post.getGuest().add(user);
 		user.getJoinedPost().add(post);
@@ -292,7 +314,7 @@ public class UserJPAResource {
 		GuestJoinEvent event = new GuestJoinEvent(this, user, post);
 		applicationEventPublisher.publishEvent(event);
 
-		return 1;
+		return "1";
 	}
 
 	@GetMapping("/user/{id}/guest/posts")
@@ -305,5 +327,28 @@ public class UserJPAResource {
 
 		return userOptional.get().getJoinedPost();
 	}
+
+    @GetMapping("/user/{id}/guest/posts/{post_id}")
+    public List<User> reviewJoinedPost(@PathVariable int id, @PathVariable int post_id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        Optional<Post> postOptional = postRepository.findById(id);
+
+        if(!userOptional.isPresent()) {
+            throw new UserNotFoundException("id-" + id);
+        }
+
+        if (!postOptional.isPresent()) {
+            throw  new NullPointerException();
+        }
+
+        User user = userOptional.get();
+        Post post = postOptional.get();
+
+        if (user.getJoinedPost().contains(post)) {
+            return post.getGuest();
+        }
+
+        return null;
+    }
 
 }

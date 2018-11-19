@@ -153,17 +153,31 @@ User can choose to be host or guest.
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
 
+We have switched from ListView to RecyclerView in iteration4.
+
 ### Send Post
 
 <img src="./Image/GuestList.png" alt="Send Post" width="250"/><br/><br/>
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
+
+After finishing sending the post, users will enter a message box, where they could get messages from guests. They will also be able to retrive their history of posts by clicking the "history" button in the bottom of the page. We have switched from ListView to RecyclerView in iteration4.
+
+
 ### Guest
 
 <img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
 
-After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join.
+After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join. We have switched from ListView to RecyclerView in iteration4.
+
+## Frontend test
+
+We have several frontend test (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+
+To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
+
+Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration.  
 
 # What need to Improve
 
