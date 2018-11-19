@@ -3,6 +3,9 @@
 
 We have built the basic framework and implemented some core features. Feel free to play with our app!
 
+Note:
+For this iteration we implemented the interaction between guest and host, so it would be better if you can use two devices acting as host and guest to actually post and join! If there is no guest to join the post after a host create one, the page will stack with loading. Same condition may happen on guest when there is no post available. You can simply click the screen and return to previous page.
+
 ## Back End
 
 For back end we choose springboot and h2 database as server and database to store user and restaurant information. The whole project is under restful-web-services folder. To run the whole projects, user Intellij to import the whole project, waiting for dependency downloaded, and click run button, you are ready to go!
