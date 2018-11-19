@@ -83,29 +83,17 @@ which includes 5 tests:
 
 ### Recommender System
 
-Our recommender system recommends restaurants and posts to hosts and guests respectively. To this end, we've implemented an SVD-based collaborative filtering system to perform ranking on all available hosts or restaurants according to the history of the user and his/her similarity with other users. 
+We've implemented an SVD-based collaborative filtering system to perform ranking on all available hosts according to the history of the guest and his/her similarity with other guests. 
 
-#### Base Recommender
+#### Introduction
 
-The base recommender sort the available restaurants according to their predicted ratings. 
-We maintain an m by n matrix M where m denotes the number of users and n denotes the number of restaurants, the (i,j)-th element of which represents the rating of user i to restaurant j. 
-The matrix will be sparse because the user will only have visited a few of all restaurants in our system. 
-And the missing elements in that matrix are estimated based on a factorization M = P^T*Q. 
-This method represents user i as a vector of preferences for a few factors and item j as a vector where each element expresses how much the item exhibits that factor. 
-Then the rating of item j for user i is estimated by the inner product of these two vectors. 
+We maintain an m by n matrix M where m denotes the numbre of users and n denotes the number of restaurants, the (i,j)-th element of which represents the rating of user i to restaurant j. The matrix will be sparse because the user will only have visited a few of all restaurants in our system. And the missing elements in that matrix are estimated based on a factorization M = P^T*Q. This method represents user i as a vector of preferences for a few factors and item j as a vector where each element expresses how much the item exhibits that factor. Then the rating of item j for user i is estimated by the inner product of these two vectors. 
 
 #### Model Training and Testing
 
 For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5. 
 
 In production mode, we will periodically update the original matrix and perform new factorization on it. We haven't look into the cold start problem, which could be addressed in later iterations using content-based recommendation.
-
-#### Post Recommender
-
-The post recommender extends the base recommender and combines the user affinity and restaurant rating to generate recommendations. 
-Current user affinity is obtained by the inner product of the latent vectors of the users. 
-For each post, the total score is the linear combination of the predicted rating of its restaurant and the user affinity score between the guest and the host. 
-The form of combination can be extended easily and more features can be integrated into the recommender. 
 
 #### Implementation
 
@@ -177,7 +165,28 @@ We have several frontend test (instrumentation/UI testing)implemented through Es
 
 To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
 
-Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration.  
+Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration. 
+
+## Backend test
+Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.
+
+The end-points tests covered including:
+GET /users, get all users.
+POST /login, user login.
+POST /register, add new user (register).
+GET /user/{id}, get single user.
+DELETE /user/{id}, delete single user.
+GET /user/{id}/host/restaurants, get user's restaurants.
+GET /user/{id}/host/posts, get user(as host)/s posts.
+Get /user/{id}/host/posts/{postId}/guests, get the guests list in posts(referenced by post ID).
+GET /user/{id}/host/posts/{postId}/guests/{guestId}, get guests (referenced by user ID) in post (referenced by post ID).
+DELETE /user/{id}/host/posts/{post_id}, delete post referenced by post ID.
+POST user/{id}/guest/posts, get all recommended posts.
+POST /user/{id}/guest/{post_id}, guest join in post.
+GET /user/{id}/guest/posts, get guests joined posts history.
+
+<img src="./Image/backend_tests.jpg" alt="Post Recommendation" width="250"/><br/><br/>
+
 
 # What need to Improve
 
