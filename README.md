@@ -63,23 +63,6 @@ For guest to look up all joined posts.
 
 There is an easy way to check our server! We deployed the whole server on Heroku, so you can eaily check the endpoint of our server by accessing: https://food-mate.herokuapp.com as the base url, the detail of endpoints are stored in FoodMate.postman_collection.json.
 
-## Backend test
-
-We also implemented some Unit tests to test the correctness of our logic.
-
-Path to the test file: src/test/java/com/oose/group18/Controller/SpringDataJpaTest.java
-
-which includes 5 tests:
-
-(1)   Find user by id
-
-(2)   Find user name
-
-(3)   Find restaurant by Id
-
-(4)   Find all user
-
-(5)   Find all restaurant
 
 ### Recommender System
 
@@ -189,9 +172,9 @@ The end-points tests covered including:
 
 # What need to Improve
 
-1. Currently we implemented part of the interaction between back end and front-end, in the next iteration we will implement all of the interactions.
-2. We built several unit tests for back end, in next iteration we will implement more comprehensive test cases to cover all cover cases.
-3. Currently the recommendation system can only do recommendation for restaurants, in next iteration we will implement the recommendation system for post recommendation.
+1. We have successfully implemented whole functionality of app, the next iteration we will focus on code quality and implement extended feature to imcrease user experience.
+2. We will set up pipeline of recommendation system, to let user add review of restaurant and update their user habbits.
+3. Add more tests for backend and frontend to make the project more robust.
 
 # Food Mate app
 
