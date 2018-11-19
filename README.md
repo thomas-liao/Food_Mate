@@ -171,19 +171,18 @@ Due to asyncronous work involved in testing, each test is not guarenteed to succ
 Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.
 
 The end-points tests covered including:
-GET /users, get all users.
-POST /login, user login.
-POST /register, add new user (register).
-GET /user/{id}, get single user.
-DELETE /user/{id}, delete single user.
-GET /user/{id}/host/restaurants, get user's restaurants.
-GET /user/{id}/host/posts, get user(as host)/s posts.
-Get /user/{id}/host/posts/{postId}/guests, get the guests list in posts(referenced by post ID).
-GET /user/{id}/host/posts/{postId}/guests/{guestId}, get guests (referenced by user ID) in post (referenced by post ID).
-DELETE /user/{id}/host/posts/{post_id}, delete post referenced by post ID.
-POST user/{id}/guest/posts, get all recommended posts.
-POST /user/{id}/guest/{post_id}, guest join in post.
-GET /user/{id}/guest/posts, get guests joined posts history.
+1. GET /users, get all users.
+2. POST /login, user login.
+3. POST /register, add new user (register).
+4. GET /user/{id}, get single user.
+5. DELETE /user/{id}, delete single user.
+6. GET /user/{id}/host/restaurants, get user's restaurants.
+7. GET /user/{id}/host/posts, get user(as host)/s posts.
+8. Get /user/{id}/host/posts/{postId}/guests, get the guests list in posts(referenced by post ID).
+9. DELETE /user/{id}/host/posts/{post_id}, delete post referenced by post ID.
+10. POST user/{id}/guest/posts, get all recommended posts.
+11. POST /user/{id}/guest/{post_id}, guest join in post.
+12. GET /user/{id}/guest/posts, get guests joined posts history.
 
 <img src="./Image/backend_tests.jpg" alt="Post Recommendation" width="250"/><br/><br/>
 
