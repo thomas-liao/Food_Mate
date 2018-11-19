@@ -3,8 +3,8 @@
     package="jhu.oose.group18.foodmate">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-feature android:name="android.hardware.location.gps" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature
         android:name="android.hardware.wifi"
         android:required="true" />
@@ -35,23 +35,25 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".RoleSelectActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".PostActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".MessageBoxActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".ReservationActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".ListRestaurantActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
+            android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".RecommendationActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
-        <activity android:name=".MyRecyclerViewAdapter"></activity>
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".MyRecyclerViewAdapter" />
+        <activity android:name=".ReviewHistoryActivity">
+        </activity>
     </application>
 
 </manifest>
