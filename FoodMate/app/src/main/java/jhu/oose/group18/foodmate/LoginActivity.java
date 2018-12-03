@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             System.out.println(e);
         }
 
+
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

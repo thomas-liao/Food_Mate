@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -68,6 +69,12 @@ public class MessageBoxActivity extends AppCompatActivity {
                                 System.out.println(jsonObj);
                                 message.setName(jsonObj.getString("fullName"));
                                 messageList.add(message);
+                            }
+                            if (messageList.isEmpty()) {
+                                findViewById(R.id.message_list).setVisibility(View.GONE);
+                                findViewById(R.id.no_guest).setVisibility(View.VISIBLE);
+                                progressDialog.cancel();
+                                //            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {System.out.println(e);}
                     }
