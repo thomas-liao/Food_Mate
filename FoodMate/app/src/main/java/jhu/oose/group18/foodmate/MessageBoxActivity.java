@@ -85,16 +85,6 @@ public class MessageBoxActivity extends AppCompatActivity {
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(MessageBoxActivity.this, PostActivity.class);
-                String message = messageList.get(position).getName();
-                MyApplication application = (MyApplication) getApplication();
-                try {
-                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                intent.putExtra("restaurantSelected", message);
-                startActivity(intent);
             }
         });
 
@@ -154,12 +144,17 @@ public class MessageBoxActivity extends AppCompatActivity {
                                 message.setName(jsonObj.getString("fullName"));
                                 messageList.add(message);
                             }
+                            findViewById(R.id.message_list).setVisibility(View.VISIBLE);
+                            findViewById(R.id.no_guest).setVisibility(View.GONE);
+
                             if (messageList.isEmpty()) {
                                 findViewById(R.id.message_list).setVisibility(View.GONE);
                                 findViewById(R.id.no_guest).setVisibility(View.VISIBLE);
-                                progressDialog.cancel();
                                 //            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
                             }
+                            progressDialog.dismiss();
+
+
                         } catch (Exception e) {System.out.println(e);}
                     }
                 },
@@ -190,74 +185,6 @@ public class MessageBoxActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
     }
-
-
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_message_box);
-//
-//        ListAdapter whatever = new ListAdapter(this, R.layout.message_row, nameArray, infoArray, imageArray);
-//        listView = (ListView) findViewById(R.id.message_list);
-//        listView.setAdapter(whatever);
-//
-//        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-//        MyApplication application=(MyApplication)getApplication();
-//        String url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.createdPostId + "/guests";
-//        System.out.println(url);
-//        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>()
-//                {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // display response
-//                        try {
-//                            jsonArr = new JSONArray(response);
-//
-//                            for (int i = 0; i < jsonArr.length(); i++)
-//                            {
-//                                JSONObject jsonObj = jsonArr.getJSONObject(i);
-//                                System.out.println(jsonObj);
-//                                nameArray[i] = jsonObj.getString("fullName");
-//                            }
-//                            //System.out.println(response.toString());
-//                            //JSONArray a = new JSONArray();
-//                            //response.toJSONArray(a);
-//                        } catch (Exception e) {System.out.println(e);}
-//                    }
-//                },
-//                new Response.ErrorListener()
-//                {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d("Error.Response", error.toString());
-//                    }
-//                }
-//
-//        );
-//        getRequest.setRetryPolicy(new RetryPolicy() {
-//            @Override
-//            public int getCurrentTimeout() {
-//                return 50000;
-//            }
-//
-//            @Override
-//            public int getCurrentRetryCount() {
-//                return 50000;
-//            }
-//
-//            @Override
-//            public void retry(VolleyError error) throws VolleyError {
-//
-//            }
-//        });
-//        queue.add(getRequest);
-//
-//    }
-
-
 }
 
 
