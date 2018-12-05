@@ -129,24 +129,6 @@ def load_weight(path):
         model = pickle.load(f)
     return model
 
-    def user_similarity (self, uid1, uid2):
-        '''
-        return similarity of two users
-        '''
-        if self.userSim is not None:
-            return self.userSim[uid1, uid2]
-        else:
-            raise NotImplementedError
-            return 0
-
-    def save_weight (self, path):
-        pickle.dump( self, open( path, "wb" ) )
-
-def load_weight(path):
-    with open(path, 'rb') as f:
-        model = pickle.load(f)
-    return model
-
 def main():
     args = parse_args()
     if args.train:
