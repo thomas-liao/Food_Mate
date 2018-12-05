@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,10 +40,93 @@ public class MessageBoxActivity extends AppCompatActivity {
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     MyApplication application;
     private String url;
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_message_box);
+
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_history:
+                                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
+                                startActivity(intent);
+
+//                            case R.id.action_schedules:
+//
+//                            case R.id.action_music:
+
+                        }
+                        return true;
+                    }
+                });
+
+
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
+
+
+        mList = findViewById(R.id.message_list);
+
+        messageList = new ArrayList<>();
+        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(MessageBoxActivity.this, PostActivity.class);
+                String message = messageList.get(position).getName();
+                MyApplication application = (MyApplication) getApplication();
+                try {
+                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                intent.putExtra("restaurantSelected", message);
+                startActivity(intent);
+            }
+        });
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
+        getData();
+
+//        _reviewButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override
+        public void onRefresh() {
+            swipeRefreshLayout.setRefreshing(true);
+            getData();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    };
 
 
     private void getData() {
@@ -107,72 +191,6 @@ public class MessageBoxActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_box);
-
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_history:
-                                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
-                                startActivity(intent);
-
-//                            case R.id.action_schedules:
-//
-//                            case R.id.action_music:
-
-                        }
-                        return true;
-                    }
-                });
-
-        mList = findViewById(R.id.message_list);
-
-        messageList = new ArrayList<>();
-        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(MessageBoxActivity.this, PostActivity.class);
-                String message = messageList.get(position).getName();
-                MyApplication application = (MyApplication) getApplication();
-                try {
-                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                intent.putExtra("restaurantSelected", message);
-                startActivity(intent);
-            }
-        });
-
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
-
-        getData();
-
-//        _reviewButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-    }
 
 //
 //    @Override
