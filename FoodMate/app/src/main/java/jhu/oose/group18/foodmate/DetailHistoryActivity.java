@@ -2,6 +2,7 @@ package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,9 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+public class DetailHistoryActivity extends AppCompatActivity {
 
-public class ReviewHistoryActivity extends AppCompatActivity {
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -37,9 +36,56 @@ public class ReviewHistoryActivity extends AppCompatActivity {
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     MyApplication application;
     private String url;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail_history);
+        messageList = new ArrayList<>();
+
+        mList = findViewById(R.id.reservation_guest_list);
+
+        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(DetailHistoryActivity.this, PostActivity.class);
+                String message = messageList.get(position).getName();
+                MyApplication application = (MyApplication) getApplication();
+                try {
+                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                intent.putExtra("restaurantSelected", message);
+                startActivity(intent);
+            }
+        });
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
+        getData();
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override
+        public void onRefresh() {
+            swipeRefreshLayout.setRefreshing(true);
+            getData();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    };
 
 
     private void getData() {
@@ -48,7 +94,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts";
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/restaurants";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -61,8 +107,8 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
                                 Message message = new Message();
-                                message.setName(jsonObj.getString("restaurantName"));
-                                message.setCategory(jsonObj.getString("description"));
+                                message.setName(jsonObj.getString("name"));
+                                message.setCategory(jsonObj.getString("category"));
                                 message.setPic(R.drawable.restaurant_logo);
                                 messageList.add(message);
 
@@ -103,31 +149,5 @@ public class ReviewHistoryActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review_history);
 
-        mList = findViewById(R.id.review_list);
-
-        messageList = new ArrayList<>();
-        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(ReviewHistoryActivity.this, DetailHistoryActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
-
-        getData();
-    }
 }
