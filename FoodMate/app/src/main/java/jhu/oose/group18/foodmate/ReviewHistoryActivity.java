@@ -48,7 +48,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + 2 + "/host/restaurants";
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -61,8 +61,8 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
                                 Message message = new Message();
-                                message.setName(jsonObj.getString("name"));
-                                message.setCategory(jsonObj.getString("category"));
+                                message.setName(jsonObj.getString("restaurantName"));
+                                message.setCategory(jsonObj.getString("description"));
                                 message.setPic(R.drawable.restaurant_logo);
                                 messageList.add(message);
 
