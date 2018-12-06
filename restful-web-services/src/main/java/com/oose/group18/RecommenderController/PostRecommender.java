@@ -84,6 +84,7 @@ public class PostRecommender extends Recommender {
     }
 }
 
+
 class PostComparer implements Comparator<Post> {
     private int _uid;
     private float[][] _user_sim;

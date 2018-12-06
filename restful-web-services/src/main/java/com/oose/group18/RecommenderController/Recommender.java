@@ -25,7 +25,7 @@ public class Recommender {
                     "--rating-data", "./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data", "--train"
             );
             Process p = pb.start();
-
+            p.waitFor();
             System.out.println("Recommender system initialized!");
         }catch(Exception e){System.out.println(e);}
     }

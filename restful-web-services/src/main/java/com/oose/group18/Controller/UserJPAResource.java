@@ -17,6 +17,7 @@ import com.oose.group18.RecommenderController.Recommender;
 import com.oose.group18.RecommenderController.PostRecommender;
 import com.oose.group18.Repository.PostRepository;
 import com.oose.group18.Repository.RestaurantRepository;
+import com.oose.group18.Repository.ReviewRepository;
 import com.oose.group18.Repository.UserRepository;
 import com.oose.group18.Exception.PostNotFoundException;
 import com.oose.group18.Exception.RestaurantNotFoundException;
@@ -50,6 +51,9 @@ public class UserJPAResource {
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
+
+	@Autowired
+	ReviewRepository reviewRepository;
 
 	Recommender recommender = new Recommender();
 	PostRecommender post_recommender = new PostRecommender();
@@ -154,14 +158,19 @@ public class UserJPAResource {
 
 
 	@GetMapping("/user/{id}/host/posts")
-	public List<Post> retrieveAllPosts(@PathVariable int id) {
+	public List<PostView> retrieveAllPosts(@PathVariable int id) {
 		Optional<User> userOptional = userRepository.findById(id);
 
 		if(!userOptional.isPresent()) {
 			throw new UserNotFoundException("id-" + id);
 		}
 
-		return userOptional.get().getPosts();
+		List<Post> posts = userOptional.get().getPosts();
+		List<PostView> result = new ArrayList<>();
+		for (Post post : posts) {
+			result.add(new PostView(post));
+		}
+		return result;
 	}
 
 	@PostMapping("/user/{id}/host/posts/{restaurantId}")
@@ -350,5 +359,11 @@ public class UserJPAResource {
 
         return null;
     }
+
+	@PostMapping("/user/")
+	public String addReview(@RequestBody Review review) {
+		reviewRepository.save(review);
+		return "1";
+	}
 
 }
