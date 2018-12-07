@@ -2,21 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_history"
+        android:id="@+id/action_new_post"
         android:enabled="true"
         android:icon="@drawable/history"
-        android:title="history"
+        android:title="@string/new_post"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_schedules"
+        android:id="@+id/action_post_history"
         android:enabled="true"
         android:icon="@drawable/history"
-        android:title="schedules"
+        android:title="@string/post_history"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_music"
+        android:id="@+id/action_guest_history"
         android:enabled="true"
         android:icon="@drawable/history"
-        android:title="music"
+        android:title="@string/guest_history"
         app:showAsAction="ifRoom" />
 </menu>

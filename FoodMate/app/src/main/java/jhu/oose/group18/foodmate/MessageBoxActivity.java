@@ -60,7 +60,7 @@ public class MessageBoxActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.action_history:
+                            case R.id.action_post_history:
                                 Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
                                 startActivity(intent);
 
