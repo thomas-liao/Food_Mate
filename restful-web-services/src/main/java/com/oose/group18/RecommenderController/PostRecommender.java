@@ -18,10 +18,18 @@ import com.oose.group18.RecommenderController.Recommender;
 import com.oose.group18.RecommenderController.RestaurantWithScore;
 
 public class PostRecommender extends Recommender {
-    final int nUserMax = 200;
-    private float[][] userSim = new float[nUserMax][nUserMax];
+    //final int nUserMax;
+    int nUser;
+    private float[][] userSim; // = new float[nUserMax][nUserMax];
 
-    public PostRecommender() {
+    public PostRecommender(int n_user) {
+        
+        init(n_user);
+    }
+    
+    public void init (int n_user) {
+        nUser = n_user;
+        userSim = new float[nUser][nUser];
         String fileName = "./src/main/java/com/oose/group18/RecommenderController/user_sim.txt";
         // Load User similarity matrix from file
         Scanner sc;
@@ -47,11 +55,10 @@ public class PostRecommender extends Recommender {
                 "Unable to open file '" + 
                 fileName + "'");                
         }
-
     }
-    
+
     public List<Post> getRecommendPost (List<Post> posts, int id, int topk ) {
-        int NUM_RECOMMEND_RESTAURANTS = 100;
+        int NUM_RECOMMEND_RESTAURANTS = 1000;
         List<RestaurantWithScore> recomm_rst_list;
         Map<Integer, Float> rstScoreMap = new HashMap<>();
         List<Post> rec_posts = new ArrayList<>();

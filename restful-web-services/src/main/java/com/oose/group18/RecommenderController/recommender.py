@@ -61,8 +61,16 @@ class Recommender:
         self.trainset = None
         self.testset = None
         self.userSim = None
+        self.nUser = None
+        self.nItem = None
 
         self.load_data()
+
+    def getNumUser (self):
+        return self.nUser
+
+    def getNumItem (self):
+        return self.nItem
 
     def load_data (self):
         self.data = Dataset.load_from_file(self.file_path, self.reader)
@@ -77,6 +85,8 @@ class Recommender:
         else:
             trainset = self.trainset
 
+        self.nUser = len(self.trainset.all_users())
+        self.nItem = len(self.trainset.all_items())
         self.algo.fit(trainset)
 
         self.userSim = np.matmul(self.algo.pu, self.algo.pu.T)
@@ -124,7 +134,7 @@ class Recommender:
                     f.write('{:.3f} '.format(self.userSim[i, j]))
                 f.write('\n')
 
-def load_weight(path):
+def load_saved_model(path):
     with open(path, 'rb') as f:
         model = pickle.load(f)
     return model
@@ -139,10 +149,10 @@ def main():
         recomm.save_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
         recomm.save_usersim('./src/main/java/com/oose/group18/RecommenderController/user_sim.txt')
     else:
-        #recomm = load_weight('weight.pkl')
-        recomm = load_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
+        #recomm = load_saved_model('weight.pkl')
+        recomm = load_saved_model('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
         ranked_list_with_score = recomm.recommend_for_user(args.uid)
-        for i in range(args.topk):
+        for i in range(min(args.topk, len(recomm.getNumItem()))):
             print( '{} {:.3f}'.format( ranked_list_with_score[i][0], ranked_list_with_score[i][1] ))
 
     if args.debug:

@@ -20,16 +20,19 @@ public class Recommender {
 
 
     public Recommender() {
+        init();
+    }
+
+    public void init() {
         try {
             ProcessBuilder pb = new ProcessBuilder("python", "./src/main/java/com/oose/group18/RecommenderController/recommender.py",
                     "--rating-data", "./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data", "--train"
             );
             Process p = pb.start();
-
+            p.waitFor();
             System.out.println("Recommender system initialized!");
         }catch(Exception e){System.out.println(e);}
     }
-
 
     public static List<Integer> getRecommend(int id, int topk) {
         List<Integer> rec_list = new ArrayList<>();
@@ -74,30 +77,4 @@ public class Recommender {
         return rec_list;
     }
 
-
-
-    public static void main(String[] args) {
-    try {
-        String uid = "1";
-        int topk = 12;
-
-        ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
-                "--rating-data","./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data",
-                "--uid", ""+uid, "--topk", ""+topk);
-
-        Process p = pb.start();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-        List<String> res= new ArrayList<String>();
-        for (int i = 0; i < 10; i++) {
-            res.add(in.readLine());
-        }
-        for (int i = 0; i < 10; i++) {
-            System.out.println(res.get(i));
-        }
-
-    }
-    catch(Exception e){System.out.println(e);}
-}
 }

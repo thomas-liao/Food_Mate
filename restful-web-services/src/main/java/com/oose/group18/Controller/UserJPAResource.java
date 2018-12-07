@@ -52,7 +52,7 @@ public class UserJPAResource {
 	ApplicationEventPublisher applicationEventPublisher;
 
 	Recommender recommender = new Recommender();
-	PostRecommender post_recommender = new PostRecommender();
+	PostRecommender post_recommender = new PostRecommender(100);
 
 	@GetMapping("/users")
 	public MappingJacksonValue retrieveAllUsers() {
