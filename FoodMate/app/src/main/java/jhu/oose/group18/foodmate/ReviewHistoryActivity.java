@@ -62,7 +62,11 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                                 System.out.println(jsonObj);
                                 Message message = new Message();
                                 message.setName(jsonObj.getString("restaurantName"));
-                                message.setCategory(jsonObj.getString("description"));
+                                String description = jsonObj.getString("description");
+                                if (description == null) {
+                                    description = "Host is lazy";
+                                }
+                                message.setCategory(description);
                                 message.setPic(R.drawable.restaurant_logo);
                                 messageList.add(message);
 
@@ -114,6 +118,14 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                try {
+                    application.reviewPostId = jsonArr.getJSONObject((position)).getInt("id");
+                    application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
+                    application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
+                    //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
                 Intent intent = new Intent(ReviewHistoryActivity.this, DetailHistoryActivity.class);
                 startActivity(intent);
             }

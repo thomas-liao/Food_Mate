@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -56,6 +57,7 @@ public class DetailHistoryActivity extends AppCompatActivity {
                 String message = messageList.get(position).getName();
                 MyApplication application = (MyApplication) getApplication();
                 try {
+                    //application.joinedPostId = jsonArr.getJSONObject((position)).getInt("id");
                     application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
                 } catch (Exception e) {
                     System.out.println(e);
@@ -94,7 +96,8 @@ public class DetailHistoryActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/restaurants";
+        ///user/{id}/host/posts/{postId}/guests
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.reviewPostId + "/guests" ;
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -104,11 +107,12 @@ public class DetailHistoryActivity extends AppCompatActivity {
                         try {
                             jsonArr = new JSONArray(response);
                             for (int i = 0; i < jsonArr.length(); i++) {
+                                System.out.println(i);
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
                                 Message message = new Message();
-                                message.setName(jsonObj.getString("name"));
-                                message.setCategory(jsonObj.getString("category"));
+                                message.setName(jsonObj.getString("userName"));
+                                message.setCategory(jsonObj.getString("description"));
                                 message.setPic(R.drawable.restaurant_logo);
                                 messageList.add(message);
 
