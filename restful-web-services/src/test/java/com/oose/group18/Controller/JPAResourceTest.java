@@ -303,7 +303,7 @@ public class JPAResourceTest {
     public void getRestaurantsTest() {
         // no restaurant at first, expecting "[]"
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/92/host/restaurants",
-                String.class)).isNotEqualTo("[]");
+                String.class)).isEqualTo("[]");
     }
 
     @Test
