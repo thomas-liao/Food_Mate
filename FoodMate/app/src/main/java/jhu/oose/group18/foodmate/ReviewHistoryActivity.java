@@ -62,7 +62,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                                 System.out.println(jsonObj);
                                 Message message = new Message();
                                 message.setName(jsonObj.getString("restaurantName"));
-                                String description = jsonObj.getString("description");
+                                String description = jsonObj.getString("startDate");
                                 if (description == null) {
                                     description = "Host is lazy";
                                 }
@@ -122,6 +122,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                     application.reviewPostId = jsonArr.getJSONObject((position)).getInt("id");
                     application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
                     application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
+                    application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
                     //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
                 } catch (Exception e) {
                     System.out.println(e);

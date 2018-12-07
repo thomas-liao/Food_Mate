@@ -94,6 +94,7 @@ public class DetailHistoryActivity extends AppCompatActivity {
         application = (MyApplication) getApplication();
         reservation_name.setText(application.reviewPostRes);
         reservation_time.setText(application.reviewPostHost);
+        reservation_description.setText((application.reviewPostStartDate));
         ///user/{id}/host/posts/{postId}/guests
         url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.reviewPostId + "/guests" ;
         System.out.println(url);

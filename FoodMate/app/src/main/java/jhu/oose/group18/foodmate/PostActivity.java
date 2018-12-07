@@ -66,25 +66,25 @@ public class PostActivity extends AppCompatActivity {
                     String URL = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.restaurantId;
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("numOfGuest", _maxGuest.getText().toString());
-                    final String requestBody = jsonBody.toString();
-                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date dateObject;
-                    try{
-                        String dateTime = _dateTime.getText().toString();
-                        dateObject = formatter.parse(dateTime);
-                        jsonBody.put("startDate", dateObject.toString());
+                    jsonBody.put("startDate", _dateTime.getText().toString());
 
-                    }catch (java.text.ParseException e){
-                        _dateTime.setError("follow the format dd/MM/yyyy");
-                        e.printStackTrace();
-                    }
+//                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                    Date dateObject;
+//                    try{
+//                        String dateTime = _dateTime.getText().toString();
+//                        dateObject = formatter.parse(dateTime);
+//                        jsonBody.put("startDate", dateObject.toString());
+//                        System.out.println(dateObject.toString());
+//
+//                    }catch (java.text.ParseException e){
+//                        _dateTime.setError("follow the format dd/MM/yyyy");
+//                        e.printStackTrace();
+//                    }
+                    final String requestBody = jsonBody.toString();
 
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            for (int i = 0; i < 100; i++) {
-                                System.out.println(response);
-                            }
                             if (response == null) {
                                 postFailed();
 //                                return;
