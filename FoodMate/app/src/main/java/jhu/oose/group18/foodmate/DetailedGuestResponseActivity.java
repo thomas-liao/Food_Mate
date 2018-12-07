@@ -41,6 +41,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     private TextView reservation_name;
     private TextView reservation_time;
     private TextView reservation_description;
+    private Button _return;
 
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -58,6 +59,14 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         reservation_name = findViewById(R.id.post_name);
         reservation_time = findViewById(R.id.post_time);
         reservation_description = findViewById(R.id.post_description);
+
+        _return = findViewById(R.id.return_btn);
+        _return.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ public class DetailedHostPostActivity extends AppCompatActivity {
     private TextView reservation_name;
     private TextView reservation_time;
     private TextView reservation_description;
+    private Button _return;
 
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -55,6 +57,14 @@ public class DetailedHostPostActivity extends AppCompatActivity {
         reservation_name = findViewById(R.id.reservation_name);
         reservation_time = findViewById(R.id.reservation_time);
         reservation_description = findViewById(R.id.reservation_description);
+
+        _return = findViewById(R.id.return_btn);
+        _return.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
