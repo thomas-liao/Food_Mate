@@ -1,7 +1,7 @@
 package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,7 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewHostHistoryActivity extends AppCompatActivity {
+public class DetailedHostPostActivity extends AppCompatActivity {
+
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -33,10 +35,54 @@ public class ReviewHostHistoryActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+    private TextView reservation_name;
+    private TextView reservation_time;
+    private TextView reservation_description;
+
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
     private String url;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detailed_host);
+        messageList = new ArrayList<>();
+
+        mList = findViewById(R.id.reservation_guest_list);
+        reservation_name = findViewById(R.id.reservation_name);
+        reservation_time = findViewById(R.id.reservation_time);
+        reservation_description = findViewById(R.id.reservation_description);
+
+        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+            }
+        });
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
+        getData();
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override
+        public void onRefresh() {
+            swipeRefreshLayout.setRefreshing(true);
+            getData();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    };
 
 
     private void getData() {
@@ -45,7 +91,11 @@ public class ReviewHostHistoryActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts";
+        reservation_name.setText(application.reviewPostRes);
+        reservation_time.setText(application.reviewPostHost);
+        reservation_description.setText((application.reviewPostStartDate));
+        ///user/{id}/host/posts/{postId}/guests
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.reviewPostId + "/guests" ;
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -55,15 +105,12 @@ public class ReviewHostHistoryActivity extends AppCompatActivity {
                         try {
                             jsonArr = new JSONArray(response);
                             for (int i = 0; i < jsonArr.length(); i++) {
+                                System.out.println(i);
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
                                 Message message = new Message();
-                                message.setName(jsonObj.getString("restaurantName"));
-                                String description = jsonObj.getString("startDate");
-                                if (description == null) {
-                                    description = "Host is lazy";
-                                }
-                                message.setCategory(description);
+                                message.setName(jsonObj.getString("userName"));
+                                message.setCategory(jsonObj.getString("description"));
                                 message.setPic(R.drawable.restaurant_logo);
                                 messageList.add(message);
 
@@ -104,40 +151,5 @@ public class ReviewHostHistoryActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review_history);
 
-        mList = findViewById(R.id.review_list);
-
-        messageList = new ArrayList<>();
-        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                try {
-                    application.reviewPostId = jsonArr.getJSONObject((position)).getInt("id");
-                    application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
-                    application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
-                    application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
-                    //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                Intent intent = new Intent(ReviewHostHistoryActivity.this, DetailedHostPostActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
-
-        getData();
-    }
 }

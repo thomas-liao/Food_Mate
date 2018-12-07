@@ -83,51 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-//                String url = "http://10.0.2.2:8080/login";
-//                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-//                        new Response.Listener<JSONObject>()
-//                        {
-//                            @Override
-//                            public void onResponse(JSONObject response) {
-//                                // display response
-//                                System.out.println("Response:"+response.toString());
-//                            }
-//                        },
-//                        new Response.ErrorListener()
-//                        {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                Log.d("Error.Response", error.toString());
-//                            }
-//                        }
-//
-//                );
-
-//                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//                String URL = "http://10.0.2.2:8080/login";
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST,URL,
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//                                System.out.println("Response:"  + response);
-//                                //Log.d(TAG, "response -> " + response);
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        System.out.println("Response:"  + error.toString());
-//                        //Log.e(TAG, error.getMessage(), error);
-//                    }
-//                }) {
-//                    @Override
-//                    protected Map<String, String> getParams() {
-//                        Map<String, String> map = new HashMap<String, String>();
-//                        map.put("name1", "value1");
-//                        map.put("name2", "value2");
-//                        return map;
-//                    }
-//                };
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
 //                    String URL = "https://food-mate.herokuapp.com/login";

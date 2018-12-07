@@ -10,6 +10,7 @@
         android:layout_width="184dp"
         android:layout_height="100dp"
         android:layout_weight="1"
+        android:paddingLeft="10dp"
         app:srcCompat="@drawable/restaurant_logo" />
 
     <LinearLayout

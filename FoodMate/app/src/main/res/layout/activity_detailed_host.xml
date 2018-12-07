@@ -94,17 +94,9 @@
         app:itemBackground="@color/primary_darker"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:menu="@menu/bottom_navigation_main" />
+        app:menu="@menu/bottom_navigation_main" >
 
-    <Button
-        android:id="@+id/join_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="62dp"
-        android:layout_marginBottom="70dp"
-        android:text="Join" />
+    </android.support.design.widget.BottomNavigationView>
 
     <Button
         android:id="@+id/return_btn"

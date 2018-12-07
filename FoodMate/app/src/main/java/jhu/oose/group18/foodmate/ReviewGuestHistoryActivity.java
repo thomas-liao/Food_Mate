@@ -124,7 +124,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-                Intent intent = new Intent(ReviewGuestHistoryActivity.this, DetailHistoryActivity.class);
+                Intent intent = new Intent(ReviewGuestHistoryActivity.this, DetailedGuestResponseActivity.class);
                 startActivity(intent);
             }
         });

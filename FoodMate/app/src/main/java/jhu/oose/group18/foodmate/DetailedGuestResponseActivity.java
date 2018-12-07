@@ -1,7 +1,6 @@
 package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,8 +28,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailHistoryActivity extends AppCompatActivity {
+import butterknife.BindView;
 
+public class DetailedGuestResponseActivity extends AppCompatActivity {
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -49,13 +51,13 @@ public class DetailHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_history);
+        setContentView(R.layout.activity_detailed_guest);
         messageList = new ArrayList<>();
 
-        mList = findViewById(R.id.reservation_guest_list);
-        reservation_name = findViewById(R.id.reservation_name);
-        reservation_time = findViewById(R.id.reservation_time);
-        reservation_description = findViewById(R.id.reservation_description);
+        mList = findViewById(R.id.post_guest_list);
+        reservation_name = findViewById(R.id.post_name);
+        reservation_time = findViewById(R.id.post_time);
+        reservation_description = findViewById(R.id.post_description);
 
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
@@ -150,7 +152,6 @@ public class DetailHistoryActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
     }
-
 
 
 }
