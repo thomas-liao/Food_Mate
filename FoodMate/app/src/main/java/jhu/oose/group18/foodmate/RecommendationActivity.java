@@ -2,6 +2,7 @@ package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -54,6 +55,8 @@ public class RecommendationActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
     private String url;
@@ -202,6 +205,10 @@ public class RecommendationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation);
 
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
+
         mList = findViewById(R.id.recommendation_list);
 
         messageList = new ArrayList<>();
@@ -233,4 +240,16 @@ public class RecommendationActivity extends AppCompatActivity {
 
         getData();
     }
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override
+        public void onRefresh() {
+            swipeRefreshLayout.setRefreshing(true);
+            getData();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    };
 }
+
+
