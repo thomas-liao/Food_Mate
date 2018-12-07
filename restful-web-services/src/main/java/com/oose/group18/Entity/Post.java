@@ -102,6 +102,9 @@ public class Post {
 
 	public List<UserView> getGuestView() {
 		List<UserView> result = new ArrayList<>();
+		if (guest == null) {
+			return result;
+		}
 		for (User user : guest) {
 			result.add(new UserView(user));
 		}
@@ -110,6 +113,9 @@ public class Post {
 
 	public boolean isFull()
 	{
+		if (getGuest() == null) {
+			return true;
+		}
 		return getGuest().size() >= getNumOfGuest();
 	}
 

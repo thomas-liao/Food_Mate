@@ -134,6 +134,9 @@ public class User {
 
 	public List<PostView> getJoinedPostView() {
 		List<PostView> result = new ArrayList<>();
+		if (joinedPost == null) {
+			return result;
+		}
 		for (Post post : joinedPost) {
 			result.add(new PostView(post));
 		}
@@ -142,6 +145,9 @@ public class User {
 
 	public List<PostView> getAllPostView() {
 		List<PostView> result = new ArrayList<>();
+		if (posts == null) {
+			return result;
+		}
 		for (Post post : posts) {
 			result.add(new PostView(post));
 		}
