@@ -22,9 +22,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/restuarnt_name"
+            android:id="@+id/reservation_name"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="100dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="TextView"
@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/reservation_description"
             android:layout_width="match_parent"
-            android:layout_height="149dp"
+            android:layout_height="102dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="TextView"
@@ -74,6 +74,7 @@
             android:id="@+id/reservation_guest_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
             android:visibility="visible">
 
         </android.support.v7.widget.RecyclerView>

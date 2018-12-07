@@ -36,6 +36,10 @@ public class DetailHistoryActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+    private TextView reservation_name;
+    private TextView reservation_time;
+    private TextView reservation_description;
+
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -49,21 +53,13 @@ public class DetailHistoryActivity extends AppCompatActivity {
         messageList = new ArrayList<>();
 
         mList = findViewById(R.id.reservation_guest_list);
+        reservation_name = findViewById(R.id.reservation_name);
+        reservation_time = findViewById(R.id.reservation_time);
+        reservation_description = findViewById(R.id.reservation_description);
 
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(DetailHistoryActivity.this, PostActivity.class);
-                String message = messageList.get(position).getName();
-                MyApplication application = (MyApplication) getApplication();
-                try {
-                    //application.joinedPostId = jsonArr.getJSONObject((position)).getInt("id");
-                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                intent.putExtra("restaurantSelected", message);
-                startActivity(intent);
             }
         });
 
@@ -96,6 +92,8 @@ public class DetailHistoryActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
+        reservation_name.setText(application.reviewPostRes);
+        reservation_time.setText(application.reviewPostHost);
         ///user/{id}/host/posts/{postId}/guests
         url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.reviewPostId + "/guests" ;
         System.out.println(url);
