@@ -10,9 +10,6 @@ public class UserView {
     @Email
     private String email;
 
-    public UserView(){
-
-    }
 
     public UserView(User user) {
         this.userName = user.getUserName();

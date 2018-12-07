@@ -35,7 +35,7 @@ public class ApplicationEventListener {
         RestTemplate restTemplate = new RestTemplate();
         Post post = new Post();
         post.setDescription(description);
-        post.setStartDate(new GregorianCalendar(year, month, day).getTime());
+        post.setStartDate(new GregorianCalendar(year, month, day).getTime().toString());
         post.setNumOfGuest(numOfGuest);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8080/user/"+ userId+"/host/posts/" + resId, post, String.class);
     }

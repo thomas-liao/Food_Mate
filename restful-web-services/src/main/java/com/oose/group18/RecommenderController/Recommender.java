@@ -31,7 +31,7 @@ public class Recommender {
     }
 
 
-    public static List<Integer> getRecommend(int id, int topk) {
+    public List<Integer> getRecommend(int id, int topk) {
         List<Integer> rec_list = new ArrayList<>();
         try {
             ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
@@ -51,7 +51,7 @@ public class Recommender {
         return rec_list;
     }
 
-    public static List<RestaurantWithScore> getRecommendWithScore(int id, int topk) {
+    public List<RestaurantWithScore> getRecommendWithScore(int id, int topk) {
         List<RestaurantWithScore> rec_list = new ArrayList<>();
         try {
             ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",
