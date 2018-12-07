@@ -57,6 +57,10 @@ public class PostRecommender extends Recommender {
         }
     }
 
+    public void update (int n_user) {
+        init(n_user);
+    }
+    
     public List<Post> getRecommendPost (List<Post> posts, int id, int topk ) {
         int NUM_RECOMMEND_RESTAURANTS = 1000;
         List<RestaurantWithScore> recomm_rst_list;
