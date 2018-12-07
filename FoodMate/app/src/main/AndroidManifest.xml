@@ -52,7 +52,7 @@
             android:name=".RecommendationActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".MyRecyclerViewAdapter" />
-        <activity android:name=".ReviewHistoryActivity"></activity>
+        <activity android:name=".ReviewHostHistoryActivity"></activity>
         <activity android:name=".DetailHistoryActivity"></activity>
     </application>
 

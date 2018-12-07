@@ -3,6 +3,7 @@ package jhu.oose.group18.foodmate;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,8 +27,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 public class MessageBoxActivity extends AppCompatActivity {
     private RecyclerView mList;
@@ -57,17 +54,22 @@ public class MessageBoxActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    Intent intent;
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.action_post_history:
-                                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
+                            case R.id.action_new_event:
+                                intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
                                 startActivity(intent);
-
-//                            case R.id.action_schedules:
-//
-//                            case R.id.action_music:
-
+                                break;
+                            case R.id.action_post_history:
+                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.action_guest_history:
+                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                startActivity(intent);
+                                break;
                         }
                         return true;
                     }
@@ -102,7 +104,7 @@ public class MessageBoxActivity extends AppCompatActivity {
 //        _reviewButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
+//                Intent intent = new Intent(getApplicationContext(),ReviewHostHistoryActivity.class);
 //                startActivity(intent);
 //            }
 //        });

@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,9 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
-public class ReviewHistoryActivity extends AppCompatActivity {
+public class ReviewHostHistoryActivity extends AppCompatActivity {
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -127,7 +124,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-                Intent intent = new Intent(ReviewHistoryActivity.this, DetailHistoryActivity.class);
+                Intent intent = new Intent(ReviewHostHistoryActivity.this, DetailHistoryActivity.class);
                 startActivity(intent);
             }
         });
