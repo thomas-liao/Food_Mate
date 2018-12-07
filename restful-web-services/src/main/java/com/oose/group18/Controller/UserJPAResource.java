@@ -56,7 +56,7 @@ public class UserJPAResource {
 	ReviewRepository reviewRepository;
 
 	Recommender recommender = new Recommender();
-	PostRecommender post_recommender = new PostRecommender(100);
+	PostRecommender post_recommender = new PostRecommender(5);
 
 	@GetMapping("/users")
 	public MappingJacksonValue retrieveAllUsers() {
@@ -74,7 +74,7 @@ public class UserJPAResource {
 
 		mapping.setFilters(filters);
 
-
+		
 		return mapping;
 	}
 

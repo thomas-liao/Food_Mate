@@ -12,19 +12,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 import com.oose.group18.RecommenderController.RestaurantWithScore;
 
-import jdk.jshell.spi.ExecutionControl.NotImplementedException;
+//import jdk.jshell.spi.ExecutionControl.NotImplementedException;
 
 import com.oose.group18.Entity.Post;
 import com.oose.group18.Entity.Review;
 
 public class Recommender {
 
-    String rating_data_path = "./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data";
-    String py_program_path = "./src/main/java/com/oose/group18/RecommenderController/recommender.py";
+    static String rating_data_path = "./src/main/java/com/oose/group18/RecommenderController/rating_sparse.data";
+    static String py_program_path = "./src/main/java/com/oose/group18/RecommenderController/recommender.py";
 
     public Recommender() {
         init();
@@ -46,12 +48,14 @@ public class Recommender {
         init();
     }
 
-    public void writeToRatingData (Review r) {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(rating_data_path));
-        String review_string = r.getUserId() + " " + r.getRestaurantId() + " " 
-                                + r.getScore() + " " + r.getTimeStep().toString() + '\n';
-        writer.write(review_string);
-        writer.close();
+    public void writeToRatingData (Review r){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(rating_data_path, true));
+            String review_string = r.getUserId() + " " + r.getRestaurantId() + " "
+                    + r.getScore() + " " + r.getTimeStep().toString() + '\n';
+            writer.append(review_string);
+            writer.close();
+        }catch(IOException e) {System.out.println(e);}
     }
 
     public static List<Integer> getRecommend(int id, int topk) {

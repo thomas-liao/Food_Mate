@@ -36,11 +36,11 @@ public class PostRecommender extends Recommender {
         try {
             sc = new Scanner(new File(fileName));
             int row = 0;
-
-            while (sc.hasNextLine()) {
+            
+            while (sc.hasNextLine() && row < n_user) {
                 int column = 0;
                 Scanner s2 = new Scanner(sc.nextLine());
-                while (s2.hasNext()) {
+                while (s2.hasNext() && column < n_user) {
                     String s = s2.next();
                     userSim[row][column] = Float.parseFloat(s);
                     // System.out.println(s);
