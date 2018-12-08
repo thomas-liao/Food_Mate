@@ -52,24 +52,26 @@ public class Recommender {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(rating_data_path, true));
             String review_string = r.getUserId() + " " + r.getRestaurantId() + " "
-                    + r.getScore() + " " + r.getTimeStep().toString() + '\n';
+                    + r.getScore() + " " + "123456789" + "\n"; //r.getTimeStep().toString()
             writer.append(review_string);
             writer.close();
         }catch(IOException e) {System.out.println(e);}
     }
 
-    public static List<Integer> getRecommend(int id, int topk) {
+    public List<Integer> getRecommend(int id, int topk) {
         List<Integer> rec_list = new ArrayList<>();
         try {
+            //System.out.println("Start Recommend");
             ProcessBuilder pb = new ProcessBuilder("python", py_program_path,
-                    "--rating-data", rating_data_path,
                     "--uid", ""+id, "--topk", ""+topk);
             Process p = pb.start();
 
+            //System.out.println("Process start!");
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
             for (int i = 0; i < topk; i++) {
                 String[] contents = in.readLine().split(" ");
+                System.out.println(contents[0]);
                 rec_list.add(Integer.parseInt(contents[0]));
             }
 
@@ -78,7 +80,7 @@ public class Recommender {
         return rec_list;
     }
 
-    public static List<RestaurantWithScore> getRecommendWithScore(int id, int topk) {
+    public List<RestaurantWithScore> getRecommendWithScore(int id, int topk) {
         List<RestaurantWithScore> rec_list = new ArrayList<>();
         try {
             ProcessBuilder pb = new ProcessBuilder("python","./src/main/java/com/oose/group18/RecommenderController/recommender.py",

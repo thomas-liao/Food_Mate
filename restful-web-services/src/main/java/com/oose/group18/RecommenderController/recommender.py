@@ -152,7 +152,7 @@ def main():
         #recomm = load_saved_model('weight.pkl')
         recomm = load_saved_model('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
         ranked_list_with_score = recomm.recommend_for_user(args.uid)
-        for i in range(min(args.topk, len(recomm.getNumItem()))):
+        for i in range(min(args.topk, recomm.getNumItem())):
             print( '{} {:.3f}'.format( ranked_list_with_score[i][0], ranked_list_with_score[i][1] ))
 
     if args.debug:

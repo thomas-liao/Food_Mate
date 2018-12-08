@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,13 +24,13 @@ public class Post {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Restaurant restaurant;
 
-	private Date startDate;
+	private String startDate;
 
 	private Integer numOfGuest;
 
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JsonView(View.Summary.class)
-//	@JsonIgnore
+//	@JsonView(View.Summary.class)
+////	@JsonIgnore
 	private User user;
 
 	//@JsonManagedReference
@@ -67,11 +68,11 @@ public class Post {
 		this.restaurant = restaurant;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
@@ -97,5 +98,22 @@ public class Post {
 
 	public void setNumOfGuest(Integer numOfGuest) {
 		this.numOfGuest = numOfGuest;
+	}
+
+	public List<UserView> getGuestView() {
+		List<UserView> result = new ArrayList<>();
+		for (User user : guest) {
+			result.add(new UserView(user));
+		}
+		return result;
+	}
+
+	public boolean isFull()
+	{
+		return getGuest().size() >= getNumOfGuest();
+	}
+
+	public boolean canJoin(User user) {
+		return !user.isHost(this) && !user.joinedPostBefore(this) && !isFull();
 	}
 }
