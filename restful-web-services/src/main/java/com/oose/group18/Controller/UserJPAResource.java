@@ -95,6 +95,7 @@ public class UserJPAResource {
 		if (res == null) {
 			return null;
 		}
+		//System.out.println(postRecommender.getUserSimilarity(1, 2));
 		return restaurantRepository.findAllById(res);
 	}
 

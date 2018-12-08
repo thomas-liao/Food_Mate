@@ -96,6 +96,16 @@ public class PostRecommender extends Recommender {
         
         return rec_posts;
     }
+
+    public float getUserSimilarity(int id1, int id2) {
+        float similarity = (float)0.0;
+        try {
+            similarity = userSim[id1][id2];
+        }
+        catch(Exception e) {System.out.println(e);}
+        
+        return similarity;
+    }
 }
 
 

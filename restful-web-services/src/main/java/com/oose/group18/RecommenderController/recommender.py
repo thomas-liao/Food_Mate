@@ -53,7 +53,7 @@ class Recommender:
     '''
 
     '''
-    def __init__ (self, type, file_path, line_format='user item rating timestamp', sep=' '):
+    def __init__ (self, type, file_path, line_format='user item rating timestamp', sep=' ', forget_rate=0.1):
         self.algo = SVD()
         self.reader = Reader(line_format=line_format, sep=sep)
         self.file_path = file_path
@@ -63,7 +63,9 @@ class Recommender:
         self.userSim = None
         self.nUser = None
         self.nItem = None
+        self.forget_rate = forget_rate
 
+        self.merge_data()
         self.load_data()
 
     def getNumUser (self):
@@ -71,6 +73,26 @@ class Recommender:
 
     def getNumItem (self):
         return self.nItem
+
+    def merge_data (self):
+        with open(self.file_path, 'r') as f:
+            rating = f.readlines()
+        
+        rating_mat = {}
+        for line in rating:
+            content = line.strip().split(' ')
+            uid = content[0]
+            iid = content[1]
+            score = float(content[2])
+            if not iid in rating_mat.setdefault(uid, {}):
+                rating_mat[uid][iid] = score
+            else:
+                rating_mat[uid][iid] = self.forget_rate * rating_mat[uid][iid] + (1 - self.forget_rate) * score
+            
+        with open(self.file_path, 'w') as f:
+            for uid in rating_mat:
+                for iid in rating_mat[uid]:
+                    f.write("{} {} {:.15f} timestamp\n".format(uid, iid, rating_mat[uid][iid]))
 
     def load_data (self):
         self.data = Dataset.load_from_file(self.file_path, self.reader)
