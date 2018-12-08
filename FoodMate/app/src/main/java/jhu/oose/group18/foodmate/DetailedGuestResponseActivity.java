@@ -42,6 +42,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     private TextView reservation_time;
     private TextView reservation_description;
     private Button _return;
+    private Button _join_btn;
 
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -65,6 +66,14 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        _join_btn = findViewById(R.id.join_btn);
+        _join_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
             }
         });
 
