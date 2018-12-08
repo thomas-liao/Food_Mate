@@ -82,6 +82,7 @@ public class UserJPAResource {
 	@PostMapping("/register")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		userRepository.save(user);
+		postRecommender.update((int)userRepository.count());
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(100)
 				.toUri();
 		return ResponseEntity.created(location).build();
