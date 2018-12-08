@@ -46,6 +46,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     private TextView reservation_time;
     private TextView reservation_description;
     private Button _return;
+    private Button _join;
 
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -166,10 +167,19 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         _return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                application.joinedPostId = application.reviewPostId;
+                joinPost();
+//                finish();
             }
         });
 
+//        _join = findViewById(R.id.btn_join);
+//        _join.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
 
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
