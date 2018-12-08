@@ -49,8 +49,7 @@ public class MessageBoxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message_box);
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -76,7 +75,7 @@ public class MessageBoxActivity extends AppCompatActivity {
                 });
 
 
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
+        swipeRefreshLayout = findViewById(R.id.SwipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
 
@@ -100,14 +99,6 @@ public class MessageBoxActivity extends AppCompatActivity {
         mList.setAdapter(adapter);
 
         getData();
-
-//        _reviewButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(),ReviewHostHistoryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {

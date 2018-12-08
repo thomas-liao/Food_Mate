@@ -26,8 +26,7 @@ public class RoleSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_role_select);
         ButterKnife.bind(this);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
