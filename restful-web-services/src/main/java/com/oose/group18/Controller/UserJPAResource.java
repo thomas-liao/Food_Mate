@@ -48,9 +48,15 @@ public class UserJPAResource {
 	@Autowired
 	ReviewRepository reviewRepository;
 
-	private Recommender recommender = new Recommender();
-	private PostRecommender postRecommender = new PostRecommender();
+	private Recommender recommender; // = new Recommender();
+	private PostRecommender postRecommender; // = new PostRecommender(10);
 
+	
+	UserJPAResource () {
+		recommender = new Recommender();
+		postRecommender = new PostRecommender();
+	}
+    // (int)userRepository.count()
 	@GetMapping("/users")
 	public List<UserView> retrieveAllUsers() {
 		List<User> users = userRepository.findAll();
@@ -76,6 +82,7 @@ public class UserJPAResource {
 	@PostMapping("/register")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		userRepository.save(user);
+		postRecommender.update((int)userRepository.count());
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(100)
 				.toUri();
 		return ResponseEntity.created(location).build();
@@ -88,6 +95,7 @@ public class UserJPAResource {
 		if (res == null) {
 			return null;
 		}
+		//System.out.println(postRecommender.getUserSimilarity(1, 2));
 		return restaurantRepository.findAllById(res);
 	}
 
@@ -163,6 +171,7 @@ public class UserJPAResource {
 		if (posts == null) {
 			return null;
 		}
+		System.out.println(posts.size());
 		List<Post> rec_posts = postRecommender.getRecommendPost(posts, id, 10);
 		rec_posts.removeIf((Post post) -> !post.canJoin(user));
 		List<PostView> result = new ArrayList<>();
@@ -245,6 +254,10 @@ public class UserJPAResource {
 	@PostMapping("/user/")
 	public String addReview(@RequestBody Review review) {
 		reviewRepository.save(review);
+		recommender.update(review);
+		int n_user = (int)userRepository.count();
+		//System.out.println(n_user);
+		postRecommender.update(n_user);
 		return "1";
 	}
 
