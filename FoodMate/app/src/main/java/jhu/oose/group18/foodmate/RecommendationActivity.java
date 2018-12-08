@@ -45,62 +45,6 @@ public class RecommendationActivity extends AppCompatActivity {
     private String url;
 
 
-    private void joinPost() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/" + application.joinedPostId;
-        System.out.println(url);
-        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // display response
-                        if (response.equals("-1")) {
-                            onJoinOwnPostFailed();
-                            application.joinedPostId = 0;
-                        } else if (response.equals("-2")) {
-                            onJoinPostFullFailed();
-                            application.joinedPostId = 0;
-                        } else if (response.equals("-3")) {
-                            onJoinJoinedPostFailed();
-                            application.joinedPostId = 0;
-                        } else {
-                            onJoinSuccess();
-                        }
-                        adapter.notifyDataSetChanged();
-                        progressDialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley", error.toString());
-                progressDialog.dismiss();
-            }
-        });
-
-        getRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(getRequest);
-    }
-
     private void getData() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
@@ -166,21 +110,6 @@ public class RecommendationActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-    private void onJoinOwnPostFailed() {
-        Toast.makeText(getBaseContext(), "Cannot join Own Posts", Toast.LENGTH_LONG).show();
-    }
-
-    private void onJoinPostFullFailed() {
-        Toast.makeText(getBaseContext(), "This post is full", Toast.LENGTH_LONG).show();
-    }
-
-    private void onJoinJoinedPostFailed() {
-        Toast.makeText(getBaseContext(), "You've already joined", Toast.LENGTH_LONG).show();
-    }
-
-    private void onJoinSuccess() {
-        Toast.makeText(getBaseContext(), "Join success!", Toast.LENGTH_LONG).show();
-    }
 
 
     @Override
@@ -227,11 +156,26 @@ public class RecommendationActivity extends AppCompatActivity {
                 String message = messageList.get(position).getName();
                 MyApplication application = (MyApplication) getApplication();
                 try {
-                    application.joinedPostId = jsonArr.getJSONObject(position).getInt("id");
-                    joinPost();
+                    application.reviewPostId = jsonArr.getJSONObject((position)).getInt("id");
+                    application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
+                    application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
+                    application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
+                    //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
                 } catch (Exception e) {
                     System.out.println(e);
                 }
+                Intent intent = new Intent(RecommendationActivity.this, DetailedGuestResponseActivity.class);
+                startActivity(intent);
+//                try {
+//                    application.reviewPostId = jsonArr.getJSONObject(position).getInt("id");
+//                    application.reviewPostStartDate = jsonArr.getJSONObject(position).getString("startDate");
+//                    application.reviewPostRes = jsonArr.getJSONObject(position).getString("restaurantName");
+//                    application.reviewPostHost = jsonArr.getJSONObject(position).getString("hostName");
+//                    //application.joinedPostId = jsonArr.getJSONObject(position).getInt("id");
+//                    //joinPost();
+//                } catch (Exception e) {
+//                    System.out.println(e);
+//                }
 //                intent.putExtra("postSelected", message);
 //                startActivity(intent);
             }
