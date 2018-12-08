@@ -1,6 +1,7 @@
 package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,9 +12,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,13 +51,90 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     private TextView reservation_time;
     private TextView reservation_description;
     private Button _return;
-    private Button _join_btn;
-
+    private Button _join;
+    private Button _review;
+    private Button _close;
+    private PopupWindow popupWindow;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
     private String url;
+
+    private void joinPost() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        application = (MyApplication) getApplication();
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/" + application.joinedPostId;
+        System.out.println(url);
+        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // display response
+                        if (response.equals("-1")) {
+                            onJoinOwnPostFailed();
+                            application.joinedPostId = 0;
+                        } else if (response.equals("-2")) {
+                            onJoinPostFullFailed();
+                            application.joinedPostId = 0;
+                        } else if (response.equals("-3")) {
+                            onJoinJoinedPostFailed();
+                            application.joinedPostId = 0;
+                        } else {
+                            onJoinSuccess();
+                        }
+                        adapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+
+        getRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(getRequest);
+    }
+
+    private void onJoinOwnPostFailed() {
+        Toast.makeText(getBaseContext(), "Cannot join Own Posts", Toast.LENGTH_LONG).show();
+    }
+
+    private void onJoinPostFullFailed() {
+        _join.setVisibility(View.GONE);
+        Toast.makeText(getBaseContext(), "This post is full", Toast.LENGTH_LONG).show();
+    }
+
+    private void onJoinJoinedPostFailed() {
+        Toast.makeText(getBaseContext(), "You've already joined", Toast.LENGTH_LONG).show();
+    }
+
+    private void onJoinSuccess() {
+        _join.setVisibility(View.GONE);
+        _review.setVisibility(View.VISIBLE);
+        Toast.makeText(getBaseContext(), "Join success!", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +173,16 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         reservation_time = findViewById(R.id.post_time);
         reservation_description = findViewById(R.id.post_description);
 
+        _join = findViewById(R.id.join_btn);
+        _join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                application.joinedPostId = application.reviewPostId;
+                joinPost();
+            }
+        });
+
+
         _return = findViewById(R.id.return_btn);
         _return.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,11 +191,30 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
             }
         });
 
-        _join_btn = findViewById(R.id.join_btn);
-        _join_btn.setOnClickListener(new View.OnClickListener() {
+        final RelativeLayout relativeLayout;
+        relativeLayout = findViewById(R.id.relativelayout);
+        _review = findViewById(R.id.review_btn);
+        _review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                LayoutInflater layoutInflater = (LayoutInflater) DetailedGuestResponseActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View customView = layoutInflater.inflate(R.layout.activity_popup,null);
+
+                _close = (Button) customView.findViewById(R.id.closePopupBtn);
+
+                //instantiate popup window
+                popupWindow = new PopupWindow(customView, RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+
+                //display the popup window
+                popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 0, 0);
+
+                //close the popup window on button click
+                _close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
             }
         });
 

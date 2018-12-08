@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,6 +34,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+//    private Button _join;
 
     MyApplication application;
     private String url;
@@ -125,6 +127,8 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
                     System.out.println(e);
                 }
                 Intent intent = new Intent(ReviewGuestHistoryActivity.this, DetailedGuestResponseActivity.class);
+//                _join = findViewById(R.id.join_btn);
+//                _join.setVisibility(View.GONE);
                 startActivity(intent);
             }
         });

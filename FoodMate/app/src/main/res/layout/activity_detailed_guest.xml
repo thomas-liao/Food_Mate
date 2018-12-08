@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -115,5 +116,16 @@
         android:layout_marginStart="62dp"
         android:layout_marginBottom="70dp"
         android:text="Join" />
+
+    <Button
+        android:id="@+id/review_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="62dp"
+        android:layout_marginBottom="70dp"
+        android:text="review"
+        android:visibility="gone" />
 
 </RelativeLayout>
