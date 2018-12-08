@@ -82,7 +82,7 @@ public class UserJPAResource {
 	@PostMapping("/register")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
 		userRepository.save(user);
-		postRecommender.update((int)userRepository.count());
+		postRecommender.update(100);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(100)
 				.toUri();
 		return ResponseEntity.created(location).build();
@@ -255,10 +255,20 @@ public class UserJPAResource {
 	public String addReview(@RequestBody Review review) {
 		reviewRepository.save(review);
 		recommender.update(review);
-		int n_user = (int)userRepository.count();
+		int n_user = 100;
 		//System.out.println(n_user);
 		postRecommender.update(n_user);
 		return "1";
+	}
+
+	@GetMapping("/user/{user1Id}/{user2Id}")
+	public  Float getSimilarity(@PathVariable int user1Id, @PathVariable int user2Id) {
+		Optional<User> user1Optional = userRepository.findById(user1Id);
+		Optional<User> user2Optional = userRepository.findById(user2Id);
+		if (!user1Optional.isPresent() || !user2Optional.isPresent()) {
+			return null;
+		}
+		return postRecommender.getUserSimilarity(user1Id, user2Id);
 	}
 
 }

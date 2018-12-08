@@ -24,7 +24,7 @@ public class PostRecommender extends Recommender {
     private float[][] userSim; // = new float[nUserMax][nUserMax];
     //UserRepository userRepository
     public PostRecommender() {
-        int n_user = 5; //(int)userRepository.count();
+        int n_user = 100; //(int)userRepository.count();
         //System.out.println(userRepository.count());
         init(n_user);
     }
@@ -102,7 +102,9 @@ public class PostRecommender extends Recommender {
         try {
             similarity = userSim[id1][id2];
         }
-        catch(Exception e) {System.out.println(e);}
+        catch(Exception e) {
+            System.out.println(userSim.length);
+            System.out.println(e);}
         
         return similarity;
     }
