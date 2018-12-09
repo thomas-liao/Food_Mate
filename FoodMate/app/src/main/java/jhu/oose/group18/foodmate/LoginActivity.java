@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//                    String URL = "https://food-mate.herokuapp.com/login";
                     String URL = "https://food-mate.herokuapp.com/login";
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("userName", _usernameText.getText().toString());
@@ -145,36 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-//                Map<String, String> map = new HashMap<>();
-//                map.put("userName", _usernameText.getText().toString());
-//                map.put("password", _passwordText.getText().toString());
-//                JSONObject postparams = new JSONObject(map);
-//                StringRequest jsonObjReq = new StringRequest(Request.Method.POST, url,
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//                                System.out.println(response.toString());
-//                                //Success Callback
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                System.out.println(error.toString());
-//                                //Failure Callback
-//                            }
-//                        });
-//                jsonObjReq.setTag("postRequest");
-//                // add it to the RequestQueue
-//                queue.add(jsonObjReq);
-//                Intent intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
-//                if (!validate()) {
-//                    onLoginFailed();
-//                    return;
-//                }
-//                startActivity(intent);
             }
         });
 
