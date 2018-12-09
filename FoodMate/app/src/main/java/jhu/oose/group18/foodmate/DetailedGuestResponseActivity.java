@@ -23,11 +23,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -35,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -226,9 +230,72 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         rating = _ratingBar.getRating();
-                        Toast.makeText(getBaseContext(),String.valueOf(rating), Toast.LENGTH_LONG).show();
+                        final MyApplication application=(MyApplication)getApplication();
+                        try {
+                            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                            String URL = "https://food-mate.herokuapp.com/user/";
+                            JSONObject jsonBody = new JSONObject();
+                            jsonBody.put("userId", application.userId);
+                            jsonBody.put("restaurantId", application.reviewResId);
+                            jsonBody.put("score", rating.intValue());
+
+//                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                    Date dateObject;
+//                    try{
+//                        String dateTime = _dateTime.getText().toString();
+//                        dateObject = formatter.parse(dateTime);
+//                        jsonBody.put("startDate", dateObject.toString());
+//                        System.out.println(dateObject.toString());
+//
+//                    }catch (java.text.ParseException e){
+//                        _dateTime.setError("follow the format dd/MM/yyyy");
+//                        e.printStackTrace();
+//                    }
+                            final String requestBody = jsonBody.toString();
+
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    System.out.println("error " + error.toString());
+                                    Log.e("VOLLEY", error.toString());
+                                }
+                            }) {
+                                @Override
+                                public String getBodyContentType() {
+                                    return "application/json; charset=utf-8";
+                                }
+
+                                @Override
+                                public byte[] getBody() throws AuthFailureError {
+                                    try {
+                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                    } catch (UnsupportedEncodingException uee) {
+                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                        return null;
+                                    }
+                                }
+
+
+                                @Override
+                                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                    String responseString = "";
+                                    if (response != null) {
+                                        responseString = String.valueOf(response.statusCode);
+                                        // can get more details such as response.headers
+                                    }
+                                    return super.parseNetworkResponse(response);
+                                }
+                            };
+                            System.out.println("create the request");
+                            requestQueue.add(stringRequest);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         popupWindow.dismiss();
-//                        _review.setVisibility(View.GONE);
                     }
                 });
             }
