@@ -140,11 +140,13 @@ After choosing to be guest, the user will receive a list of recommended posts. T
 
 ## Frontend test
 
-We have several frontend test (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+We have frontend tests (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
 
-To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
+These tests can be run together from command line when the emulator has been **opened**: under the Android app directory, run the command: ./gradlew connectedAndroidTest -i
 
-Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration. 
+To run these UI tests individually, find each test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest) directory, and the test file can be run directly within Android Studio. 
+
+Due to asyncronicity involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. 
 
 ## Backend test
 Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.
