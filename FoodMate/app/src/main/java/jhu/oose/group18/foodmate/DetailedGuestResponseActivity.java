@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,6 @@ import butterknife.BindView;
 public class DetailedGuestResponseActivity extends AppCompatActivity {
     private RecyclerView mList;
     JSONArray jsonArr;
-
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
@@ -54,7 +54,10 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     private Button _join;
     private Button _review;
     private Button _close;
+    private RatingBar _ratingBar;
     private PopupWindow popupWindow;
+    private String previousActivity;
+    private Float rating;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -132,7 +135,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
 
     private void onJoinSuccess() {
         _join.setVisibility(View.GONE);
-        _review.setVisibility(View.VISIBLE);
+//        _review.setVisibility(View.VISIBLE);
         Toast.makeText(getBaseContext(), "Join success!", Toast.LENGTH_LONG).show();
     }
 
@@ -140,6 +143,19 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_guest);
+        _review = findViewById(R.id.review_btn);
+        _join = findViewById(R.id.join_btn);
+        _return = findViewById(R.id.return_btn);
+
+        previousActivity = getIntent().getStringExtra("FROM_ACTIVITY");
+        if (previousActivity.equals("ReviewGuestHistoryActivity")){
+            _review.setVisibility(View.VISIBLE);
+            _join.setVisibility(View.GONE);
+        }
+        if (previousActivity.equals("RecommendationActivity")){
+            _review.setVisibility(View.GONE);
+            _join.setVisibility(View.VISIBLE);
+        }
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -173,7 +189,6 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         reservation_time = findViewById(R.id.post_time);
         reservation_description = findViewById(R.id.post_description);
 
-        _join = findViewById(R.id.join_btn);
         _join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,8 +197,6 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
             }
         });
 
-
-        _return = findViewById(R.id.return_btn);
         _return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,14 +206,14 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
 
         final RelativeLayout relativeLayout;
         relativeLayout = findViewById(R.id.relativelayout);
-        _review = findViewById(R.id.review_btn);
         _review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LayoutInflater layoutInflater = (LayoutInflater) DetailedGuestResponseActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View customView = layoutInflater.inflate(R.layout.activity_popup,null);
 
-                _close = (Button) customView.findViewById(R.id.closePopupBtn);
+                _close = customView.findViewById(R.id.submit_btn);
+                _ratingBar = customView.findViewById(R.id.ratingBar);
 
                 //instantiate popup window
                 popupWindow = new PopupWindow(customView, RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
@@ -212,7 +225,10 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                 _close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        rating = _ratingBar.getRating();
+                        Toast.makeText(getBaseContext(),String.valueOf(rating), Toast.LENGTH_LONG).show();
                         popupWindow.dismiss();
+//                        _review.setVisibility(View.GONE);
                     }
                 });
             }

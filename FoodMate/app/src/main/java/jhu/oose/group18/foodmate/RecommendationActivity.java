@@ -165,6 +165,7 @@ public class RecommendationActivity extends AppCompatActivity {
                     System.out.println(e);
                 }
                 Intent intent = new Intent(RecommendationActivity.this, DetailedGuestResponseActivity.class);
+                intent.putExtra("FROM_ACTIVITY", "RecommendationActivity");
                 startActivity(intent);
 //                try {
 //                    application.reviewPostId = jsonArr.getJSONObject(position).getInt("id");

@@ -127,8 +127,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
                     System.out.println(e);
                 }
                 Intent intent = new Intent(ReviewGuestHistoryActivity.this, DetailedGuestResponseActivity.class);
-//                _join = findViewById(R.id.join_btn);
-//                _join.setVisibility(View.GONE);
+                intent.putExtra("FROM_ACTIVITY", "ReviewGuestHistoryActivity");
                 startActivity(intent);
             }
         });

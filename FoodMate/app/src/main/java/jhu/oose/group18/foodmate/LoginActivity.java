@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getBaseContext(),"Loading...", Toast.LENGTH_LONG);
+                            Toast.makeText(getBaseContext(),"Loading...", Toast.LENGTH_LONG).show();
                             System.out.println("error " + error.toString());
                             Log.e("VOLLEY", error.toString());
                         }
