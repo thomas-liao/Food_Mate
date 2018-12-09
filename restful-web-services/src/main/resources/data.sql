@@ -1,13 +1,13 @@
-insert into user values(1, 'Baltimore', 'first','first@example.com',  'John', 'John', 'John');
-insert into user values(2, 'Baltimore', 'second','second@example.com',  'Amy', 'Amy', 'Amy');
-insert into user values(3, 'Baltimore', 'third','third@example.com',  'Thomas', 'Thomas', 'Thomas');
-insert into user values(4, 'Baltimore', 'fourth','fourth@example.com',  'Bob', 'Bob', 'Bob');
-insert into user values(5, 'Baltimore', 'fifth','fifth@example.com',  'Yuka', 'Yuka', 'Yuka');
-insert into user values(6, 'Baltimore', 'sixth','sixth@example.com',  'Xiangge', 'Xiangge', 'Xiangge');
-insert into user values(7, 'Baltimore', 'seventh','seventh@example.com',  'Zhangyi', 'Zhangyi', 'Zhangyi');
-insert into user values(8, 'Baltimore', 'eighth','eighth@example.com',  'Vince', 'Vince', 'Vince');
-insert into user values(9, 'Baltimore', 'ninth','ninth@example.com',  'Alex', 'Alex', 'Alex');
-insert into user values(10, 'Baltimore', 'tenth','tenth@example.com',  'Frank', 'Frank', 'Frank');
+insert into user values(91, 'Baltimore', 'first','first@example.com',  'John', 'John', 'John');
+insert into user values(92, 'Baltimore', 'second','second@example.com',  'Amy', 'Amy', 'Amy');
+insert into user values(93, 'Baltimore', 'third','third@example.com',  'Thomas', 'Thomas', 'Thomas');
+insert into user values(94, 'Baltimore', 'fourth','fourth@example.com',  'Bob', 'Bob', 'Bob');
+insert into user values(95, 'Baltimore', 'fifth','fifth@example.com',  'Yuka', 'Yuka', 'Yuka');
+insert into user values(96, 'Baltimore', 'sixth','sixth@example.com',  'Xiangge', 'Xiangge', 'Xiangge');
+insert into user values(97, 'Baltimore', 'seventh','seventh@example.com',  'Zhangyi', 'Zhangyi', 'Zhangyi');
+insert into user values(98, 'Baltimore', 'eighth','eighth@example.com',  'Vince', 'Vince', 'Vince');
+insert into user values(99, 'Baltimore', 'ninth','ninth@example.com',  'Alex', 'Alex', 'Alex');
+insert into user values(90, 'Baltimore', 'tenth','tenth@example.com',  'Frank', 'Frank', 'Frank');
 --
 -- insert into restaurant values(1, 'Chinese', 0, 0, 'abc', 1, 5,  100);
 --insert into post values(11001, 'My First Post', 2, '00:00:00', 1, 10001);

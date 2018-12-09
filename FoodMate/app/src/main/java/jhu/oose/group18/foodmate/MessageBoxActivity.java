@@ -3,12 +3,15 @@ package jhu.oose.group18.foodmate;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +27,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 public class MessageBoxActivity extends AppCompatActivity {
     private RecyclerView mList;
     JSONArray jsonArr;
@@ -35,6 +40,8 @@ public class MessageBoxActivity extends AppCompatActivity {
 
     MyApplication application;
     private String url;
+
+
 
 
     private void getData() {
@@ -99,6 +106,28 @@ public class MessageBoxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_box);
 
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_history:
+                                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
+                                startActivity(intent);
+
+//                            case R.id.action_schedules:
+//
+//                            case R.id.action_music:
+
+                        }
+                        return true;
+                    }
+                });
+
         mList = findViewById(R.id.message_list);
 
         messageList = new ArrayList<>();
@@ -128,6 +157,14 @@ public class MessageBoxActivity extends AppCompatActivity {
         mList.setAdapter(adapter);
 
         getData();
+
+//        _reviewButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(),ReviewHistoryActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
 //

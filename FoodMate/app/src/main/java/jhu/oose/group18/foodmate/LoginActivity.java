@@ -127,13 +127,10 @@ public class LoginActivity extends AppCompatActivity {
 //                        return map;
 //                    }
 //                };
-
-
-
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    String URL = "https://food-mate.herokuapp.com/login";
 //                    String URL = "https://food-mate.herokuapp.com/login";
+                    String URL = "https://food-mate.herokuapp.com/login";
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("userName", _usernameText.getText().toString());
                     jsonBody.put("password", _passwordText.getText().toString());
@@ -156,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getBaseContext(),"Loading...",Toast.LENGTH_LONG);
                             System.out.println("error " + error.toString());
                             Log.e("VOLLEY", error.toString());
                         }

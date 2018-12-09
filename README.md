@@ -1,7 +1,7 @@
 # 2018-group-18
 # Welcome to Food Mate World!
 
-We have built the basic framework and implemented some core features. Feel free to play with our app!
+We implemented most of the features and refined our code. The app is now full-functionality and are more user-friendly. Feel free to play with our app!
 
 ## Back End
 
@@ -49,10 +49,6 @@ Get guest information(referenced by user id) who responded to post(posted by hos
 
 This end point is used by host to reject guest. The rejection method takes in host’s user id, guest’s user id, post id s.t. guest is rejected by host from post.
 
-**DELETE /user/{id}/host/posts/{post_id}**
-
-Host delete post.
-
 **POST /user/{id}/guest/{post_id}**
 
 Guest join POST (accept invitation from host). More concretely, post information is updated with new guest information stored in post. Weblistener is used such that this process could be asynchronized (for example, it doesn’t make sense to have host waiting in the whole invitation process, which is why a weblistener is used here).
@@ -63,23 +59,6 @@ For guest to look up all joined posts.
 
 There is an easy way to check our server! We deployed the whole server on Heroku, so you can eaily check the endpoint of our server by accessing: https://food-mate.herokuapp.com as the base url, the detail of endpoints are stored in FoodMate.postman_collection.json.
 
-## Backend test
-
-We also implemented some Unit tests to test the correctness of our logic.
-
-Path to the test file: src/test/java/com/oose/group18/Controller/SpringDataJpaTest.java
-
-which includes 5 tests:
-
-(1)   Find user by id
-
-(2)   Find user name
-
-(3)   Find restaurant by Id
-
-(4)   Find all user
-
-(5)   Find all restaurant
 
 ### Recommender System
 
@@ -141,23 +120,57 @@ User can choose to be host or guest.
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
 
+We have switched from ListView to RecyclerView in iteration4.
+
 ### Send Post
 
 <img src="./Image/GuestList.png" alt="Send Post" width="250"/><br/><br/>
 
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
+
+After finishing sending the post, users will enter a message box, where they could get messages from guests. They will also be able to retrive their history of posts by clicking the "history" button in the bottom of the page. We have switched from ListView to RecyclerView in iteration4.
+
+
 ### Guest
 
 <img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
 
-After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join.
+After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join. We have switched from ListView to RecyclerView in iteration4.
+
+## Frontend test
+
+We have several frontend test (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+
+To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
+
+Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration. 
+
+## Backend test
+Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.
+
+The end-points tests covered including:
+1. GET /users, get all users.
+2. POST /login, user login.
+3. POST /register, add new user (register).
+4. GET /user/{id}, get single user.
+5. DELETE /user/{id}, delete single user.
+6. GET /user/{id}/host/restaurants, get user's restaurants.
+7. GET /user/{id}/host/posts, get user(as host)/s posts.
+8. Get /user/{id}/host/posts/{postId}/guests, get the guests list in posts(referenced by post ID).
+9. DELETE /user/{id}/host/posts/{post_id}, delete post referenced by post ID.
+10. POST user/{id}/guest/posts, get all recommended posts.
+11. POST /user/{id}/guest/{post_id}, guest join in post.
+12. GET /user/{id}/guest/posts, get guests joined posts history.
+
+<img src="./Image/backend_tests.jpg" alt="Post Recommendation" width="250"/><br/><br/>
+
 
 # What need to Improve
 
-1. Currently we implemented part of the interaction between back end and front-end, in the next iteration we will implement all of the interactions.
-2. We built several unit tests for back end, in next iteration we will implement more comprehensive test cases to cover all cover cases.
-3. Currently the recommendation system can only do recommendation for restaurants, in next iteration we will implement the recommendation system for post recommendation.
+1. We have successfully implemented whole functionality of app, the next iteration we will focus on code quality and implement extended feature to imcrease user experience.
+2. We will set up pipeline of recommendation system, to let user add review of restaurant and update their user habbits.
+3. Add more tests for backend and frontend to make the project more robust.
 
 # Food Mate app
 

@@ -14,25 +14,35 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 import com.oose.group18.Entity.Post;
+import com.oose.group18.Repository.UserRepository;
 import com.oose.group18.RecommenderController.Recommender;
 import com.oose.group18.RecommenderController.RestaurantWithScore;
 
 public class PostRecommender extends Recommender {
-    final int nUserMax = 200;
-    private float[][] userSim = new float[nUserMax][nUserMax];
-
+    //final int nUserMax;
+    private int nUser;
+    private float[][] userSim; // = new float[nUserMax][nUserMax];
+    //UserRepository userRepository
     public PostRecommender() {
+        int n_user = 100; //(int)userRepository.count();
+        //System.out.println(userRepository.count());
+        init(n_user);
+    }
+    
+    public void init (int n_user) {
+        nUser = n_user;
+        userSim = new float[nUser][nUser];
         String fileName = "./src/main/java/com/oose/group18/RecommenderController/user_sim.txt";
         // Load User similarity matrix from file
         Scanner sc;
         try {
             sc = new Scanner(new File(fileName));
             int row = 0;
-
-            while (sc.hasNextLine()) {
+            
+            while (sc.hasNextLine() && row < n_user) {
                 int column = 0;
                 Scanner s2 = new Scanner(sc.nextLine());
-                while (s2.hasNext()) {
+                while (s2.hasNext() && column < n_user) {
                     String s = s2.next();
                     userSim[row][column] = Float.parseFloat(s);
                     // System.out.println(s);
@@ -47,11 +57,15 @@ public class PostRecommender extends Recommender {
                 "Unable to open file '" + 
                 fileName + "'");                
         }
+    }
 
+    
+    public void update (int n_user) {
+        init(n_user);
     }
     
     public List<Post> getRecommendPost (List<Post> posts, int id, int topk ) {
-        int NUM_RECOMMEND_RESTAURANTS = 100;
+        int NUM_RECOMMEND_RESTAURANTS = 1000;
         List<RestaurantWithScore> recomm_rst_list;
         Map<Integer, Float> rstScoreMap = new HashMap<>();
         List<Post> rec_posts = new ArrayList<>();
@@ -82,7 +96,20 @@ public class PostRecommender extends Recommender {
         
         return rec_posts;
     }
+
+    public float getUserSimilarity(int id1, int id2) {
+        float similarity = (float)0.0;
+        try {
+            similarity = userSim[id1][id2];
+        }
+        catch(Exception e) {
+            System.out.println(userSim.length);
+            System.out.println(e);}
+        
+        return similarity;
+    }
 }
+
 
 class PostComparer implements Comparator<Post> {
     private int _uid;

@@ -2,7 +2,7 @@ import os
 import argparse
 import numpy as np
 import pickle
-from surprise import SVD 
+from surprise import SVD
 from surprise import Dataset
 from surprise.model_selection import cross_validate
 from surprise import accuracy
@@ -53,7 +53,7 @@ class Recommender:
     '''
 
     '''
-    def __init__ (self, type, file_path, line_format='user item rating timestamp', sep=' '):
+    def __init__ (self, type, file_path, line_format='user item rating timestamp', sep=' ', forget_rate=0.1):
         self.algo = SVD()
         self.reader = Reader(line_format=line_format, sep=sep)
         self.file_path = file_path
@@ -61,12 +61,42 @@ class Recommender:
         self.trainset = None
         self.testset = None
         self.userSim = None
-        
+        self.nUser = None
+        self.nItem = None
+        self.forget_rate = forget_rate
+
+        self.merge_data()
         self.load_data()
+
+    def getNumUser (self):
+        return self.nUser
+
+    def getNumItem (self):
+        return self.nItem
+
+    def merge_data (self):
+        with open(self.file_path, 'r') as f:
+            rating = f.readlines()
+        
+        rating_mat = {}
+        for line in rating:
+            content = line.strip().split(' ')
+            uid = content[0]
+            iid = content[1]
+            score = float(content[2])
+            if not iid in rating_mat.setdefault(uid, {}):
+                rating_mat[uid][iid] = score
+            else:
+                rating_mat[uid][iid] = self.forget_rate * rating_mat[uid][iid] + (1 - self.forget_rate) * score
+            
+        with open(self.file_path, 'w') as f:
+            for uid in rating_mat:
+                for iid in rating_mat[uid]:
+                    f.write("{} {} {:.15f} timestamp\n".format(uid, iid, rating_mat[uid][iid]))
 
     def load_data (self):
         self.data = Dataset.load_from_file(self.file_path, self.reader)
-    
+
     def split_data (self, test_size=0.05):
         self.trainset, self.testset = train_test_split(self.data, test_size=test_size)
 
@@ -77,6 +107,8 @@ class Recommender:
         else:
             trainset = self.trainset
 
+        self.nUser = len(self.trainset.all_users())
+        self.nItem = len(self.trainset.all_items())
         self.algo.fit(trainset)
 
         self.userSim = np.matmul(self.algo.pu, self.algo.pu.T)
@@ -124,7 +156,7 @@ class Recommender:
                     f.write('{:.3f} '.format(self.userSim[i, j]))
                 f.write('\n')
 
-def load_weight(path):
+def load_saved_model(path):
     with open(path, 'rb') as f:
         model = pickle.load(f)
     return model
@@ -139,10 +171,10 @@ def main():
         recomm.save_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
         recomm.save_usersim('./src/main/java/com/oose/group18/RecommenderController/user_sim.txt')
     else:
-        #recomm = load_weight('weight.pkl')
-        recomm = load_weight('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
+        #recomm = load_saved_model('weight.pkl')
+        recomm = load_saved_model('./src/main/java/com/oose/group18/RecommenderController/weight.pkl')
         ranked_list_with_score = recomm.recommend_for_user(args.uid)
-        for i in range(args.topk):
+        for i in range(min(args.topk, recomm.getNumItem())):
             print( '{} {:.3f}'.format( ranked_list_with_score[i][0], ranked_list_with_score[i][1] ))
 
     if args.debug:
