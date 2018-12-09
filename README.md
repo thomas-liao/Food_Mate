@@ -72,7 +72,9 @@ We maintain an m by n matrix M where m denotes the numbre of users and n denotes
 
 For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5. 
 
-In production mode, we will periodically update the original matrix and perform new factorization on it. We haven't look into the cold start problem, which could be addressed in later iterations using content-based recommendation.
+In production mode, we will periodically update the original rating matrix and perform new factorization on it. Specifically, when new review with a rating for a restaurant received, we calculate a weighted average of this rating and the old one in the matrix as the new rating. 
+
+For new users, we randomly initiallize their preference as one of our preset value, which will be updated according to their activities in the future.
 
 #### Implementation
 
@@ -140,11 +142,13 @@ After choosing to be guest, the user will receive a list of recommended posts. T
 
 ## Frontend test
 
-We have several frontend test (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+We have frontend tests (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
 
-To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
+These tests can be run together from command line when the emulator has been **opened**: under the Android app directory, run the command: ./gradlew connectedAndroidTest -i
 
-Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration. 
+To run these UI tests individually, find each test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest) directory, and the test file can be run directly within Android Studio. 
+
+Due to asyncronicity involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. 
 
 ## Backend test
 Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.
