@@ -2,6 +2,7 @@ package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -59,14 +60,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                Message message = new Message();
-                                message.setName(jsonObj.getString("restaurantName"));
-                                String description = jsonObj.getString("startDate");
-                                if (description == null) {
-                                    description = "Host is lazy";
-                                }
-                                message.setCategory(description);
-                                message.setPic(R.drawable.restaurant_logo);
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
 
                             }
@@ -103,6 +97,19 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
+
+    @NonNull
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("restaurantName"));
+        String description = jsonObj.getString("startDate");
+        if (description == null) {
+            description = "Host is lazy";
+        }
+        message.setCategory(description);
+        message.setPic(R.drawable.restaurant_logo);
+        return message;
     }
 
 

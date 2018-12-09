@@ -43,9 +43,6 @@
             android:name=".MessageBoxActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".ReservationActivity"
-            android:theme="@style/AppTheme.Dark" />
-        <activity
             android:name=".ListRestaurantActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity

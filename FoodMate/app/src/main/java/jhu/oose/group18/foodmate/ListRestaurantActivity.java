@@ -139,12 +139,8 @@ public class ListRestaurantActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                Message message = new Message();
-                                message.setName(jsonObj.getString("name"));
-                                message.setCategory(jsonObj.getString("category"));
-                                message.setPic(R.drawable.restaurant_logo);
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -181,6 +177,13 @@ public class ListRestaurantActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("name"));
+        message.setCategory(jsonObj.getString("category"));
+        message.setPic(R.drawable.restaurant_logo);
+        return message;
+    }
 
 
 }

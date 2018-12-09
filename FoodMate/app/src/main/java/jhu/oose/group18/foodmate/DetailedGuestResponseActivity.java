@@ -286,10 +286,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                                 System.out.println(i);
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                Message message = new Message();
-                                message.setName(jsonObj.getString("userName"));
-                                message.setCategory(jsonObj.getString("description"));
-                                message.setPic(R.drawable.restaurant_logo);
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
 
                             }
@@ -326,6 +323,15 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
+
+    @NonNull
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("userName"));
+        message.setCategory(jsonObj.getString("description"));
+        message.setPic(R.drawable.restaurant_logo);
+        return message;
     }
 
 
