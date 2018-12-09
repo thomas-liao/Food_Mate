@@ -17,8 +17,8 @@ public class RestfulWebServicesApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestfulWebServicesApplication.class, args);
-		ApplicationEventListener listener = new ApplicationEventListener();
-		listener.doSomethingAfterStartup();
+		ApplicationEventListener applicationEventListener = new ApplicationEventListener();
+		applicationEventListener.doSomethingAfterStartup();
 	}
 	
 	@Bean

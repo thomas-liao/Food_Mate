@@ -5,10 +5,11 @@ import java.util.Date;
 public class PostView {
     private Integer id;
     private String description;
-    private Date startDate;
+    private String startDate;
     private Integer numOfGuest;
     private String hostName;
     private String restaurantName;
+    private Integer restaurantId;
 
     public PostView(){}
     public PostView(Post post) {
@@ -18,6 +19,15 @@ public class PostView {
         this.numOfGuest = post.getNumOfGuest();
         this.hostName = post.getUser().getFullName();
         this.restaurantName = post.getRestaurant().getName();
+        this.restaurantId = post.getRestaurant().getId();
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public Integer getId() {
@@ -36,11 +46,11 @@ public class PostView {
         this.description = description;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 

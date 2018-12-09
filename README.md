@@ -1,10 +1,7 @@
 # 2018-group-18
 # Welcome to Food Mate World!
 
-We have built the basic framework and implemented some core features. Feel free to play with our app!
-
-Note:
-For this iteration we implemented the interaction between guest and host, so it would be better if you can use two devices acting as host and guest to actually post and join! If there is no guest to join the post after a host create one, the page will stack with loading. Same condition may happen on guest when there is no post available. You can simply click the screen and return to previous page.
+We implemented most of the features and refined our code. The app is now full-functionality and are more user-friendly. Feel free to play with our app!
 
 ## Back End
 
@@ -51,10 +48,6 @@ Get guest information(referenced by user id) who responded to post(posted by hos
 **POST /user/{id}/host/posts/{postId}/guests/{guestId}**
 
 This end point is used by host to reject guest. The rejection method takes in host’s user id, guest’s user id, post id s.t. guest is rejected by host from post.
-
-**DELETE /user/{id}/host/posts/{post_id}**
-
-Host delete post.
 
 **POST /user/{id}/guest/{post_id}**
 
@@ -149,11 +142,13 @@ After choosing to be guest, the user will receive a list of recommended posts. T
 
 ## Frontend test
 
-We have several frontend test (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+We have frontend tests (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
 
-To run these UI tests, after Gradle finish building the whole project, find the individual test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest), and the test file can be run directly within Android Studio. 
+These tests can be run together from command line when the emulator has been **opened**: under the Android app directory, run the command: ./gradlew connectedAndroidTest -i
 
-Due to asyncronous work involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. Also Recyclerview testing library dependency issues need to be solved in the future iteration. 
+To run these UI tests individually, find each test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest) directory, and the test file can be run directly within Android Studio. 
+
+Due to asyncronicity involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. 
 
 ## Backend test
 Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.

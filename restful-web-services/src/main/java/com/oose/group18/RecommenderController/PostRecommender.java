@@ -14,16 +14,18 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 import com.oose.group18.Entity.Post;
+import com.oose.group18.Repository.UserRepository;
 import com.oose.group18.RecommenderController.Recommender;
 import com.oose.group18.RecommenderController.RestaurantWithScore;
 
 public class PostRecommender extends Recommender {
     //final int nUserMax;
-    int nUser;
+    private int nUser;
     private float[][] userSim; // = new float[nUserMax][nUserMax];
-
-    public PostRecommender(int n_user) {
-        
+    //UserRepository userRepository
+    public PostRecommender() {
+        int n_user = 100; //(int)userRepository.count();
+        //System.out.println(userRepository.count());
         init(n_user);
     }
     
@@ -36,11 +38,11 @@ public class PostRecommender extends Recommender {
         try {
             sc = new Scanner(new File(fileName));
             int row = 0;
-
-            while (sc.hasNextLine()) {
+            
+            while (sc.hasNextLine() && row < n_user) {
                 int column = 0;
                 Scanner s2 = new Scanner(sc.nextLine());
-                while (s2.hasNext()) {
+                while (s2.hasNext() && column < n_user) {
                     String s = s2.next();
                     userSim[row][column] = Float.parseFloat(s);
                     // System.out.println(s);
@@ -57,6 +59,11 @@ public class PostRecommender extends Recommender {
         }
     }
 
+    
+    public void update (int n_user) {
+        init(n_user);
+    }
+    
     public List<Post> getRecommendPost (List<Post> posts, int id, int topk ) {
         int NUM_RECOMMEND_RESTAURANTS = 1000;
         List<RestaurantWithScore> recomm_rst_list;
@@ -89,7 +96,20 @@ public class PostRecommender extends Recommender {
         
         return rec_posts;
     }
+
+    public float getUserSimilarity(int id1, int id2) {
+        float similarity = (float)0.0;
+        try {
+            similarity = userSim[id1][id2];
+        }
+        catch(Exception e) {
+            System.out.println(userSim.length);
+            System.out.println(e);}
+        
+        return similarity;
+    }
 }
+
 
 class PostComparer implements Comparator<Post> {
     private int _uid;
