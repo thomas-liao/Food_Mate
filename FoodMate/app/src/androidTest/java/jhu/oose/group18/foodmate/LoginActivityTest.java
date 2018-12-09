@@ -34,7 +34,8 @@ import static org.hamcrest.CoreMatchers.not;
 public class LoginActivityTest {
 
     @Rule
-    public ActivityTestRule<LoginActivity> loginActivityActivityTestRule = new ActivityTestRule<LoginActivity>(LoginActivity.class);
+    public ActivityTestRule<LoginActivity> loginActivityActivityTestRule =
+            new ActivityTestRule<>(LoginActivity.class);
 
 //    @Rule
 //    public IntentsTestRule<LoginActivity> intentsTestRule = new IntentsTestRule<>(LoginActivity.class);
