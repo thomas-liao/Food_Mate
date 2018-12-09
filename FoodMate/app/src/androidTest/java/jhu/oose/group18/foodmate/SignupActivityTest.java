@@ -106,7 +106,7 @@ public class SignupActivityTest {
         onView(withId(R.id.input_password)).perform(typeText(password));
         // close the soft keyboard
         Espresso.closeSoftKeyboard();
-        // Reenter password 'jack123'
+        // Reenter wrong password 'jack124'
         onView(withId(R.id.input_reEnterPassword)).perform(typeText(password_));
         // close the soft keyboard
         Espresso.closeSoftKeyboard();
