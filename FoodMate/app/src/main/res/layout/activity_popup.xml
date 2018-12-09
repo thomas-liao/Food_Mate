@@ -10,17 +10,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Please rate the reservation."
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:textSize="18sp" />
 
     <RatingBar
-        android:id="@+id/ratingBar2"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp" />
-
-    <Button
+        android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Close"
-        android:id="@+id/closePopupBtn"/>
+        android:isIndicator="false"
+        android:max="5"/>
+
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
 
 </LinearLayout>

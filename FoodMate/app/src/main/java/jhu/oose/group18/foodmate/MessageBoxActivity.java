@@ -23,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -132,9 +133,8 @@ public class MessageBoxActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArr.length(); i++)
                             {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
-                                Message message = new Message();
                                 System.out.println(jsonObj);
-                                message.setName(jsonObj.getString("fullName"));
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
                             }
                             findViewById(R.id.message_list).setVisibility(View.VISIBLE);
@@ -177,6 +177,13 @@ public class MessageBoxActivity extends AppCompatActivity {
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
+
+    @NonNull
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("fullName"));
+        return message;
     }
 }
 
