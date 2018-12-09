@@ -22,7 +22,7 @@ public class RecommendationActivityTest {
             new ActivityTestRule<>(RecommendationActivity.class);
 
     @Test
-    public void testDetailedGuestResponse() {
+    public void testRecommendation() {
 
 
         onView(withId(R.id.no_post)).check(matches(withText(R.string.waiting_for_new_posts)));
