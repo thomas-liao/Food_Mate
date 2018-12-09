@@ -1,10 +1,7 @@
 # 2018-group-18
 # Welcome to Food Mate World!
 
-We have built the basic framework and implemented some core features. Feel free to play with our app!
-
-Note:
-For this iteration we implemented the interaction between guest and host, so it would be better if you can use two devices acting as host and guest to actually post and join! If there is no guest to join the post after a host create one, the page will stack with loading. Same condition may happen on guest when there is no post available. You can simply click the screen and return to previous page.
+We implemented most of the features and refined our code. The app is now full-functionality and are more user-friendly. Feel free to play with our app!
 
 ## Back End
 
@@ -51,10 +48,6 @@ Get guest information(referenced by user id) who responded to post(posted by hos
 **POST /user/{id}/host/posts/{postId}/guests/{guestId}**
 
 This end point is used by host to reject guest. The rejection method takes in host’s user id, guest’s user id, post id s.t. guest is rejected by host from post.
-
-**DELETE /user/{id}/host/posts/{post_id}**
-
-Host delete post.
 
 **POST /user/{id}/guest/{post_id}**
 
