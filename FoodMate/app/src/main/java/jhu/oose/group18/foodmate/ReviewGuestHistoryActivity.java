@@ -122,6 +122,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
                     application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
                     application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
                     application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
+                    application.reviewResId = jsonArr.getJSONObject((position)).getInt("restaurantId");
                     //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
                 } catch (Exception e) {
                     System.out.println(e);

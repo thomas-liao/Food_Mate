@@ -64,6 +64,7 @@ public class PostActivity extends AppCompatActivity {
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("numOfGuest", _maxGuest.getText().toString());
                     jsonBody.put("startDate", _dateTime.getText().toString());
+                    jsonBody.put("description", _postDescription.getText().toString());
 
 //                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 //                    Date dateObject;

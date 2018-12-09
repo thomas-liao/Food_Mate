@@ -16,5 +16,6 @@ public class MyApplication extends Application {
     Integer reviewPostId;
     String reviewPostRes;
     String reviewPostHost;
+    Integer reviewResId;
     String reviewPostStartDate;
 }
