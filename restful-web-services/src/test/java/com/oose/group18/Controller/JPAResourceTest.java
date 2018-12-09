@@ -20,22 +20,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.xml.ws.Response;
-import java.io.PipedOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -43,66 +34,55 @@ public class JPAResourceTest {
 
     @LocalServerPort
     private int port;
+    private String base= "http://localhost:";
 
     @Autowired
     private TestRestTemplate restTemplate;
 
-//    @Test
-//    public void getUserRequestTest() throws Exception {
-//
-//        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/1",
-//                String.class)).contains("John").contains("first@example.com");
-//
-//        ResponseEntity<String> response1 = this.restTemplate.getForEntity("http://localhost:" + port + "/user/1", String.class);
-//        assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
-//
-//        ResponseEntity<String> response2 = this.restTemplate.getForEntity("http://localhost:" + port + "/user/9999", String.class);
-//        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//
-//        ResponseEntity<String> response3 = this.restTemplate.getForEntity("http://localhost:" + port + "/user/abc", String.class);
-//        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//
-//    }
+    public String customizeUrl(String end) {
+        return this.base + this.port + end;
+    }
+
+    public User settersGroup(String userName, String address, String description) {
+        User dummyUser = new User();
+        dummyUser.setAddr(address);
+        dummyUser.setFullName(userName); // for convenience for test, dummy user have identity userName, fullName, password
+        dummyUser.setUserName(userName);
+        dummyUser.setPassword(userName);
+        dummyUser.setEmail(userName + "@example.com");
+        dummyUser.setDescription(description);
+        return dummyUser;
+    }
 
     @Test
     public void getAllUserRequestTest() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/users",
-                String.class)).contains("John").contains("first@example.com");
-
-        ResponseEntity<String> response1 = this.restTemplate.getForEntity("http://localhost:" + port + "/users", String.class);
+        assertThat(this.restTemplate.getForObject(customizeUrl("/users"), String.class)).contains("John").contains("first@example.com");
+        ResponseEntity<String> response1 = this.restTemplate.getForEntity(customizeUrl("/users"), String.class);
         assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-
     }
 
     @Test
     public void getRecommendedPostsTest() {
-
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/92/guest/posts",
+        assertThat(this.restTemplate.getForObject(customizeUrl("/user/99/guest/posts"),
                 String.class)).isEqualTo("[]");
     }
 
-
     @Test
     public void deleteUserRequestTest() throws Exception {
-        this.restTemplate.delete("http://localhost:" + port + "/user/3");
-        this.restTemplate.delete("http://localhost:"+port+String.format("/user/%s", 2));
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/3",
+
+        this.restTemplate.delete(customizeUrl("/user/3"));
+        this.restTemplate.delete(customizeUrl(String.format("/user/%s", 2)));
+        assertThat(this.restTemplate.getForObject(customizeUrl("/user/3"),
                 String.class)).doesNotContain("Thomas").doesNotContain("third@example.com");
     }
 
     @Test
     public void userLoginTest() throws Exception {
-        final String baseUrl = "http://localhost:" + port + "/login";
+        final String baseUrl = customizeUrl("/login");
         URI uri = new URI(baseUrl);
-        User mockUser1 = new User();
-        mockUser1.setUserName("DonaldTrump");
-        mockUser1.setPassword("123cdeF!");
 
-        User mockUser2 = new User();
-        mockUser2.setUserName("John");
-        mockUser2.setPassword("John");
-
+        User mockUser1 = settersGroup("DonaldTrump", "toilet", "I'm rich.");
+        User mockUser2 = settersGroup("Thomas", "nowhere", "I can fly.");
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "false");
@@ -121,18 +101,11 @@ public class JPAResourceTest {
 
     }
 
-
     @Test
     public void putUserRequestTest() throws Exception {
-        final String baseUrl = "http://localhost:"+port+"/register";
+        final String baseUrl = customizeUrl("/register");
         URI uri = new URI(baseUrl);
-        User mockUser1 = new User();
-        mockUser1.setAddr("somewhere");
-        mockUser1.setFullName("DonaldTrump");
-        mockUser1.setUserName("DonaldTrump123");
-        mockUser1.setPassword("123cdeF!");
-        mockUser1.setEmail("fifth@example.com");
-        mockUser1.setDescription("abcdefg");
+        User mockUser1 = settersGroup("DonaldTrumps", "DC", "I'm really rich");
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-COM-PERSIST", "true");
         HttpEntity<User> request = new HttpEntity<>(mockUser1, headers);
@@ -142,31 +115,16 @@ public class JPAResourceTest {
         Assert.assertEquals(201, result.getStatusCodeValue());
     }
 
-//    @Test
-//    public void hostRejectGuestTest() throws Exception {
-//
-//        final String baseUrl = "http://localhost:"+port+"/user/1/host/posts/1/guests";
-//        URI uri = new URI(baseUrl);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("X-COM-PERSIST", "false");
-//        HttpEntity<Integer> request = new HttpEntity<>((Integer) 1, headers);
-//        ResponseEntity<String> result = this.restTemplate.postForEntity(uri, request, String.class);
-//
-//        // cannot be translated into Integer... TODO: need to fix this test.
-//        Assert.assertEquals(405, result.getStatusCodeValue());
-//    }
-
     @Test
     public void getAllPostsTest() {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/91/host/posts",
+        assertThat(this.restTemplate.getForObject(customizeUrl("/user/91/host/posts"),
                 String.class)).isEqualTo("[]");
     }
 
     @Test
     public void hostCreatePostTest() throws Exception {
 //        POST /user/{id}/host/posts/{restaurantId}
-        final String baseUrl = "http://localhost:"+port+"/user/1/host/posts/13";
+        final String baseUrl = customizeUrl("/user/1/host/posts/13");
         Restaurant mockRestaurant = new Restaurant();
         URI uri = new URI(baseUrl);
 //        mockRestaurant.setId(13);
@@ -185,14 +143,14 @@ public class JPAResourceTest {
     @Test
     public void getGuestTest() throws Exception {
         // should successfully get something instead of return "[]"
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/2/host/posts/1/guests",
+        assertThat(this.restTemplate.getForObject(customizeUrl("/user/2/host/posts/1/guests"),
                 String.class)).isNotEqualTo(("[]"));
     }
 
     @Test
     public void guestJoinPostTest() throws Exception {
 
-        final String baseUrl = "http://localhost:"+port+"/user/1/guest/2";
+        final String baseUrl = customizeUrl("/user/1/guest/2");
         Post mockPost = new Post();
         URI uri = new URI(baseUrl);
         mockPost.setNumOfGuest(5);
@@ -205,7 +163,6 @@ public class JPAResourceTest {
         //Verify request succeed
         Assert.assertEquals(200, result.getStatusCodeValue());
     }
-
 
     // JPA layer tests
     @Autowired
@@ -274,65 +231,43 @@ public class JPAResourceTest {
 
     @Test
     public void addOneUserTest() {
-        User mockUser = new User();
+        User mockUser = settersGroup("tliao4", "somewhere", "abcdefg");
         Integer tempId = 97;
         mockUser.setId(tempId);
-        mockUser.setAddr("somewhere");
-        mockUser.setFullName("ThomasL");
-        mockUser.setUserName("tliao4");
-        mockUser.setPassword("123cdeF!");
-        mockUser.setEmail("tliao4@jhu.edu");
-        mockUser.setDescription("abcdefg");
-
         userRepository.save(mockUser);
         List<Integer> querry = new ArrayList<>();
         querry.add(97);
-
         List<User> res = userRepository.findAllById(querry);
 
         assert res.size() == 1;
         assert res.get(0).getId() == tempId;
         assert res.get(0).getUserName().equals("tliao4");
         assert res.get(0).getAddr().equals("somewhere");
-        assert res.get(0).getPassword().equals("123cdeF!");
-        assert res.get(0).getEmail().equals("tliao4@jhu.edu");
+        assert res.get(0).getPassword().equals("tliao4");
+        assert res.get(0).getEmail().equals("tliao4@example.com");
         assert res.get(0).getDescription().equals("abcdefg");
     }
 
     @Test
     public void getRestaurantsTest() {
         // no restaurant at first, expecting "[]"
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/92/host/restaurants",
+        assertThat(this.restTemplate.getForObject( customizeUrl("/user/92/host/restaurants"),
                 String.class)).isEqualTo("[]");
     }
 
     @Test
     public void addMultipleUsersTest() {
-        User mockUser1 = new User();
+        User mockUser1 = settersGroup("tliao4", "somewhere", "abcdefg");
         Integer tempId1 = 95;
         mockUser1.setId(tempId1);
-        mockUser1.setAddr("somewhere");
-        mockUser1.setFullName("ThomasL");
-        mockUser1.setUserName("tliao4");
-        mockUser1.setPassword("123cdeF!");
-        mockUser1.setEmail("tliao4@jhu.edu");
-        mockUser1.setDescription("abcdefg");
 
-        User mockUser2 = new User();
+        User mockUser2 = settersGroup("mxg", "somewhere2", "whatever");
         Integer tempId2 = 96;
         mockUser2.setId(tempId2);
-        mockUser2.setAddr("somewhere2");
-        mockUser2.setFullName("mxg");
-        mockUser2.setUserName("abcde123");
-        mockUser2.setPassword("321defgG!");
-        mockUser2.setEmail("xxx@jhu.edu");
-        mockUser2.setDescription("whatever");
 
         List<User> usrs = new ArrayList<>();
         usrs.add(mockUser1);
         usrs.add(mockUser2);
-        System.out.println("Sanity check");
-        System.out.println(usrs.size());
 
         List<Integer> querryIDs = new ArrayList<>();
         querryIDs.add(tempId1);
@@ -367,29 +302,15 @@ public class JPAResourceTest {
         Integer tempId3 = 111;
         Integer tempId4 = 222;
 
-        User mockUser1 = new User();
+        User mockUser1 = settersGroup("ThomasL", "somewhere", "whatever");
         mockUser1.setId(tempId1);
-        mockUser1.setAddr("somewhere");
-        mockUser1.setFullName("ThomasL");
-        mockUser1.setUserName("tliao4");
-        mockUser1.setPassword("123cdeF!");
-        mockUser1.setEmail("tliao4@jhu.edu");
-        mockUser1.setDescription("abcdefg");
 
-        User mockUser2 = new User();
+        User mockUser2 = settersGroup("mxg", "somewhere2", "abcdfd");
         mockUser2.setId(tempId2);
-        mockUser2.setAddr("somewhere2");
-        mockUser2.setFullName("mxg");
-        mockUser2.setUserName("abcde123");
-        mockUser2.setPassword("321defgG!");
-        mockUser2.setEmail("xxx@jhu.edu");
-        mockUser2.setDescription("whatever");
 
         List<User> usrs = new ArrayList<>();
         usrs.add(mockUser1);
         usrs.add(mockUser2);
-        System.out.println("Sanity check");
-        System.out.println(usrs.size());
 
         List<Integer> querryIDs = new ArrayList<>();
         querryIDs.add(tempId1);
@@ -400,11 +321,8 @@ public class JPAResourceTest {
         userRepository.saveAll(usrs);
 
         List<User> res = userRepository.findAllById(querryIDs);
-
         assert res.size() == 2; // should only return 2 instead of 4, although querry for 4 ids.w
         assert res.get(0).getId() == tempId1;
         assert res.get(1).getId() == tempId2;
     }
 }
-
-
