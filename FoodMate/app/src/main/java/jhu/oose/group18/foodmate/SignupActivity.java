@@ -116,7 +116,8 @@ public class SignupActivity extends AppCompatActivity {
                         };
 
                         requestQueue.add(stringRequest);
-                    } catch (JSONException e) {
+                    }
+                    catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
