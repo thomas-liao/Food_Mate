@@ -79,7 +79,9 @@ We maintain an m by n matrix M where m denotes the numbre of users and n denotes
 
 For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5. 
 
-In production mode, we will periodically update the original matrix and perform new factorization on it. We haven't look into the cold start problem, which could be addressed in later iterations using content-based recommendation.
+In production mode, we will periodically update the original rating matrix and perform new factorization on it. Specifically, when new review with a rating for a restaurant received, we calculate a weighted average of this rating and the old one in the matrix as the new rating. 
+
+For new users, we randomly initiallize their preference as one of our preset value, which will be updated according to their activities in the future.
 
 #### Implementation
 
