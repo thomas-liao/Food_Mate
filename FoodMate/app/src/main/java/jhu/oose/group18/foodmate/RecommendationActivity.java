@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -63,10 +62,7 @@ public class RecommendationActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                Message message = new Message();
-                                message.setName(jsonObj.getString("restaurantName"));
-                                message.setCategory(jsonObj.getString("hostName"));
-                                message.setPic(R.drawable.restaurant_logo);
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
                             }
                             if (messageList.isEmpty()) {
@@ -110,6 +106,14 @@ public class RecommendationActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
+    @NonNull
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("restaurantName"));
+        message.setCategory(jsonObj.getString("hostName"));
+        message.setPic(R.drawable.restaurant_logo);
+        return message;
+    }
 
 
     @Override
@@ -165,6 +169,7 @@ public class RecommendationActivity extends AppCompatActivity {
                     System.out.println(e);
                 }
                 Intent intent = new Intent(RecommendationActivity.this, DetailedGuestResponseActivity.class);
+                intent.putExtra("FROM_ACTIVITY", "RecommendationActivity");
                 startActivity(intent);
 //                try {
 //                    application.reviewPostId = jsonArr.getJSONObject(position).getInt("id");
