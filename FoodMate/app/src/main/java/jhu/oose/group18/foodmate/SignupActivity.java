@@ -55,78 +55,71 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                try {
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    String URL = "https://food-mate.herokuapp.com/register";
-                    JSONObject jsonBody = new JSONObject();
-                    jsonBody.put("userName", _usernameText.getText().toString());
-                    jsonBody.put("password", _passwordText.getText().toString());
-                    jsonBody.put("fullName", _fullnameText.getText().toString());
-                    jsonBody.put("addr", _locationText.getText().toString());
-                    jsonBody.put("email", _emailText.getText().toString());
-                    jsonBody.put("description", _bioText.getText().toString());
-                    final String requestBody = jsonBody.toString();
-
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            for (int i = 0; i < 100; i++) {
-                                System.out.println(response);
-                            }
-                            if (!response.equals("201")) {
-                                onSignupFailed();
-//                                return;
-                            } else {
-                                _signupButton.setEnabled(false);
-                                onSignupSuccess();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            System.out.println("error " + error.toString());
-                            Log.e("VOLLEY", error.toString());
-                        }
-                    }) {
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json; charset=utf-8";
-                        }
-
-                        @Override
-                        public byte[] getBody() throws AuthFailureError {
-                            try {
-                                return requestBody == null ? null : requestBody.getBytes("utf-8");
-                            } catch (UnsupportedEncodingException uee) {
-                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                                return null;
-                            }
-                        }
-
-
-                        @Override
-                        protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                            String responseString = "";
-                            if (response != null) {
-                                responseString = String.valueOf(response.statusCode);
-                                // can get more details such as response.headers
-                            }
-                            return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-                        }
-                    };
-
-                    requestQueue.add(stringRequest);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (!validate()) {
+                    onSignupFailed();
                 }
+                else {
+                    try {
+                        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                        String URL = "https://food-mate.herokuapp.com/register";
+                        JSONObject jsonBody = new JSONObject();
+                        jsonBody.put("userName", _usernameText.getText().toString());
+                        jsonBody.put("password", _passwordText.getText().toString());
+                        jsonBody.put("fullName", _fullnameText.getText().toString());
+                        jsonBody.put("addr", _locationText.getText().toString());
+                        jsonBody.put("email", _emailText.getText().toString());
+                        jsonBody.put("description", _bioText.getText().toString());
+                        final String requestBody = jsonBody.toString();
 
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                for (int i = 0; i < 100; i++) {
+                                    System.out.println(response);
+                                }
+                                if (!response.equals("201")) {
+                                    onSignupFailed();
+                                } else {
+                                    _signupButton.setEnabled(false);
+                                    onSignupSuccess();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                System.out.println("error " + error.toString());
+                                Log.e("VOLLEY", error.toString());
+                            }
+                        }) {
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try {
+                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                } catch (UnsupportedEncodingException uee) {
+                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                    return null;
+                                }
+                            }
+                            @Override
+                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                String responseString = "";
+                                if (response != null) {
+                                    responseString = String.valueOf(response.statusCode);
+                                    // can get more details such as response.headers
+                                }
+                                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                            }
+                        };
 
-//                if (!validate()) {
-//                    onSignupFailed();
-//                    return;
-//                }
-//                _signupButton.setEnabled(false);
-//                onSignupSuccess();
+                        requestQueue.add(stringRequest);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -142,6 +135,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+
     private void onSignupSuccess() {
         Toast.makeText(getBaseContext(), "Signup finished", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
@@ -151,10 +145,12 @@ public class SignupActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
+
     private void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Signup failed", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
     }
+
 
     private boolean validate() {
         boolean valid = true;
@@ -175,7 +171,7 @@ public class SignupActivity extends AppCompatActivity {
             _fullnameText.setError(null);
         }
 
-        if (fullname.isEmpty() || fullname.length() < 3) {
+        if (username.isEmpty() || fullname.length() < 3) {
             _usernameText.setError("at least 3 characters");
             valid = false;
         } else {
