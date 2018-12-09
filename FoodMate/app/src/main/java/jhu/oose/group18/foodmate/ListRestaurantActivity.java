@@ -37,7 +37,6 @@ public class ListRestaurantActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
-
     private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
@@ -47,6 +46,11 @@ public class ListRestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_restaurant);
+
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -75,11 +79,6 @@ public class ListRestaurantActivity extends AppCompatActivity {
 
 
         messageList = new ArrayList<>();
-
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
-        swipeRefreshLayout.setOnRefreshListener(refreshListener);
-
         mList = findViewById(R.id.restaurant_list);
 
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {

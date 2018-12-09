@@ -137,12 +137,9 @@ public class MessageBoxActivity extends AppCompatActivity {
                                 Message message = getMessage(jsonObj);
                                 messageList.add(message);
                             }
-                            findViewById(R.id.message_list).setVisibility(View.VISIBLE);
-                            findViewById(R.id.no_guest).setVisibility(View.GONE);
-
+                            showMessageList();
                             if (messageList.isEmpty()) {
-                                findViewById(R.id.message_list).setVisibility(View.GONE);
-                                findViewById(R.id.no_guest).setVisibility(View.VISIBLE);
+                                showNoGuestMessage();
                                 //            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
                             }
                             progressDialog.dismiss();
@@ -177,6 +174,16 @@ public class MessageBoxActivity extends AppCompatActivity {
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
+
+    private void showNoGuestMessage() {
+        findViewById(R.id.message_list).setVisibility(View.GONE);
+        findViewById(R.id.no_guest).setVisibility(View.VISIBLE);
+    }
+
+    private void showMessageList() {
+        findViewById(R.id.message_list).setVisibility(View.VISIBLE);
+        findViewById(R.id.no_guest).setVisibility(View.GONE);
     }
 
     @NonNull

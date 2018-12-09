@@ -66,11 +66,9 @@ public class RecommendationActivity extends AppCompatActivity {
                                 messageList.add(message);
                             }
                             if (messageList.isEmpty()) {
-                                findViewById(R.id.recommendation_list).setVisibility(View.GONE);
-                                findViewById(R.id.no_post).setVisibility(View.VISIBLE);
-                                progressDialog.cancel();
-                                //            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
+                                showNoGuestMessage();//            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
                             }
+                            progressDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             progressDialog.dismiss();
@@ -104,6 +102,11 @@ public class RecommendationActivity extends AppCompatActivity {
         });
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
+
+    private void showNoGuestMessage() {
+        findViewById(R.id.recommendation_list).setVisibility(View.GONE);
+        findViewById(R.id.no_post).setVisibility(View.VISIBLE);
     }
 
     @NonNull

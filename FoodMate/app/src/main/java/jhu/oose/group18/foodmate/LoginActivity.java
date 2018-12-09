@@ -41,9 +41,6 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
-//    private static final String TAG = "LoginActivity";
-//    private static final int REQUEST_SIGNUP = 0;
-
     @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
@@ -164,25 +161,4 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setEnabled(true);
     }
 
-    private boolean validate() {
-        boolean valid = true;
-
-        String username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
-
-        if (username.isEmpty() || username.equals("admin")) {
-            _usernameText.setError("enter a valid username");
-            valid = false;
-        } else {
-            _usernameText.setError(null);
-        }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            _passwordText.setError(null);
-        }
-        return valid;
-    }
 }
