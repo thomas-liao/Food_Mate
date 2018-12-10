@@ -126,6 +126,7 @@ User can choose to be host or guest.
 
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
+After sending the post, hosts can go back to the posts and see if any guests have joined in the navigation bar.
 
 We have switched from ListView to RecyclerView in iteration4.
 
@@ -136,14 +137,13 @@ We have switched from ListView to RecyclerView in iteration4.
 Then the user can fill the form and send the post to the server and wait for guests to join.
 
 
-After finishing sending the post, users will enter a message box, where they could get messages from guests. They will also be able to retrive their history of posts by clicking the "history" button in the bottom of the page. We have switched from ListView to RecyclerView in iteration4.
-
+After finishing sending the post, users will enter a message box, where they could get messages from guests. Originally there will be no guests, users could pull down to refresh the page if new guests joined. They will also be able to retrive their history of posts by clicking the "history" button in the bottom of the page. We have switched from ListView to RecyclerView in iteration4.
 
 ### Guest
 
 <img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
 
-After choosing to be guest, the user will receive a list of recommended posts. The guest can choose which post he/she likes to join. We have switched from ListView to RecyclerView in iteration4.
+After choosing to be guest, the user be provided a summary of posts distributed by the recommendation system. By clicking on each post, the user can see detailed information and choose which post he/she likes to join. We have switched from ListView to RecyclerView in iteration4. The user can go back to joined posts using button in the navigation bar. After reservation is completed, user could also rate the reservation.
 
 ## Frontend test
 
