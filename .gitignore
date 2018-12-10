@@ -1,3 +1,5 @@
 user_sim.txt
 .idea/
 *.pkl
+.DS_Store
+Image/.DS_Store

@@ -31,15 +31,15 @@ Pretty self-explanatory. This one deletes user from userRepository by id.
 
 **GET /user{id}/host/restaurants **
 
-(The recommendation module comes into play) we used matching algorithm(collaborative filtering algorithm, https://en.wikipedia.org/wiki/Collaborative_filtering)  to recommend top k(by default, 10) restaurants for host. 
+(The recommendation module comes into play) we used matching algorithm(collaborative filtering algorithm, https://en.wikipedia.org/wiki/Collaborative_filtering)  to recommend top k(by default, 10) restaurants for host.
 
 **GET /user/{id}/host/posts**
 
-Get post history of host (referenced by ID). 
+Get post history of host (referenced by ID).
 
 **POST /user/{id}/host/posts/{restaurantId}**
 
-Host create POST end point. This one is used for host to post POST (e.g. which restaurant, time, preferences etc). The restaurant information is referenced by restaurant ID(from restaurantRepository) and the host information is referenced by user id(from userRepository). And the post containing all those information is stored in POST, which is persisted to postRepository 
+Host create POST end point. This one is used for host to post POST (e.g. which restaurant, time, preferences etc). The restaurant information is referenced by restaurant ID(from restaurantRepository) and the host information is referenced by user id(from userRepository). And the post containing all those information is stored in POST, which is persisted to postRepository
 
 **GET /user/{id}/host/posts/{postId}/guests**
 
@@ -62,23 +62,23 @@ There is an easy way to check our server! We deployed the whole server on Heroku
 
 ### Recommender System
 
-We've implemented an SVD-based collaborative filtering system to perform ranking on all available hosts according to the history of the guest and his/her similarity with other guests. 
+We've implemented an SVD-based collaborative filtering system to perform ranking on all available hosts according to the history of the guest and his/her similarity with other guests.
 
 #### Introduction
 
-We maintain an m by n matrix M where m denotes the numbre of users and n denotes the number of restaurants, the (i,j)-th element of which represents the rating of user i to restaurant j. The matrix will be sparse because the user will only have visited a few of all restaurants in our system. And the missing elements in that matrix are estimated based on a factorization M = P^T*Q. This method represents user i as a vector of preferences for a few factors and item j as a vector where each element expresses how much the item exhibits that factor. Then the rating of item j for user i is estimated by the inner product of these two vectors. 
+We maintain an m by n matrix M where m denotes the numbre of users and n denotes the number of restaurants, the (i,j)-th element of which represents the rating of user i to restaurant j. The matrix will be sparse because the user will only have visited a few of all restaurants in our system. And the missing elements in that matrix are estimated based on a factorization M = P^T*Q. This method represents user i as a vector of preferences for a few factors and item j as a vector where each element expresses how much the item exhibits that factor. Then the rating of item j for user i is estimated by the inner product of these two vectors.
 
 #### Model Training and Testing
 
-For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5. 
+For model training, we only minimize loss over observed values and regularize P and Q. We use stochastic gradient descent  (SGD) to minimize the loss function. Since we don't have data for our system, we created some synthetic user history data which are generated from 5 independent distributions. We crawled information of ~300 restaurants and generated 100 users for testing. With 10% data of the whole matrix, we achieve a RMSE of 1.07 in the rating scale of 1 to 5.
 
-In production mode, we will periodically update the original rating matrix and perform new factorization on it. Specifically, when new review with a rating for a restaurant received, we calculate a weighted average of this rating and the old one in the matrix as the new rating. 
+In production mode, we will periodically update the original rating matrix and perform new factorization on it. Specifically, when new review with a rating for a restaurant received, we calculate a weighted average of this rating and the old one in the matrix as the new rating.
 
 For new users, we randomly initiallize their preference as one of our preset value, which will be updated according to their activities in the future.
 
 #### Implementation
 
-The core code is currently using Python and called by Java ProcessBuilder class. We will consider rewrite it in Java and add more logic on top of that. 
+The core code is currently using Python and called by Java ProcessBuilder class. We will consider rewrite it in Java and add more logic on top of that.
 
 Some python packages are needed to run the whole project. run
 
@@ -92,63 +92,82 @@ Since the packages in requirement1.txt are depend on packages in requirement.txt
 
 Now let's look at our Android App!
 
-We designed and implemented the UI sketch and implemented some core features for the interaction between user and server. The whole project is under FoodMate folder. 
+We designed and implemented the UI sketch and implemented some core features for the interaction between user and server. The whole project is under FoodMate folder.
 
 To build the project, use Android studio to import the whole project, waiting for the project to compile, then click run button, you will be asked to choose the USB device or simulator. SInce the target sdk version is 21, we strongly recommend you to use Android version larger than this level. For most of the testing, we use Pixel 28 as the simulator, so it will give you the best user experience.
 
 Now let's take a look at our app!
 
 ### Login
-<img align="middle" src="./Image/login.png" alt="login" width="250"/><br/><br/>
+<img align="middle" src="./Image/5_1.png" alt="login" width="250"/><br/><br/>
 
 The initial page is the login page. User need to enter username and password to login. You can use the registered account (it's in our database): username: Amy, password Amy to login.
 
-<img  src="./Image/signup.png" alt="signup" width="250"/><br/><br/>
+<img  src="./Image/5_2.png" alt="signup" width="250"/><br/><br/>
 
 
 Wanna create your own account? No problem! Click create one will send you to registration page where you can fill your basic information to create a new account. Then you will jump to login page to login will your own account.
 
 ### Choose Role
 
-<img  src="./Image/ChooseRole.png" alt="Choose Role" width="250"/><br/><br/>
+<img  src="./Image/5_3.png" alt="Choose Role" width="250"/><br/><br/>
 
 
 User can choose to be host or guest.
 
-### Host:
+### Choose Host:
 
-<img src="./Image/restaurant.png" alt="drawing" width="250"/><br/><br/>
+<img src="./Image/5_4.png" alt="drawing" width="250"/><br/><br/>
 
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
-After sending the post, hosts can go back to the posts and see if any guests have joined in the navigation bar.
+After sending the post, hosts can go back to the posts and see if any guests have joined in the navigation bar. Then the user can fill the form and send the post to the server and wait for guests to join.
 
-We have switched from ListView to RecyclerView in iteration4.
+We have switched from ListView to RecyclerView starting from iteration4.
 
-### Send Post
+### View Message Box
 
-<img src="./Image/GuestList.png" alt="Send Post" width="250"/><br/><br/>
+<img src="./Image/5_4_2.png" width="250"/><br/><br/>
 
-Then the user can fill the form and send the post to the server and wait for guests to join.
+After finishing sending the post, users will enter a message box, where they could get messages from guests. Originally there will be no guests, users could pull down to refresh the page if new guests joined.
 
 
-After finishing sending the post, users will enter a message box, where they could get messages from guests. Originally there will be no guests, users could pull down to refresh the page if new guests joined. They will also be able to retrive their history of posts by clicking the "history" button in the bottom of the page. We have switched from ListView to RecyclerView in iteration4.
+### View Current or Past Posts
 
-### Guest
+<img src="./Image/5_5.png" width="250"/><br/><br/>
 
-<img src="./Image/postRecommendation.png" alt="Post Recommendation" width="250"/><br/><br/>
+For demonstration purposes, we used the account Amy to create a bunch of posts, and you can view all your current or past posts by selecting "My Hostings" at the bottom navigation bar.
 
-After choosing to be guest, the user be provided a summary of posts distributed by the recommendation system. By clicking on each post, the user can see detailed information and choose which post he/she likes to join. We have switched from ListView to RecyclerView in iteration4. The user can go back to joined posts using button in the navigation bar. After reservation is completed, user could also rate the reservation.
+
+### Guest Viewing Recommended Posts
+
+<img src="./Image/5_6.png" alt="Post Recommendation" width="250"/><br/><br/>
+
+We logged in with another account, after choosing to be guest, the user is provided a summary of posts distributed by the recommendation system(The illustration only shows Amy's posts because right now only Amy posted a bunch of posts).
+
+<img src="./Image/5_7.png" width="250"/><br/><br/>
+
+By clicking on each post, the user can see detailed information and choose whether or not he/she likes to join. The user can go back to joined posts using button in the navigation bar.
+
+### Host Viewing Joined Guests
+
+<img src="./Image/5_8.png" width="250"/><br/><br/>
+
+The host can go back to his/her posts to see if any other users have joined this post.
+
+<img src="./Image/5_9.png" width="250"/><br/><br/>
+
+After reservation is completed, user could also rate the reservation.
 
 ## Frontend test
 
-We have frontend tests (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate. 
+We have frontend tests (instrumentation/UI testing)implemented through Espresso framework for Android. The tests are located in: /Users/vince/OOSE project/2018-group-18/FoodMate/app/src/androidTest/java/jhu/oose/group18/foodmate.
 
 These tests can be run together from command line when the emulator has been **opened**: under the Android app directory, run the command: ./gradlew connectedAndroidTest -i
 
-To run these UI tests individually, find each test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest) directory, and the test file can be run directly within Android Studio. 
+To run these UI tests individually, find each test file (each file is for an activity) you would like to run in jhu.oose.group18.foodmate(androidTest) directory, and the test file can be run directly within Android Studio.
 
-Due to asyncronicity involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior. 
+Due to asyncronicity involved in testing, each test is not guarenteed to succeed each time. Multiple runs are recommened to get the correct behavior.
 
 ## Backend test
 Java JUnit test for JPA and web layer tests are placed in restful-web-services/src/test/java/com/oose/group18/Controller/JPAResourceTest.java. Most of the important endpoints (12/14, 85% coverage rate) has been tested. Backend unit tests have been deployed to Travis-CI and each time we push to master the backend unit tests are run automatically.
