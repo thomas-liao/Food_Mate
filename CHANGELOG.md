@@ -7,10 +7,25 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - code refactoring and improvement
 
+## [0.3.0] - 2018-12-9
+
+### Added
+
+- implemented pipeline 
+- implemented rating function for user to add rating for restaurants
+- implemented pipeline to update user preference based on review
+- added detailed description about posts to let guest review
+- implemented review history function in front-end to let user review the posts they posted or joined
+- refactor code to be extendable
+
+### Changed
+
+- change getGuest function to return userView
+- change getPost function to return postView
+
 
 ## [0.2.0] - 2018-11-18
 ### Added
-- implemented 
 - implemented post recommendation system for guests
 - added frontend interface, including post recommendation, review history
 - added frontend-backend communication, including send post, get recommendation posts, join post, review history
