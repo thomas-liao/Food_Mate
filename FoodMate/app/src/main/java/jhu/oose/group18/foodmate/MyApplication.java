@@ -12,4 +12,10 @@ public class MyApplication extends Application {
     Integer restaurantId;
     Integer createdPostId;
     Integer joinedPostId;
+
+    Integer reviewPostId;
+    String reviewPostRes;
+    String reviewPostHost;
+    Integer reviewResId;
+    String reviewPostStartDate;
 }

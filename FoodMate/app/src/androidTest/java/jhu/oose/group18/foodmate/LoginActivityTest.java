@@ -34,7 +34,8 @@ import static org.hamcrest.CoreMatchers.not;
 public class LoginActivityTest {
 
     @Rule
-    public ActivityTestRule<LoginActivity> loginActivityActivityTestRule = new ActivityTestRule<LoginActivity>(LoginActivity.class);
+    public ActivityTestRule<LoginActivity> loginActivityActivityTestRule =
+            new ActivityTestRule<>(LoginActivity.class);
 
 //    @Rule
 //    public IntentsTestRule<LoginActivity> intentsTestRule = new IntentsTestRule<>(LoginActivity.class);
@@ -59,13 +60,13 @@ public class LoginActivityTest {
         onView(withId(R.id.btn_login)).perform(click());
         // check that after successfully login the next activity RoleSelectActivity is invoked
 //        intended(hasComponent(RoleSelectActivity.class.getName()));
-        timer.schedule( new TimerTask(){
-            public void run() {
-                System.out.println("Wait for loading");
-            }
-        }, 2000);
-        // check that after successfully login the next activity RoleSelectActivity is invoked by viewmatch
-        onView(withId(R.id.btn_host)).check(matches(isDisplayed()));
+//        timer.schedule( new TimerTask(){
+//            public void run() {
+//                System.out.println("Wait for loading");
+//            }
+//        }, 2000);
+//        // check that after successfully login the next activity RoleSelectActivity is invoked by viewmatch
+//        onView(withId(R.id.btn_host)).check(matches(isDisplayed()));
     }
 
     @Test

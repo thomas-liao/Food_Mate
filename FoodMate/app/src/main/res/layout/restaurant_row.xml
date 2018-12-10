@@ -10,6 +10,7 @@
         android:layout_width="184dp"
         android:layout_height="100dp"
         android:layout_weight="1"
+        android:paddingLeft="10dp"
         app:srcCompat="@drawable/restaurant_logo" />
 
     <LinearLayout
@@ -27,6 +28,7 @@
             android:layout_marginLeft="20dp"
             android:text="TextView"
             android:textSize="24sp"
+            android:textColor="@color/accent"
             android:textStyle="bold" />
 
         <TextView
@@ -35,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="TextView"
+            android:textColor="@color/accent"
             android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

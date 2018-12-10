@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -17,7 +16,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -27,7 +25,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -37,7 +34,7 @@ public class PostActivity extends AppCompatActivity {
     @BindView(R.id.btn_post) Button _postButton;
     @BindView(R.id.restaurant) EditText _restaurant;
     @BindView(R.id.dateTime) EditText _dateTime;
-    @BindView(R.id.waitingTime) EditText _waitingTime;
+    @BindView(R.id.post_description) EditText _postDescription;
     @BindView(R.id.maxGuest) EditText _maxGuest;
 
 
@@ -66,25 +63,26 @@ public class PostActivity extends AppCompatActivity {
                     String URL = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.restaurantId;
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("numOfGuest", _maxGuest.getText().toString());
-                    final String requestBody = jsonBody.toString();
-                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date dateObject;
-                    try{
-                        String dateTime = _dateTime.getText().toString();
-                        dateObject = formatter.parse(dateTime);
-                        jsonBody.put("startDate", dateObject.toString());
+                    jsonBody.put("startDate", _dateTime.getText().toString());
+                    jsonBody.put("description", _postDescription.getText().toString());
 
-                    }catch (java.text.ParseException e){
-                        _dateTime.setError("follow the format dd/MM/yyyy");
-                        e.printStackTrace();
-                    }
+//                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                    Date dateObject;
+//                    try{
+//                        String dateTime = _dateTime.getText().toString();
+//                        dateObject = formatter.parse(dateTime);
+//                        jsonBody.put("startDate", dateObject.toString());
+//                        System.out.println(dateObject.toString());
+//
+//                    }catch (java.text.ParseException e){
+//                        _dateTime.setError("follow the format dd/MM/yyyy");
+//                        e.printStackTrace();
+//                    }
+                    final String requestBody = jsonBody.toString();
 
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            for (int i = 0; i < 100; i++) {
-                                System.out.println(response);
-                            }
                             if (response == null) {
                                 postFailed();
 //                                return;
@@ -178,7 +176,7 @@ public class PostActivity extends AppCompatActivity {
         }
         String resturant = _restaurant.getText().toString();
         String maxGuest = _maxGuest.getText().toString();
-        String waitingTime = _waitingTime.getText().toString();
+        String waitingTime = _postDescription.getText().toString();
 
 
         if (resturant.isEmpty()) {

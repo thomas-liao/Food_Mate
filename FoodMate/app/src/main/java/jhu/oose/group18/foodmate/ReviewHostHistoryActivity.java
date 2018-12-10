@@ -3,15 +3,12 @@ package jhu.oose.group18.foodmate;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.Request;
@@ -29,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecommendationActivity extends AppCompatActivity {
+public class ReviewHostHistoryActivity extends AppCompatActivity {
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -38,10 +35,9 @@ public class RecommendationActivity extends AppCompatActivity {
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
-
     MyApplication application;
     private String url;
+
 
 
     private void getData() {
@@ -50,9 +46,9 @@ public class RecommendationActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/posts";
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts";
         System.out.println(url);
-        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -64,11 +60,8 @@ public class RecommendationActivity extends AppCompatActivity {
                                 System.out.println(jsonObj);
                                 Message message = getMessage(jsonObj);
                                 messageList.add(message);
+
                             }
-                            if (messageList.isEmpty()) {
-                                showNoGuestMessage();//            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
-                            }
-                            progressDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             progressDialog.dismiss();
@@ -104,16 +97,15 @@ public class RecommendationActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-    private void showNoGuestMessage() {
-        findViewById(R.id.recommendation_list).setVisibility(View.GONE);
-        findViewById(R.id.no_post).setVisibility(View.VISIBLE);
-    }
-
     @NonNull
     private Message getMessage(JSONObject jsonObj) throws JSONException {
         Message message = new Message();
         message.setName(jsonObj.getString("restaurantName"));
-        message.setCategory(jsonObj.getString("hostName"));
+        String description = jsonObj.getString("startDate");
+        if (description == null) {
+            description = "Host is lazy";
+        }
+        message.setCategory(description);
         message.setPic(R.drawable.restaurant_logo);
         return message;
     }
@@ -122,70 +114,26 @@ public class RecommendationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recommendation);
+        setContentView(R.layout.activity_review_history);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    Intent intent;
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_new_event:
-                                intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
-                                startActivity(intent);
-                                break;
-                            case R.id.action_post_history:
-                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
-                                startActivity(intent);
-                                break;
-                            case R.id.action_guest_history:
-                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
-                        return true;
-                    }
-                });
-
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
-        swipeRefreshLayout.setOnRefreshListener(refreshListener);
-
-        mList = findViewById(R.id.recommendation_list);
+        mList = findViewById(R.id.review_list);
 
         messageList = new ArrayList<>();
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-//                Intent intent = new Intent(RecommendationActivity.this, DetailedHostPostActivity.class);
-                String message = messageList.get(position).getName();
-                MyApplication application = (MyApplication) getApplication();
                 try {
                     application.reviewPostId = jsonArr.getJSONObject((position)).getInt("id");
                     application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
                     application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
                     application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
+                    application.reviewResId = jsonArr.getJSONObject((position)).getInt("restaurantId");
                     //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-                Intent intent = new Intent(RecommendationActivity.this, DetailedGuestResponseActivity.class);
-                intent.putExtra("FROM_ACTIVITY", "RecommendationActivity");
+                Intent intent = new Intent(ReviewHostHistoryActivity.this, DetailedHostPostActivity.class);
                 startActivity(intent);
-//                try {
-//                    application.reviewPostId = jsonArr.getJSONObject(position).getInt("id");
-//                    application.reviewPostStartDate = jsonArr.getJSONObject(position).getString("startDate");
-//                    application.reviewPostRes = jsonArr.getJSONObject(position).getString("restaurantName");
-//                    application.reviewPostHost = jsonArr.getJSONObject(position).getString("hostName");
-//                    //application.joinedPostId = jsonArr.getJSONObject(position).getInt("id");
-//                    //joinPost();
-//                } catch (Exception e) {
-//                    System.out.println(e);
-//                }
-//                intent.putExtra("postSelected", message);
-//                startActivity(intent);
             }
         });
 
@@ -200,16 +148,4 @@ public class RecommendationActivity extends AppCompatActivity {
 
         getData();
     }
-
-    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-
-        @Override
-        public void onRefresh() {
-            swipeRefreshLayout.setRefreshing(true);
-            getData();
-            swipeRefreshLayout.setRefreshing(false);
-        }
-    };
 }
-
-

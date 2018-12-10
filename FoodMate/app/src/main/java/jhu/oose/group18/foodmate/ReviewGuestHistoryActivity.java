@@ -2,6 +2,7 @@ package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -26,9 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
-public class ReviewHistoryActivity extends AppCompatActivity {
+public class ReviewGuestHistoryActivity extends AppCompatActivity{
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -36,6 +35,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+//    private Button _join;
 
     MyApplication application;
     private String url;
@@ -48,7 +48,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + 2 + "/host/restaurants";
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/posts";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -60,10 +60,7 @@ public class ReviewHistoryActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                Message message = new Message();
-                                message.setName(jsonObj.getString("name"));
-                                message.setCategory(jsonObj.getString("category"));
-                                message.setPic(R.drawable.restaurant_logo);
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
 
                             }
@@ -102,6 +99,19 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
+    @NonNull
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("restaurantName"));
+        String description = jsonObj.getString("startDate");
+        if (description == null) {
+            description = "Host is lazy";
+        }
+        message.setCategory(description);
+        message.setPic(R.drawable.restaurant_logo);
+        return message;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,15 +124,18 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Intent intent = new Intent(ReviewHistoryActivity.this, PostActivity.class);
-                String message = messageList.get(position).getName();
-                MyApplication application = (MyApplication) getApplication();
                 try {
-                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                    application.reviewPostId = jsonArr.getJSONObject((position)).getInt("id");
+                    application.reviewPostHost = jsonArr.getJSONObject((position)).getString("hostName");
+                    application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
+                    application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
+                    application.reviewResId = jsonArr.getJSONObject((position)).getInt("restaurantId");
+                    //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-                intent.putExtra("restaurantSelected", message);
+                Intent intent = new Intent(ReviewGuestHistoryActivity.this, DetailedGuestResponseActivity.class);
+                intent.putExtra("FROM_ACTIVITY", "ReviewGuestHistoryActivity");
                 startActivity(intent);
             }
         });
@@ -139,3 +152,4 @@ public class ReviewHistoryActivity extends AppCompatActivity {
         getData();
     }
 }
+

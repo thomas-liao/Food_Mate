@@ -2,12 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_new_event"
-        android:enabled="true"
-        android:icon="@drawable/history"
-        android:title="@string/new_event"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_post_history"
         android:enabled="true"
         android:icon="@drawable/history"
@@ -18,5 +12,11 @@
         android:enabled="true"
         android:icon="@drawable/history"
         android:title="@string/guest_history"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_log_out"
+        android:enabled="true"
+        android:icon="@drawable/history"
+        android:title="@string/log_out"
         app:showAsAction="ifRoom" />
 </menu>

@@ -34,11 +34,12 @@ public class SignupActivityTest {
 
     @Rule
     public ActivityTestRule<SignupActivity> SignupActivityActivityTestRule =
-            new ActivityTestRule<SignupActivity>(SignupActivity.class);
+            new ActivityTestRule<>(SignupActivity.class);
 
     private String fullname = "Jack Smith";
     private String username = "Jack";
-    private String email = "jack1@gmail.com";
+    private String email = "jack1@gmail";
+    private String email_ = "jack1@gmail.com";
     private String password = "jack123";
     private String password_ = "jack124";
     private String cityname = "Baltimore";
@@ -78,7 +79,7 @@ public class SignupActivityTest {
         // perform button click to login
         onView(withId(R.id.btn_signup)).perform(click());
         // check if signup success
-        onView(withText("Signup finished")).
+        onView(withText("Signup failed")).
                 inRoot(withDecorView(
                         not(is(SignupActivityActivityTestRule.getActivity().
                                 getWindow().getDecorView())))).
@@ -99,14 +100,14 @@ public class SignupActivityTest {
         // close the soft keyboard
         Espresso.closeSoftKeyboard();
         // input test email 'jack1@gmail.com'
-        onView(withId(R.id.input_email)).perform(typeText(email));
+        onView(withId(R.id.input_email)).perform(typeText(email_));
         // close the soft keyboard
         Espresso.closeSoftKeyboard();
         // input test password 'jack123'
         onView(withId(R.id.input_password)).perform(typeText(password));
         // close the soft keyboard
         Espresso.closeSoftKeyboard();
-        // Reenter password 'jack123'
+        // Reenter wrong password 'jack124'
         onView(withId(R.id.input_reEnterPassword)).perform(typeText(password_));
         // close the soft keyboard
         Espresso.closeSoftKeyboard();

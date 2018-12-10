@@ -2,17 +2,19 @@ package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,7 +31,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageBoxActivity extends AppCompatActivity {
+public class DetailedHostPostActivity extends AppCompatActivity {
+
     private RecyclerView mList;
     JSONArray jsonArr;
 
@@ -37,18 +40,21 @@ public class MessageBoxActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+    private TextView reservation_name;
+    private TextView reservation_time;
+    private TextView reservation_description;
+    private Button _return;
+
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
     private String url;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_box);
-
+        setContentView(R.layout.activity_detailed_host);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -75,15 +81,21 @@ public class MessageBoxActivity extends AppCompatActivity {
                     }
                 });
 
-
-        swipeRefreshLayout = findViewById(R.id.SwipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
-        swipeRefreshLayout.setOnRefreshListener(refreshListener);
-
-
-        mList = findViewById(R.id.message_list);
-
         messageList = new ArrayList<>();
+
+        mList = findViewById(R.id.reservation_guest_list);
+        reservation_name = findViewById(R.id.reservation_name);
+        reservation_time = findViewById(R.id.reservation_time);
+        reservation_description = findViewById(R.id.reservation_description);
+
+        _return = findViewById(R.id.return_btn);
+        _return.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -119,43 +131,42 @@ public class MessageBoxActivity extends AppCompatActivity {
         progressDialog.show();
 
         application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.createdPostId + "/guests";
+        reservation_name.setText(application.reviewPostRes);
+        reservation_time.setText(application.reviewPostHost);
+        reservation_description.setText((application.reviewPostStartDate));
+        ///user/{id}/host/posts/{postId}/guests
+        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.reviewPostId + "/guests" ;
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // display response
                         try {
                             jsonArr = new JSONArray(response);
-
-                            for (int i = 0; i < jsonArr.length(); i++)
-                            {
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                System.out.println(i);
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
                                 Message message = getMessage(jsonObj);
                                 messageList.add(message);
+
                             }
-                            showMessageList();
-                            if (messageList.isEmpty()) {
-                                showNoGuestMessage();
-                                //            Toast.makeText(getBaseContext(),"Waiting for guests to join",Toast.LENGTH_LONG).show();
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                             progressDialog.dismiss();
-
-
-                        } catch (Exception e) {System.out.println(e);}
+                        }
+                        adapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-        );
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                progressDialog.dismiss();
+            }
+        });
+
         getRequest.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
@@ -176,23 +187,14 @@ public class MessageBoxActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-    private void showNoGuestMessage() {
-        findViewById(R.id.message_list).setVisibility(View.GONE);
-        findViewById(R.id.no_guest).setVisibility(View.VISIBLE);
-    }
-
-    private void showMessageList() {
-        findViewById(R.id.message_list).setVisibility(View.VISIBLE);
-        findViewById(R.id.no_guest).setVisibility(View.GONE);
-    }
-
     @NonNull
     private Message getMessage(JSONObject jsonObj) throws JSONException {
         Message message = new Message();
-        message.setName(jsonObj.getString("fullName"));
+        message.setName(jsonObj.getString("userName"));
+        message.setCategory(jsonObj.getString("description"));
+        message.setPic(R.drawable.restaurant_logo);
         return message;
     }
+
+
 }
-
-
-

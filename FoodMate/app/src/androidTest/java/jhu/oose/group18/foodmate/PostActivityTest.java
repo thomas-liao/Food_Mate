@@ -35,34 +35,32 @@ import static org.junit.Assert.*;
 public class PostActivityTest {
 
     @Rule
-    public ActivityTestRule<LoginActivity> PostActivityActivityTestRule = new ActivityTestRule<LoginActivity>(LoginActivity.class);
+    public ActivityTestRule<PostActivity> PostActivityActivityTestRule =
+            new ActivityTestRule<>(PostActivity.class);
 
-    private String username = "John";
-    private String password = "John";
 
     @Test
-    public void testPostSuccess()
-    {
-        // input existing username 'John'
-        onView(withId(R.id.input_username)).perform(typeText(username));
-        // input correct password 'John'
-        onView(withId(R.id.input_password)).perform(typeText(password));
+    public void testPostScreen() {
+        String datetime = "12/10/2018";
+        onView(withId(R.id.dateTime)).perform(typeText(datetime));
         // close the soft keyboard
         Espresso.closeSoftKeyboard();
-        // perform button click to login
-        onView(withId(R.id.btn_login)).perform(click());
+        String maxguest = "4";
+        onView(withId(R.id.maxGuest)).perform(typeText(maxguest));
+        // close the soft keyboard
+        Espresso.closeSoftKeyboard();
+        String description = "Italian food";
+        onView(withId(R.id.post_description)).perform(typeText(description));
+        // close the soft keyboard
+        Espresso.closeSoftKeyboard();
 
-        onView(withId(R.id.btn_host)).perform(click());
+        onView(withId(R.id.link_switchrole)).check(matches(isDisplayed()));
+
+        // perform button click to post
+        onView(withId(R.id.btn_post)).perform(click());
+
 
 //        onView(ViewMatchers.withId(R.id.restaurant_list))
 //                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-    }
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 }

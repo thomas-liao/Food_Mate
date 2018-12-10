@@ -2,12 +2,16 @@ package jhu.oose.group18.foodmate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.Request;
@@ -33,9 +37,87 @@ public class ListRestaurantActivity extends AppCompatActivity {
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
     private RecyclerView.Adapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
     private String url;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list_restaurant);
+
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.SwipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light);
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    Intent intent;
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_new_event:
+                                intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.action_post_history:
+                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.action_guest_history:
+                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                startActivity(intent);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+
+        messageList = new ArrayList<>();
+        mList = findViewById(R.id.restaurant_list);
+
+        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(ListRestaurantActivity.this, PostActivity.class);
+                String message = messageList.get(position).getName();
+                MyApplication application = (MyApplication) getApplication();
+                try {
+                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                intent.putExtra("restaurantSelected", message);
+                startActivity(intent);
+            }
+        });
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
+        getData();
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override
+        public void onRefresh() {
+            swipeRefreshLayout.setRefreshing(true);
+            getData();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    };
 
 
     private void getData() {
@@ -56,12 +138,8 @@ public class ListRestaurantActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 JSONObject jsonObj = jsonArr.getJSONObject(i);
                                 System.out.println(jsonObj);
-                                Message message = new Message();
-                                message.setName(jsonObj.getString("name"));
-                                message.setCategory(jsonObj.getString("category"));
-                                message.setPic(R.drawable.restaurant_logo);
+                                Message message = getMessage(jsonObj);
                                 messageList.add(message);
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -98,40 +176,13 @@ public class ListRestaurantActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_restaurant);
-
-        mList = findViewById(R.id.restaurant_list);
-
-        messageList = new ArrayList<>();
-        adapter = new MyRecyclerViewAdapter(getApplicationContext(), messageList, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Intent intent = new Intent(ListRestaurantActivity.this, PostActivity.class);
-                String message = messageList.get(position).getName();
-                MyApplication application = (MyApplication) getApplication();
-                try {
-                    application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                intent.putExtra("restaurantSelected", message);
-                startActivity(intent);
-            }
-        });
-
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
-
-        getData();
+    private Message getMessage(JSONObject jsonObj) throws JSONException {
+        Message message = new Message();
+        message.setName(jsonObj.getString("name"));
+        message.setCategory(jsonObj.getString("category"));
+        message.setPic(R.drawable.restaurant_logo);
+        return message;
     }
+
+
 }
