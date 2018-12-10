@@ -191,9 +191,7 @@ The end-points tests covered including:
 
 # What need to Improve
 
-1. We have successfully implemented whole functionality of app, the next iteration we will focus on code quality and implement extended feature to imcrease user experience.
-2. We will set up pipeline of recommendation system, to let user add review of restaurant and update their user habbits.
-3. Add more tests for backend and frontend to make the project more robust.
+1. We successfully implemented the whole functions of our app, the next iteration will focus on refining front-end layer and prepare for presentation
 
 # Food Mate app
 
