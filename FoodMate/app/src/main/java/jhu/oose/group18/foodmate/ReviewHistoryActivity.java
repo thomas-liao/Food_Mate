@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,19 +26,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewGuestHistoryActivity extends AppCompatActivity{
-    private RecyclerView mList;
-    JSONArray jsonArr;
+public class ReviewHistoryActivity extends AppCompatActivity{
+        private RecyclerView mList;
+        JSONArray jsonArr;
 
-    private LinearLayoutManager linearLayoutManager;
-    private DividerItemDecoration dividerItemDecoration;
-    private List<Message> messageList;
-    private RecyclerView.Adapter adapter;
-//    private Button _join;
+        private LinearLayoutManager linearLayoutManager;
+        private DividerItemDecoration dividerItemDecoration;
+        private List<Message> messageList;
+        private RecyclerView.Adapter adapter;
 
-    MyApplication application;
-    private String url;
+        MyApplication application;
 
+        private String url;
+        private String extraValue;
+        private Intent intent;
 
 
     private void getData() {
@@ -47,8 +47,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        application = (MyApplication) getApplication();
-        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/posts";
+//        url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/posts";
         System.out.println(url);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -118,6 +117,19 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_history);
 
+        String historyType = getIntent().getStringExtra("HistoryType");
+        application = (MyApplication) getApplication();
+
+        if (historyType.equals("PostHistory")){
+            url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts";
+            extraValue = "";
+            intent = new Intent(getApplicationContext(), DetailedHostPostActivity.class);
+        } else if (historyType.equals("GuestHistory")){
+            url = "https://food-mate.herokuapp.com/user/" + application.userId + "/guest/posts";
+            extraValue = "ReviewHistoryActivity";
+            intent = new Intent(getApplicationContext(), DetailedGuestResponseActivity.class);
+        }
+
         mList = findViewById(R.id.review_list);
 
         messageList = new ArrayList<>();
@@ -134,8 +146,7 @@ public class ReviewGuestHistoryActivity extends AppCompatActivity{
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-                Intent intent = new Intent(ReviewGuestHistoryActivity.this, DetailedGuestResponseActivity.class);
-                intent.putExtra("FROM_ACTIVITY", "ReviewGuestHistoryActivity");
+                intent.putExtra("FROM_ACTIVITY", extraValue);
                 startActivity(intent);
             }
         });

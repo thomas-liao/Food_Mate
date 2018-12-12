@@ -63,11 +63,13 @@ public class MessageBoxActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case R.id.action_post_history:
-                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "PostHistory");
                                 startActivity(intent);
                                 break;
                             case R.id.action_guest_history:
-                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "GuestHistory");
                                 startActivity(intent);
                                 break;
                         }

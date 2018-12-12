@@ -49,8 +49,7 @@
             android:name=".RecommendationActivity"
             android:theme="@style/AppTheme.Dark" />
         <activity android:name=".MyRecyclerViewAdapter" />
-        <activity android:name=".ReviewHostHistoryActivity" />
-        <activity android:name=".ReviewGuestHistoryActivity" />
+        <activity android:name=".ReviewHistoryActivity" />
         <activity android:name=".DetailedHostPostActivity" />
         <activity android:name=".DetailedGuestResponseActivity"></activity>
     </application>
