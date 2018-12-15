@@ -237,6 +237,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         rating = _ratingBar.getRating();
+                        _review.setVisibility(View.GONE);
                         final MyApplication application=(MyApplication)getApplication();
                         try {
                             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
