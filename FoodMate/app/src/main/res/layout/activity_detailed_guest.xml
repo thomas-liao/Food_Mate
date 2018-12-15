@@ -94,9 +94,9 @@
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
         app:labelVisibilityMode="labeled"
-        app:itemBackground="@color/primary_darker"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@color/primary_darker"
+        app:itemTextColor="@color/primary_darker"
         app:menu="@menu/bottom_navigation_main" />
 
     <Button
