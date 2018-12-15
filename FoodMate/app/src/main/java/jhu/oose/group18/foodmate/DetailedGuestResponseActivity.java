@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -184,8 +185,8 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case R.id.action_log_out:
-                                intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
+                                DialogFragment dialog = new LogOutDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "dialog");
                                 break;
                         }
                         return true;
