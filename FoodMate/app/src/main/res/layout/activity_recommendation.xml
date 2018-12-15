@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        app:labelVisibilityMode="labeled"
         app:itemBackground="@color/primary_darker"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
