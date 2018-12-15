@@ -3,7 +3,6 @@
     package="jhu.oose.group18.foodmate">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <application android:icon="@drawable/icon" android:label="@string/app_name"/>
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature
         android:name="android.hardware.wifi"
