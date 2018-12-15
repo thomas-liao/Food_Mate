@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_new_event"
         android:enabled="true"
-        android:icon="@drawable/wrestaurant"
+        android:icon="@drawable/newevent"
         android:title="@string/new_event"
         app:showAsAction="ifRoom" />
     <item

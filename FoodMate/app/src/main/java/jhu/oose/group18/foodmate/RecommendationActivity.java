@@ -114,7 +114,7 @@ public class RecommendationActivity extends AppCompatActivity {
         Message message = new Message();
         message.setName(jsonObj.getString("restaurantName"));
         message.setCategory(jsonObj.getString("hostName"));
-        message.setPic(R.drawable.restaurant_logo);
+        message.setPic(R.drawable.restaurant);
         return message;
     }
 

@@ -109,7 +109,7 @@ public class ReviewHistoryActivity extends AppCompatActivity{
             description = "Host is lazy";
         }
         message.setCategory(description);
-        message.setPic(R.drawable.restaurant_logo);
+        message.setPic(R.drawable.restaurant);
         return message;
     }
 
@@ -175,7 +175,7 @@ public class ReviewHistoryActivity extends AppCompatActivity{
                     application.reviewPostRes = jsonArr.getJSONObject((position)).getString("restaurantName");
                     application.reviewPostStartDate = jsonArr.getJSONObject((position)).getString("startDate");
                     application.reviewResId = jsonArr.getJSONObject((position)).getInt("restaurantId");
-                    //application.restaurantId = jsonArr.getJSONObject(position).getInt("id");
+                    application.postDescription = jsonArr.getJSONObject(position).getString("description");
                 } catch (Exception e) {
                     System.out.println(e);
                 }

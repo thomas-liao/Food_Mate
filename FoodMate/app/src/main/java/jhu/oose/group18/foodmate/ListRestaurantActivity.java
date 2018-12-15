@@ -186,7 +186,7 @@ public class ListRestaurantActivity extends AppCompatActivity {
         Message message = new Message();
         message.setName(jsonObj.getString("name"));
         message.setCategory(jsonObj.getString("category"));
-        message.setPic(R.drawable.restaurant_logo);
+        message.setPic(R.drawable.restaurant);
         return message;
     }
 
