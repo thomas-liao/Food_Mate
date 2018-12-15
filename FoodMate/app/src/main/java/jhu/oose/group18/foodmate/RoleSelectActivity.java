@@ -34,6 +34,10 @@ public class RoleSelectActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
+                            case R.id.action_new_event:
+                                intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+                                startActivity(intent);
+                                break;
                             case R.id.action_post_history:
                                 intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
                                 intent.putExtra("HistoryType", "PostHistory");
