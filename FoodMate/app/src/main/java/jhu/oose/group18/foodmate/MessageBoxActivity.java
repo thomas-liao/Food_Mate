@@ -72,6 +72,10 @@ public class MessageBoxActivity extends AppCompatActivity {
                                 intent.putExtra("HistoryType", "GuestHistory");
                                 startActivity(intent);
                                 break;
+                            case R.id.action_log_out:
+                                intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                break;
                         }
                         return true;
                     }
