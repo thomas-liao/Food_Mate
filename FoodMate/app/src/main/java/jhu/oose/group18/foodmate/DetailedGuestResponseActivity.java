@@ -162,6 +162,11 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
             _join.setVisibility(View.VISIBLE);
         }
 
+//        if (application.reviewedPost.contains(application.reviewPostId)) {
+//            System.out.println(application.reviewPostId);
+//            _review.setVisibility(View.GONE);
+//        }
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -220,6 +225,10 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         _review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (application.reviewedPost.contains(application.reviewPostId)) {
+                    onSignupFailed();
+                    return;
+                }
                 LayoutInflater layoutInflater = (LayoutInflater) DetailedGuestResponseActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View customView = layoutInflater.inflate(R.layout.activity_popup,null);
 
@@ -299,6 +308,8 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                                 }
                             };
                             System.out.println("create the request");
+                            application.reviewedPost.add(application.reviewPostId);
+                            System.out.println(application.reviewedPost.size());
                             requestQueue.add(stringRequest);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -325,6 +336,11 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         mList.setAdapter(adapter);
 
         getData();
+    }
+
+    private void onSignupFailed() {
+        Toast.makeText(getBaseContext(), "already reviewed", Toast.LENGTH_LONG).show();
+        _review.setEnabled(false);
     }
 
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
