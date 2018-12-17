@@ -197,6 +197,7 @@ public class MessageBoxActivity extends AppCompatActivity {
     private Message getMessage(JSONObject jsonObj) throws JSONException {
         Message message = new Message();
         message.setName(jsonObj.getString("fullName"));
+        message.setPic(R.drawable.user);
         return message;
     }
 }
