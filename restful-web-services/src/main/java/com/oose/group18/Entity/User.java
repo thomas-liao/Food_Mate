@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class User {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="user_id")
 	private Integer id;
 

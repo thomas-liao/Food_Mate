@@ -3,21 +3,21 @@ package com.oose.group18.Entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.annotations.ApiModel;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@ApiModel(description="All details about the Review.")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Entity
 @Table(name="Review")
 public class Review {
 
     @Id
     @GeneratedValue
+    @Column(name="review_id")
     private Integer id;
 
     private Integer userId;

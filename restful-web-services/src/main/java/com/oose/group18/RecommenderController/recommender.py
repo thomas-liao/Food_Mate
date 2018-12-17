@@ -53,7 +53,7 @@ class Recommender:
     '''
 
     '''
-    def __init__ (self, type, file_path, line_format='user item rating timestamp', sep=' ', forget_rate=0.1):
+    def __init__ (self, type, file_path, line_format='user item rating timestamp', sep=' ', forget_rate=0.0):
         self.algo = SVD()
         self.reader = Reader(line_format=line_format, sep=sep)
         self.file_path = file_path

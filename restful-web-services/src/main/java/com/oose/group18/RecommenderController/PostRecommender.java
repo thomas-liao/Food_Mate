@@ -100,7 +100,7 @@ public class PostRecommender extends Recommender {
     public float getUserSimilarity(int id1, int id2) {
         float similarity = (float)0.0;
         try {
-            similarity = userSim[id1][id2];
+            similarity = userSim[id1 - 1][id2 - 1];
         }
         catch(Exception e) {
             System.out.println(userSim.length);

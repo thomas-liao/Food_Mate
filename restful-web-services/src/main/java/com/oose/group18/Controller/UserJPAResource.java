@@ -3,31 +3,21 @@ package com.oose.group18.Controller;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.oose.group18.Entity.*;
 import com.oose.group18.RecommenderController.Recommender;
 import com.oose.group18.RecommenderController.PostRecommender;
-import com.oose.group18.Repository.PostRepository;
-import com.oose.group18.Repository.RestaurantRepository;
-import com.oose.group18.Repository.ReviewRepository;
-import com.oose.group18.Repository.UserRepository;
+import com.oose.group18.Repository.*;
 import com.oose.group18.Exception.PostNotFoundException;
 import com.oose.group18.Exception.RestaurantNotFoundException;
 import com.oose.group18.Exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
@@ -46,7 +36,8 @@ public class UserJPAResource {
 	ApplicationEventPublisher applicationEventPublisher;
 
 	@Autowired
-	ReviewRepository reviewRepository;
+	ReviewRepository usedReviewRepository;
+
 
 	private Recommender recommender; // = new Recommender();
 	private PostRecommender postRecommender; // = new PostRecommender(10);
@@ -81,6 +72,12 @@ public class UserJPAResource {
 
 	@PostMapping("/register")
 	public ResponseEntity<Object> createUser(@RequestBody User user) {
+		List<User> users = userRepository.findAll();
+		for (User existsUser : users) {
+			if (existsUser.getUserName() != null && user.getUserName() != null && existsUser.getUserName().equals(user.getUserName())) {
+				return ResponseEntity.notFound().build();
+			}
+		}
 		userRepository.save(user);
 		postRecommender.update(100);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(100)
@@ -91,7 +88,7 @@ public class UserJPAResource {
 
 	@GetMapping("user/{id}/host/restaurants")
 	public List<Restaurant> retrieveAllRestaurants(@PathVariable int id) {
-		List<Integer> res = recommender.getRecommend(id, 11);
+		List<Integer> res = recommender.getRecommend(id % 200, 11);
 		if (res == null) {
 			return null;
 		}
@@ -172,7 +169,7 @@ public class UserJPAResource {
 			return null;
 		}
 		System.out.println(posts.size());
-		List<Post> rec_posts = postRecommender.getRecommendPost(posts, id, 10);
+		List<Post> rec_posts = postRecommender.getRecommendPost(posts, id % 100, 10);
 		rec_posts.removeIf((Post post) -> !post.canJoin(user));
 		List<PostView> result = new ArrayList<>();
 		for (Post post : rec_posts) {
@@ -253,12 +250,22 @@ public class UserJPAResource {
 
 	@PostMapping("/user/")
 	public String addReview(@RequestBody Review review) {
-		reviewRepository.save(review);
+		review.setTimeStep(new Date());
+		review.setId(review.getUserId() % 100);
+		usedReviewRepository.save(review);
 		recommender.update(review);
 		int n_user = 100;
 		//System.out.println(n_user);
 		postRecommender.update(n_user);
 		return "1";
+	}
+
+	@PutMapping("/update/")
+	public void update() {
+		recommender.update_system();
+		int n_user = 100;
+		//System.out.println(n_user);
+		postRecommender.update(n_user);
 	}
 
 	@GetMapping("/user/{user1Id}/{user2Id}")

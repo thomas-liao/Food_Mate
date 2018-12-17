@@ -45,6 +45,10 @@ public class Recommender {
 
     public void update(Review r) {
         writeToRatingData(r);
+        //init();
+    }
+
+    public void update_system() {
         init();
     }
 
