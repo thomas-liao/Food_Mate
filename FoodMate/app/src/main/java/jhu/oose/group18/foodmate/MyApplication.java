@@ -21,5 +21,4 @@ public class MyApplication extends Application {
     Integer reviewResId;
     String reviewPostStartDate;
     String postDescription;
-    List<Integer> 
 }
