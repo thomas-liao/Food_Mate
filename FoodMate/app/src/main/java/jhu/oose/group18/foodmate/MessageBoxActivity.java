@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -36,7 +37,7 @@ public class MessageBoxActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
-    private RecyclerView.Adapter adapter;
+    private MyRecyclerViewAdapter adapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -63,12 +64,18 @@ public class MessageBoxActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case R.id.action_post_history:
-                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "PostHistory");
                                 startActivity(intent);
                                 break;
                             case R.id.action_guest_history:
-                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "GuestHistory");
                                 startActivity(intent);
+                                break;
+                            case R.id.action_log_out:
+                                DialogFragment dialog = new LogOutDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "dialog");
                                 break;
                         }
                         return true;
@@ -107,6 +114,9 @@ public class MessageBoxActivity extends AppCompatActivity {
         @Override
         public void onRefresh() {
             swipeRefreshLayout.setRefreshing(true);
+            for(int i = 0; i < adapter.getItemCount(); i++) {
+                adapter.deleteItem(i);
+            }
             getData();
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -190,6 +200,7 @@ public class MessageBoxActivity extends AppCompatActivity {
     private Message getMessage(JSONObject jsonObj) throws JSONException {
         Message message = new Message();
         message.setName(jsonObj.getString("fullName"));
+        message.setPic(R.drawable.user);
         return message;
     }
 }

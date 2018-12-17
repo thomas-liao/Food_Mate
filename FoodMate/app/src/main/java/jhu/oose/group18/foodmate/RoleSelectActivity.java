@@ -3,6 +3,7 @@ package jhu.oose.group18.foodmate;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -34,17 +35,23 @@ public class RoleSelectActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
+                            case R.id.action_new_event:
+                                intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+                                startActivity(intent);
+                                break;
                             case R.id.action_post_history:
-                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "PostHistory");
                                 startActivity(intent);
                                 break;
                             case R.id.action_guest_history:
-                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "GuestHistory");
                                 startActivity(intent);
                                 break;
                             case R.id.action_log_out:
-                                intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
+                                DialogFragment dialog = new LogOutDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "dialog");
                                 break;
                         }
                         return true;

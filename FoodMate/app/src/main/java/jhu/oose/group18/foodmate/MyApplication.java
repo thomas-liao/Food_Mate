@@ -6,6 +6,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import java.util.List;
+
 public class MyApplication extends Application {
     String globalVariable="My Global Variable";
     Integer userId;
@@ -18,4 +20,5 @@ public class MyApplication extends Application {
     String reviewPostHost;
     Integer reviewResId;
     String reviewPostStartDate;
+    String postDescription;
 }

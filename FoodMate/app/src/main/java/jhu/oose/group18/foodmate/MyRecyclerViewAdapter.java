@@ -23,7 +23,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.restaurant_row, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.message_row, parent, false);
         final ViewHolder mViewHoder = new ViewHolder(v);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +46,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void deleteItem(int index) {
+        list.remove(index);
+//        notifyItemRemoved(index);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

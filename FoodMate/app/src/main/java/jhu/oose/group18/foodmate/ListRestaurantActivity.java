@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class ListRestaurantActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
-    private RecyclerView.Adapter adapter;
+    private MyRecyclerViewAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     MyApplication application;
@@ -65,12 +66,18 @@ public class ListRestaurantActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case R.id.action_post_history:
-                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "PostHistory");
                                 startActivity(intent);
                                 break;
                             case R.id.action_guest_history:
-                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "GuestHistory");
                                 startActivity(intent);
+                                break;
+                            case R.id.action_log_out:
+                                DialogFragment dialog = new LogOutDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "dialog");
                                 break;
                         }
                         return true;
@@ -114,6 +121,9 @@ public class ListRestaurantActivity extends AppCompatActivity {
         @Override
         public void onRefresh() {
             swipeRefreshLayout.setRefreshing(true);
+            for(int i = 0; i < adapter.getItemCount(); i++) {
+                adapter.deleteItem(i);
+            }
             getData();
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -180,7 +190,7 @@ public class ListRestaurantActivity extends AppCompatActivity {
         Message message = new Message();
         message.setName(jsonObj.getString("name"));
         message.setCategory(jsonObj.getString("category"));
-        message.setPic(R.drawable.restaurant_logo);
+        message.setPic(R.drawable.restaurant);
         return message;
     }
 

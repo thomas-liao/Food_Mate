@@ -14,6 +14,7 @@
         android:layout_marginTop="56dp"
         android:text="@string/choose_your_role"
         android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_host"
@@ -54,12 +55,13 @@
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/primary_darker"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@color/primary_darker"
+        app:itemTextColor="@color/primary_darker"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_role_select" />
+        app:menu="@menu/bottom_navigation_main" />
 
 </android.support.constraint.ConstraintLayout>

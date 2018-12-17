@@ -2,8 +2,12 @@ package jhu.oose.group18.foodmate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +48,37 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    Intent intent;
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_new_event:
+                                intent = new Intent(getApplicationContext(), RoleSelectActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.action_post_history:
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "PostHistory");
+                                startActivity(intent);
+                                break;
+                            case R.id.action_guest_history:
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "GuestHistory");
+                                startActivity(intent);
+                                break;
+                            case R.id.action_log_out:
+                                DialogFragment dialog = new LogOutDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "dialog");
+                                break;
+                        }
+                        return true;
+                    }
+                });
 
         String restaurantSelected = getIntent().getStringExtra("restaurantSelected");
         _restaurant.setText(restaurantSelected);

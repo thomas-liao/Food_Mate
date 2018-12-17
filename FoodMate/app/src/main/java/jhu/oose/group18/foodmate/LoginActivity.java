@@ -14,6 +14,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupLink;
+    private ProgressBar pgsBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        pgsBar = (ProgressBar) findViewById(R.id.pBar);
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -80,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pgsBar.setVisibility(View.VISIBLE);
                 try {
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                     String URL = "https://food-mate.herokuapp.com/login";
@@ -88,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                     jsonBody.put("password", _passwordText.getText().toString());
                     final String requestBody = jsonBody.toString();
                     System.out.println(requestBody);
-
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -97,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (userId < 0) {
                                 onLoginFailed();
                             } else {
+                                pgsBar.setVisibility(View.INVISIBLE);
                                 MyApplication application=(MyApplication)getApplication();
                                 application.userId = userId;
                                 startActivity(intent);
@@ -105,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getBaseContext(),"Loading...", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getBaseContext(),"Loading...", Toast.LENGTH_LONG).show();
                             System.out.println("error " + error.toString());
                             Log.e("VOLLEY", error.toString());
                         }

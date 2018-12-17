@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
-    private RecyclerView.Adapter adapter;
+    private MyRecyclerViewAdapter adapter;
     private TextView reservation_name;
     private TextView reservation_time;
     private TextView reservation_description;
@@ -152,7 +153,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         _return = findViewById(R.id.return_btn);
 
         previousActivity = getIntent().getStringExtra("FROM_ACTIVITY");
-        if (previousActivity.equals("ReviewGuestHistoryActivity")){
+        if (previousActivity.equals("ReviewHistoryActivity")){
             _review.setVisibility(View.VISIBLE);
             _join.setVisibility(View.GONE);
         }
@@ -174,12 +175,18 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case R.id.action_post_history:
-                                intent = new Intent(getApplicationContext(), ReviewHostHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "PostHistory");
                                 startActivity(intent);
                                 break;
                             case R.id.action_guest_history:
-                                intent = new Intent(getApplicationContext(), ReviewGuestHistoryActivity.class);
+                                intent = new Intent(getApplicationContext(), ReviewHistoryActivity.class);
+                                intent.putExtra("HistoryType", "GuestHistory");
                                 startActivity(intent);
+                                break;
+                            case R.id.action_log_out:
+                                DialogFragment dialog = new LogOutDialogFragment();
+                                dialog.show(getSupportFragmentManager(), "dialog");
                                 break;
                         }
                         return true;
@@ -230,6 +237,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         rating = _ratingBar.getRating();
+                        _review.setVisibility(View.GONE);
                         final MyApplication application=(MyApplication)getApplication();
                         try {
                             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -324,6 +332,9 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         @Override
         public void onRefresh() {
             swipeRefreshLayout.setRefreshing(true);
+            for(int i = 0; i < adapter.getItemCount(); i++) {
+                adapter.deleteItem(i);
+            }
             getData();
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -338,7 +349,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         application = (MyApplication) getApplication();
         reservation_name.setText(application.reviewPostRes);
         reservation_time.setText(application.reviewPostHost);
-        reservation_description.setText((application.reviewPostStartDate));
+        reservation_description.setText((application.postDescription));
         ///user/{id}/host/posts/{postId}/guests
         url = "https://food-mate.herokuapp.com/user/" + application.userId + "/host/posts/" + application.reviewPostId + "/guests" ;
         System.out.println(url);
@@ -397,7 +408,7 @@ public class DetailedGuestResponseActivity extends AppCompatActivity {
         Message message = new Message();
         message.setName(jsonObj.getString("userName"));
         message.setCategory(jsonObj.getString("description"));
-        message.setPic(R.drawable.restaurant_logo);
+        message.setPic(R.drawable.user);
         return message;
     }
 
