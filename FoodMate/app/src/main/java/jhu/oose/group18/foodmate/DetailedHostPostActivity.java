@@ -40,7 +40,7 @@ public class DetailedHostPostActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<Message> messageList;
-    private RecyclerView.Adapter adapter;
+    private MyRecyclerViewAdapter adapter;
     private TextView reservation_name;
     private TextView reservation_time;
     private TextView reservation_description;
@@ -126,6 +126,9 @@ public class DetailedHostPostActivity extends AppCompatActivity {
         @Override
         public void onRefresh() {
             swipeRefreshLayout.setRefreshing(true);
+            for(int i = 0; i < adapter.getItemCount(); i++) {
+                adapter.deleteItem(i);
+            }
             getData();
             swipeRefreshLayout.setRefreshing(false);
         }

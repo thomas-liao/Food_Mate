@@ -48,6 +48,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return list.size();
     }
 
+    public void deleteItem(int index) {
+        list.remove(index);
+//        notifyItemRemoved(index);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView textPic;
         public TextView testName, textCategory;
