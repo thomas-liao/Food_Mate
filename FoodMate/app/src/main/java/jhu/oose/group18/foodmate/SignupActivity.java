@@ -87,6 +87,7 @@ public class SignupActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                userNameUsed();
                                 System.out.println("error " + error.toString());
                                 Log.e("VOLLEY", error.toString());
                             }
@@ -149,6 +150,10 @@ public class SignupActivity extends AppCompatActivity {
 
     private void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Signup failed", Toast.LENGTH_LONG).show();
+        _signupButton.setEnabled(true);
+    }
+    private void userNameUsed() {
+        Toast.makeText(getBaseContext(), "Username token", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
     }
 
