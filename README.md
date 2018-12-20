@@ -147,7 +147,7 @@ The host can go back to his/her posts to see if any other users have joined this
 
 <img src="./Image/5_6.png" alt="Post Recommendation" width="250"/><br/><br/>
 
-We logged in with another account, after choosing to be guest, the user is provided a summary of posts distributed by the recommendation system(The illustration only shows Amy's posts because right now only Amy posted a bunch of posts).
+We logged in with another account, after choosing to be guest, the user is provided a summary of posts distributed by the recommendation system(The illustration only shows Amy's posts because right now only Amy posted a bunch of posts). The user could also pull the page to refresh if any new posts are added and recmended to the user.
 
 <img src="./Image/5_7.png" width="250"/><br/><br/>
 
