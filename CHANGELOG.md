@@ -7,6 +7,18 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - code refactoring and improvement
 
+## [0.4.0] - 2018-12-19
+
+### Added
+
+- polished front-end layout
+- Added constraints for user to review one post only once
+- Added constraints that user cannot user same username
+
+### Changed
+
+- fixed bugs of front-end and back-end
+
 ## [0.3.0] - 2018-12-9
 
 ### Added
