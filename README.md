@@ -106,14 +106,14 @@ The initial page is the login page. User need to enter username and password to 
 <img  src="./Image/5_2.png" alt="signup" width="250"/><br/><br/>
 
 
-Wanna create your own account? No problem! Click create one will send you to registration page where you can fill your basic information to create a new account. Then you will jump to login page to login will your own account.
+Wanna create your own account? No problem! Click create one will send you to registration page where you can fill your basic information to create a new account. We have set up some restrictions on the register page, so all account information will follow a pattern. Then you will jump to login page to login will your own account.
 
 ### Choose Role
 
 <img  src="./Image/5_3.png" alt="Choose Role" width="250"/><br/><br/>
 
 
-User can choose to be host or guest.
+User can choose to be host or guest. User could also go back to this page at any time by clicking on the "New Event" in the bottom navigation bar.
 
 ### Choose Host:
 
@@ -121,15 +121,15 @@ User can choose to be host or guest.
 
 
 After choosing to be host, the user can get a list of recommended restaurants (by our recommendation system!). Then the user can choose the restaurant he/she likes to make a post.
-After sending the post, hosts can go back to the posts and see if any guests have joined in the navigation bar. Then the user can fill the form and send the post to the server and wait for guests to join.
+Hosts can go back to the posts and see if any guests have joined using "My hostings" in the bottom navigation bar.
 
-We have switched from ListView to RecyclerView starting from iteration4.
 
 ### View Message Box
 
 <img src="./Image/5_4_2.png" width="250"/><br/><br/>
 
-After finishing sending the post, users will enter a message box, where they could get messages from guests. Originally there will be no guests, users could pull down to refresh the page if new guests joined.
+After sending the post, the user will be directed to a waiting page, where he/she can pull to refresh if new guest join at the time.
+Hosts can go back to the posts and see if any guests have joined using "My hostings" in the bottom navigation bar.
 
 
 ### View Current or Past Posts
@@ -137,6 +137,10 @@ After finishing sending the post, users will enter a message box, where they cou
 <img src="./Image/5_5.png" width="250"/><br/><br/>
 
 For demonstration purposes, we used the account Amy to create a bunch of posts, and you can view all your current or past posts by selecting "My Hostings" at the bottom navigation bar.
+
+<img src="./Image/5_8.png" width="250"/><br/><br/>
+
+The host can go back to his/her posts to see if any other users have joined this post.
 
 
 ### Guest Viewing Recommended Posts
@@ -147,17 +151,14 @@ We logged in with another account, after choosing to be guest, the user is provi
 
 <img src="./Image/5_7.png" width="250"/><br/><br/>
 
-By clicking on each post, the user can see detailed information and choose whether or not he/she likes to join. The user can go back to joined posts using button in the navigation bar.
+By clicking on each post, the user can see detailed information and choose whether or not he/she likes to join. Posts that are already filled up (according to guest limit), sent by the user or already joined by the user will not appear in the recommendation list. The user can go back to joined posts using button in the navigation bar.
 
-### Host Viewing Joined Guests
-
-<img src="./Image/5_8.png" width="250"/><br/><br/>
-
-The host can go back to his/her posts to see if any other users have joined this post.
+### Guests Viewing Joined Posts
+Guests could go back to posts they have joined by clicking "My guestings".
 
 <img src="./Image/5_9.png" width="250"/><br/><br/>
 
-After reservation is completed, user could also rate the reservation.
+After reservation is completed, user could also rate the reservation by clicking the review button and submit. Rated reservation could not be review again.
 
 ## Frontend test
 
